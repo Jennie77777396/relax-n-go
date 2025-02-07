@@ -1,3 +1,4 @@
+import { colorOptions } from "@/blocks/Color/config";
 import type { CollectionConfig } from "payload";
 
 export const Fields: CollectionConfig = {
@@ -7,9 +8,10 @@ export const Fields: CollectionConfig = {
     },
     fields: [
       { name: 'fieldName', type: 'text', required: true },
-      { name: 'description', type: 'text' },
+      { name: 'color', type: 'select', options: colorOptions },
       { name: 'tasks', type: 'relationship', relationTo: 'tasks', hasMany: true },
       { name: 'totalMinutesSpent', type: 'number' },
+
     ],
 
   };

@@ -22,6 +22,7 @@ export interface Config {
     time: Time;
     tags: Tag;
     'full-stack-knowledge': FullStackKnowledge;
+    importance: Importance;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -44,6 +45,7 @@ export interface Config {
     time: TimeSelect<false> | TimeSelect<true>;
     tags: TagsSelect<false> | TagsSelect<true>;
     'full-stack-knowledge': FullStackKnowledgeSelect<false> | FullStackKnowledgeSelect<true>;
+    importance: ImportanceSelect<false> | ImportanceSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -689,6 +691,8 @@ export interface Form {
 export interface Task {
   id: number;
   taskName: string;
+  taskDescription?: string | null;
+  taskAnswer?: string | null;
   taskEmoji?: string | null;
   status: 'Not Started' | 'In Progress' | 'Completed';
   feedback?: string | null;
@@ -696,8 +700,11 @@ export interface Task {
   rating?: (number | Rating)[] | null;
   totalMinutesSpent?: number | null;
   field?: (number | Field)[] | null;
-  successTimes?: number | null;
-  totalTimes?: number | null;
+  successAttempts?: number | null;
+  totalAttempts?: number | null;
+  importance?: (number | Importance)[] | null;
+  startTime?: number | null;
+  isCounting?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -710,7 +717,32 @@ export interface Tag {
   tagName: string;
   description?: string | null;
   emoji?: string | null;
-  color?: string | null;
+  color?:
+    | (
+        | 'slate'
+        | 'gray'
+        | 'zinc'
+        | 'neutral'
+        | 'stone'
+        | 'red'
+        | 'orange'
+        | 'amber'
+        | 'yellow'
+        | 'lime'
+        | 'green'
+        | 'emerald'
+        | 'teal'
+        | 'cyan'
+        | 'sky'
+        | 'blue'
+        | 'indigo'
+        | 'violet'
+        | 'purple'
+        | 'fuchsia'
+        | 'pink'
+        | 'rose'
+      )
+    | null;
   image?: (number | null) | Media;
   updatedAt: string;
   createdAt: string;
@@ -723,7 +755,21 @@ export interface Rating {
   id: number;
   ratingValue: number;
   task?: (number | null) | Task;
-  comments?: string | null;
+  comments?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -734,9 +780,45 @@ export interface Rating {
 export interface Field {
   id: number;
   fieldName: string;
-  description?: string | null;
+  color?:
+    | (
+        | 'slate'
+        | 'gray'
+        | 'zinc'
+        | 'neutral'
+        | 'stone'
+        | 'red'
+        | 'orange'
+        | 'amber'
+        | 'yellow'
+        | 'lime'
+        | 'green'
+        | 'emerald'
+        | 'teal'
+        | 'cyan'
+        | 'sky'
+        | 'blue'
+        | 'indigo'
+        | 'violet'
+        | 'purple'
+        | 'fuchsia'
+        | 'pink'
+        | 'rose'
+      )
+    | null;
   tasks?: (number | Task)[] | null;
   totalMinutesSpent?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "importance".
+ */
+export interface Importance {
+  id: number;
+  importanceValue: '0' | '1' | '2' | '3' | '4' | '5';
+  task?: (number | null) | Task;
   updatedAt: string;
   createdAt: string;
 }
@@ -999,6 +1081,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'full-stack-knowledge';
         value: number | FullStackKnowledge;
+      } | null)
+    | ({
+        relationTo: 'importance';
+        value: number | Importance;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1363,6 +1449,8 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface TasksSelect<T extends boolean = true> {
   taskName?: T;
+  taskDescription?: T;
+  taskAnswer?: T;
   taskEmoji?: T;
   status?: T;
   feedback?: T;
@@ -1370,8 +1458,11 @@ export interface TasksSelect<T extends boolean = true> {
   rating?: T;
   totalMinutesSpent?: T;
   field?: T;
-  successTimes?: T;
-  totalTimes?: T;
+  successAttempts?: T;
+  totalAttempts?: T;
+  importance?: T;
+  startTime?: T;
+  isCounting?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1392,7 +1483,7 @@ export interface RatingsSelect<T extends boolean = true> {
  */
 export interface FieldsSelect<T extends boolean = true> {
   fieldName?: T;
-  description?: T;
+  color?: T;
   tasks?: T;
   totalMinutesSpent?: T;
   updatedAt?: T;
@@ -1455,6 +1546,16 @@ export interface TasksBlockSelect<T extends boolean = true> {
   feedback?: T;
   id?: T;
   blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "importance_select".
+ */
+export interface ImportanceSelect<T extends boolean = true> {
+  importanceValue?: T;
+  task?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

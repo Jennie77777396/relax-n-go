@@ -12,6 +12,8 @@ export default function ToDoPage() {
     { id: 2, text: "Build a full-stack app", completed: true },
     { id: 4, text: "Learn Hooks for StopWatch Feature", completed: false },
     { id: 5, text: "Learn other 3 knowledge points", completed: false },
+    { id: 6, text: "Global Header with Dynamic Links based on fields", completed: false }, 
+    { id: 7, text: "Enable Rich Text Editor for Task Description, and Task Answer", completed: false },
   ]);
 
   const [newTask, setNewTask] = useState("");

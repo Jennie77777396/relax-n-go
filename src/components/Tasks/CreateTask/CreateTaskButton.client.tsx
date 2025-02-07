@@ -19,20 +19,24 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useFieldStore } from '@/stores/useFieldStore';
 import { createTask } from '@/app/(frontend)/actions';
+import { useFieldStore } from '@/stores/useFieldStore';
 
-export function CreateTaskButton2() {
-//set up default values
+export default function CreateTaskButtonClient() {
+  const { fields, loading, error, fetchFields } = useFieldStore();
   const [isLoading, setIsLoading] = useState(false);
   const [showPopover, setShowPopover] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [taskName, setTaskName] = useState('');
   const [taskEmoji, setTaskEmoji] = useState('✨');
-  const { fields, fetchFields } = useFieldStore();
-  const [selectedFieldId, setSelectedFieldId] = useState<string>('');
-  const selectedField = fields.find((field) => field.id.toString() === selectedFieldId);
+  const [taskDescription, setTaskDescription] = useState('');
+  const [taskAnswer, setTaskAnswer] = useState('');
+  const [field, setField] = useState('');
+  const [tags, setTags] = useState('');
 
+  useEffect(() => {
+    fetchFields();
+  }, [fetchFields]);
 
   const handleCreateTask = async () => {
     setIsLoading(true);
@@ -47,35 +51,24 @@ export function CreateTaskButton2() {
       });
       if (!result.success) throw new Error('Failed to create task');
 
-
-
-
       setIsSuccess(true);
       setShowPopover(true);
       setTimeout(() => setShowPopover(false), 2000);
       setTaskName('');
       setTaskEmoji('✨');
+      setTaskDescription('');
+      setTaskAnswer('');
     } catch (error) {
       setIsSuccess(false);
       setShowPopover(true);
-
       setTimeout(() => setShowPopover(false), 2000);
     } finally {
       setIsLoading(false);
     }
   };
 
-
-
-  useEffect(() => {
-    fetchFields();
-  }, []);
-
-
   return (
     <Dialog>
-
-
       <Popover open={showPopover}>
         <PopoverTrigger asChild>
           <motion.div
@@ -133,14 +126,14 @@ export function CreateTaskButton2() {
             />
           </div>
           <div>
-            <Label htmlFor="field">Field</Label>
-            <Select onValueChange={(value) => setSelectedFieldId(value)}>
+            <Label htmlFor="category">Fields</Label>
+            <Select onValueChange={(value) => setField(value)}>
               <SelectTrigger>
                 <SelectValue placeholder="Select a field" />
               </SelectTrigger>
               <SelectContent>
                 {fields.map((field) => (
-                  <SelectItem key={field.id} value={field.id.toString()}>
+                  <SelectItem key={field.id.toString()} value={field.id.toString()}>
                     {field.fieldName}
                   </SelectItem>
                 ))}
@@ -157,7 +150,6 @@ export function CreateTaskButton2() {
           <Button onClick={handleCreateTask} disabled={isLoading}>
             {isLoading ? "Creating..." : "Create Task"}
           </Button>
-        
         </div>
       </DialogContent>
     </Dialog>

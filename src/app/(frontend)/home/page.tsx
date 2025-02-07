@@ -1,8 +1,8 @@
-import { CreateTaskButton } from "@/components/createtaskbutton";
-
+import { CreateTaskButton2 } from "@/components/CreateTaskButton";
+import { CreateQAButton } from "@/components/CreateQAButton";
+import { CreateFieldButton } from "@/components/CreateFieldButton";
+import { GoToQAGame } from "@/components/GoToQAGame";
 export default async function HomePage() {
-
-
 
   return (
     <main>
@@ -15,7 +15,12 @@ export default async function HomePage() {
             Jennie is also a talented task manager with a philosophy of <strong>"Relax and Go"</strong>. 
             For her, <strong>relaxation is the key to success</strong>. 🧘‍♀️🚀
           </p>
-          <CreateTaskButton />
+          <div className="flex flex-row gap-4">
+          <CreateTaskButton2 /> <GoToQAGame />
+          <CreateQAButton />
+          <CreateFieldButton />
+          </div>
+
 
         </div>
       </div>

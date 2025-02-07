@@ -6,9 +6,9 @@ export const Ratings: CollectionConfig = {
         useAsTitle: 'ratingValue',
     },
     fields: [
-        { name: 'ratingValue', type: 'number', required: true },
+        { name: 'ratingValue', type: 'number', required: true, min: 0, max: 100 },
         { name: 'task', type: 'relationship', relationTo: 'tasks' },
-        { name: 'comments', type: 'text' },
+        { name: 'comments', type: 'richText' },
       ],
 }
 

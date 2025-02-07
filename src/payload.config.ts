@@ -22,6 +22,7 @@ import { Tasks } from './collections/Tasks'
 import { Ratings } from './collections/Ratings'
 import { Time } from './collections/Time'
 import { Tags } from './collections/Tags'
+import { Importance } from './collections/Importance'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -70,7 +71,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Users, Tasks, Ratings, Fields, Time, Tags, FullStackKnowledge],
+  collections: [Pages, Posts, Media, Categories, Users, Tasks, Ratings, Fields, Time, Tags, FullStackKnowledge, Importance],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],      
   plugins: [

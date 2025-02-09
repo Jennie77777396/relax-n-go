@@ -1,41 +1,42 @@
-'use client';
+'use client'
 
-import { useState, useEffect } from 'react';
-import { Button } from "@/components/ui/button";
-import { PlusCircle, Check, AlertCircle } from "lucide-react";
-import { motion } from "framer-motion";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { useState, useEffect } from 'react'
+import { Button } from '@/components/ui/button'
+import { PlusCircle, Check, AlertCircle } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useFieldStore } from '@/stores/useFieldStore';
-import { createTask } from '@/app/(frontend)/actions';
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { useFieldStore } from '@/stores/useFieldStore'
+import { createTask } from '@/app/(frontend)/actions1'
 
 export function CreateTaskButton2() {
-//set up default values
-  const [isLoading, setIsLoading] = useState(false);
-  const [showPopover, setShowPopover] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [taskName, setTaskName] = useState('');
-  const [taskEmoji, setTaskEmoji] = useState('✨');
-  const { fields, fetchFields } = useFieldStore();
-  const [selectedFieldId, setSelectedFieldId] = useState<string>('');
-  const selectedField = fields.find((field) => field.id.toString() === selectedFieldId);
-
+  //set up default values
+  const [isLoading, setIsLoading] = useState(false)
+  const [showPopover, setShowPopover] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
+  const [taskName, setTaskName] = useState('')
+  const [taskEmoji, setTaskEmoji] = useState('✨')
+  const { fields, fetchFields } = useFieldStore()
+  const [selectedFieldId, setSelectedFieldId] = useState<string>('')
+  const selectedField = fields.find((field) => field.id.toString() === selectedFieldId)
 
   const handleCreateTask = async () => {
-    setIsLoading(true);
+    setIsLoading(true)
     try {
       const result = await createTask({
         taskName,
@@ -44,38 +45,30 @@ export function CreateTaskButton2() {
         id: 0,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-      });
-      if (!result.success) throw new Error('Failed to create task');
+      })
+      if (!result.success) throw new Error('Failed to create task')
 
-
-
-
-      setIsSuccess(true);
-      setShowPopover(true);
-      setTimeout(() => setShowPopover(false), 2000);
-      setTaskName('');
-      setTaskEmoji('✨');
+      setIsSuccess(true)
+      setShowPopover(true)
+      setTimeout(() => setShowPopover(false), 2000)
+      setTaskName('')
+      setTaskEmoji('✨')
     } catch (error) {
-      setIsSuccess(false);
-      setShowPopover(true);
+      setIsSuccess(false)
+      setShowPopover(true)
 
-      setTimeout(() => setShowPopover(false), 2000);
+      setTimeout(() => setShowPopover(false), 2000)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
-
-
+  }
 
   useEffect(() => {
-    fetchFields();
-  }, []);
-
+    fetchFields()
+  }, [])
 
   return (
     <Dialog>
-
-
       <Popover open={showPopover}>
         <PopoverTrigger asChild>
           <motion.div
@@ -153,13 +146,12 @@ export function CreateTaskButton2() {
           <div>
             <Label htmlFor="importance">Importance</Label>
           </div>
-    
+
           <Button onClick={handleCreateTask} disabled={isLoading}>
-            {isLoading ? "Creating..." : "Create Task"}
+            {isLoading ? 'Creating...' : 'Create Task'}
           </Button>
-        
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

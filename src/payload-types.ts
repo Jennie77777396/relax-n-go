@@ -21,7 +21,6 @@ export interface Config {
     fields: Field;
     time: Time;
     tags: Tag;
-    'full-stack-knowledge': FullStackKnowledge;
     importance: Importance;
     redirects: Redirect;
     forms: Form;
@@ -44,7 +43,6 @@ export interface Config {
     fields: FieldsSelect<false> | FieldsSelect<true>;
     time: TimeSelect<false> | TimeSelect<true>;
     tags: TagsSelect<false> | TagsSelect<true>;
-    'full-stack-knowledge': FullStackKnowledgeSelect<false> | FullStackKnowledgeSelect<true>;
     importance: ImportanceSelect<false> | ImportanceSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
@@ -690,21 +688,21 @@ export interface Form {
  */
 export interface Task {
   id: number;
-  taskName: string;
-  taskDescription?: string | null;
-  taskAnswer?: string | null;
-  taskEmoji?: string | null;
-  status: 'Not Started' | 'In Progress' | 'Completed';
+  title: string;
+  emoji: string;
+  importance?: number | null;
+  rating?: number | null;
   feedback?: string | null;
   tags?: (number | Tag)[] | null;
-  rating?: (number | Rating)[] | null;
-  totalMinutesSpent?: number | null;
-  field?: (number | Field)[] | null;
-  successAttempts?: number | null;
-  totalAttempts?: number | null;
-  importance?: (number | Importance)[] | null;
-  startTime?: number | null;
-  isCounting?: boolean | null;
+  fields?: (number | Field)[] | null;
+  status?: ('not_started' | 'in_progress' | 'completed') | null;
+  startTime?: string | null;
+  timer: number;
+  is_running?: boolean | null;
+  parent_task?: (number | null) | Task;
+  completed_subtasks?: number | null;
+  total_subtasks?: number | null;
+  is_repeated?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -714,36 +712,65 @@ export interface Task {
  */
 export interface Tag {
   id: number;
-  tagName: string;
-  description?: string | null;
-  emoji?: string | null;
-  color?:
-    | (
-        | 'slate'
-        | 'gray'
-        | 'zinc'
-        | 'neutral'
-        | 'stone'
-        | 'red'
-        | 'orange'
-        | 'amber'
-        | 'yellow'
-        | 'lime'
-        | 'green'
-        | 'emerald'
-        | 'teal'
-        | 'cyan'
-        | 'sky'
-        | 'blue'
-        | 'indigo'
-        | 'violet'
-        | 'purple'
-        | 'fuchsia'
-        | 'pink'
-        | 'rose'
-      )
-    | null;
-  image?: (number | null) | Media;
+  title: string;
+  color:
+    | 'slate'
+    | 'gray'
+    | 'zinc'
+    | 'neutral'
+    | 'stone'
+    | 'red'
+    | 'orange'
+    | 'amber'
+    | 'yellow'
+    | 'lime'
+    | 'green'
+    | 'emerald'
+    | 'teal'
+    | 'cyan'
+    | 'sky'
+    | 'blue'
+    | 'indigo'
+    | 'violet'
+    | 'purple'
+    | 'fuchsia'
+    | 'pink'
+    | 'rose';
+  tasks?: (number | Task)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fields".
+ */
+export interface Field {
+  id: number;
+  title: string;
+  color:
+    | 'slate'
+    | 'gray'
+    | 'zinc'
+    | 'neutral'
+    | 'stone'
+    | 'red'
+    | 'orange'
+    | 'amber'
+    | 'yellow'
+    | 'lime'
+    | 'green'
+    | 'emerald'
+    | 'teal'
+    | 'cyan'
+    | 'sky'
+    | 'blue'
+    | 'indigo'
+    | 'violet'
+    | 'purple'
+    | 'fuchsia'
+    | 'pink'
+    | 'rose';
+  tasks?: (number | Task)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -775,55 +802,6 @@ export interface Rating {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "fields".
- */
-export interface Field {
-  id: number;
-  fieldName: string;
-  color?:
-    | (
-        | 'slate'
-        | 'gray'
-        | 'zinc'
-        | 'neutral'
-        | 'stone'
-        | 'red'
-        | 'orange'
-        | 'amber'
-        | 'yellow'
-        | 'lime'
-        | 'green'
-        | 'emerald'
-        | 'teal'
-        | 'cyan'
-        | 'sky'
-        | 'blue'
-        | 'indigo'
-        | 'violet'
-        | 'purple'
-        | 'fuchsia'
-        | 'pink'
-        | 'rose'
-      )
-    | null;
-  tasks?: (number | Task)[] | null;
-  totalMinutesSpent?: number | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "importance".
- */
-export interface Importance {
-  id: number;
-  importanceValue: '0' | '1' | '2' | '3' | '4' | '5';
-  task?: (number | null) | Task;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "time".
  */
 export interface Time {
@@ -837,34 +815,14 @@ export interface Time {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "full-stack-knowledge".
+ * via the `definition` "importance".
  */
-export interface FullStackKnowledge {
+export interface Importance {
   id: number;
-  tasks?: TasksBlock[] | null;
+  importanceValue: '0' | '1' | '2' | '3' | '4' | '5';
+  task?: (number | null) | Task;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TasksBlock".
- */
-export interface TasksBlock {
-  name: string;
-  emoji?: string | null;
-  minutes?: number | null;
-  tags?:
-    | {
-        tag?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  result?: ('success' | 'failure') | null;
-  description?: string | null;
-  feedback?: string | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'tasks';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1077,10 +1035,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'tags';
         value: number | Tag;
-      } | null)
-    | ({
-        relationTo: 'full-stack-knowledge';
-        value: number | FullStackKnowledge;
       } | null)
     | ({
         relationTo: 'importance';
@@ -1448,21 +1402,21 @@ export interface UsersSelect<T extends boolean = true> {
  * via the `definition` "tasks_select".
  */
 export interface TasksSelect<T extends boolean = true> {
-  taskName?: T;
-  taskDescription?: T;
-  taskAnswer?: T;
-  taskEmoji?: T;
-  status?: T;
+  title?: T;
+  emoji?: T;
+  importance?: T;
+  rating?: T;
   feedback?: T;
   tags?: T;
-  rating?: T;
-  totalMinutesSpent?: T;
-  field?: T;
-  successAttempts?: T;
-  totalAttempts?: T;
-  importance?: T;
+  fields?: T;
+  status?: T;
   startTime?: T;
-  isCounting?: T;
+  timer?: T;
+  is_running?: T;
+  parent_task?: T;
+  completed_subtasks?: T;
+  total_subtasks?: T;
+  is_repeated?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1482,10 +1436,9 @@ export interface RatingsSelect<T extends boolean = true> {
  * via the `definition` "fields_select".
  */
 export interface FieldsSelect<T extends boolean = true> {
-  fieldName?: T;
+  title?: T;
   color?: T;
   tasks?: T;
-  totalMinutesSpent?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1506,46 +1459,11 @@ export interface TimeSelect<T extends boolean = true> {
  * via the `definition` "tags_select".
  */
 export interface TagsSelect<T extends boolean = true> {
-  tagName?: T;
-  description?: T;
-  emoji?: T;
+  title?: T;
   color?: T;
-  image?: T;
+  tasks?: T;
   updatedAt?: T;
   createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "full-stack-knowledge_select".
- */
-export interface FullStackKnowledgeSelect<T extends boolean = true> {
-  tasks?:
-    | T
-    | {
-        tasks?: T | TasksBlockSelect<T>;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TasksBlock_select".
- */
-export interface TasksBlockSelect<T extends boolean = true> {
-  name?: T;
-  emoji?: T;
-  minutes?: T;
-  tags?:
-    | T
-    | {
-        tag?: T;
-        id?: T;
-      };
-  result?: T;
-  description?: T;
-  feedback?: T;
-  id?: T;
-  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -1,7 +1,7 @@
 // storage-adapter-import-placeholder
 import { postgresAdapter } from '@payloadcms/db-postgres'
 
-import sharp from 'sharp' // sharp-import
+import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
@@ -16,7 +16,6 @@ import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
-import { FullStackKnowledge } from './collections/FullStackKnowledge'
 import { Fields } from './collections/Fields'
 import { Tasks } from './collections/Tasks'
 import { Ratings } from './collections/Ratings'
@@ -71,9 +70,21 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Users, Tasks, Ratings, Fields, Time, Tags, FullStackKnowledge, Importance],
+  collections: [
+    Pages,
+    Posts,
+    Media,
+    Categories,
+    Users,
+    Tasks,
+    Ratings,
+    Fields,
+    Time,
+    Tags,
+    Importance,
+  ],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer],      
+  globals: [Header, Footer],
   plugins: [
     ...plugins,
     // storage-adapter-placeholder

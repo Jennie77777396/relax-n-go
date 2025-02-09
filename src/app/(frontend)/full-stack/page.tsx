@@ -1,12 +1,12 @@
-import { getTasks, getKnowledgeCards } from "../actions";
-import { CreateTaskButton2 } from "@/components/CreateTaskButton";
-import { CreateQAButton } from "@/components/CreateQAButton";
-import { AccordionKnowledgeCard } from "@/components/KnowledgeCard";
-import { FullTaskCard } from "@/components/TaskCard";
+import { getTasks, getKnowledgeCards } from '../actions1'
+import { CreateTaskButton2 } from '@/components/CreateTaskButton'
+import { CreateQAButton } from '@/components/CreateQAButton'
+import { AccordionKnowledgeCard } from '@/components/KnowledgeCard'
+import { FullTaskCard } from '@/components/TaskCard'
 
 export default async function FullStackPage() {
-  const tasks = await getTasks();
-  const knowledge = await getKnowledgeCards();
+  const tasks = await getTasks()
+  const knowledge = await getKnowledgeCards()
 
   return (
     <main className="flex flex-row items-start justify-center min-h-screen bg-gray-100 p-8 gap-8">
@@ -20,7 +20,7 @@ export default async function FullStackPage() {
             Tasks
           </h2>
           <div className="flex space-x-4">
-          <CreateTaskButton2 />
+            <CreateTaskButton2 />
             <button className="p-2 rounded-full hover:bg-gray-200 transition-colors">
               <span role="img" aria-label="Grid View">
                 ⬛
@@ -39,7 +39,6 @@ export default async function FullStackPage() {
           ))}
         </div>
       </div>
-
 
       {/* Knowledge Cards Section (Right) */}
       <div className="w-1/2 bg-white rounded-lg shadow-lg p-6">
@@ -65,11 +64,9 @@ export default async function FullStackPage() {
           </div>
         </div>
         <div className="grid grid-cols-1 gap-6">
-          {knowledge.data?.docs?.map((card) => (
-            <AccordionKnowledgeCard key={card.id} {...card} />
-          ))}
+          {knowledge.data?.docs?.map((card) => <AccordionKnowledgeCard key={card.id} {...card} />)}
         </div>
       </div>
     </main>
-  );
+  )
 }

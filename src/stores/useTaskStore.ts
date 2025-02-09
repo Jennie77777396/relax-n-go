@@ -1,95 +1,119 @@
-import { create } from "zustand";
-import { Task } from "@/payload-types";
-import { getTask, getTasks, createTask, updateTask, deleteTask } from "@/app/(frontend)/actions";
+import { create } from 'zustand'
+import { createTask, getTaskById, getTasks, updateTask } from '@/actions/tasks'
+import { Task } from '@/payload-types'
 
 interface TaskStore {
-  tasks: Task[];
-  taskDetails: Record<string, Task>; // Store individual tasks by their ID
-  loading: boolean;
-  error: string | null;
-  fetchTasks: () => Promise<void>;
-  fetchTask: (id: number) => Promise<void>;
-  addTask: (task: Task) => Promise<void>;
-  updateTask: (id: string, data: Partial<Task>) => Promise<void>;
-  removeTask: (id: string) => Promise<void>;
+  tasks: Task[]
+  itemsPerPage: number
+  currentPage: number
+  totalPages: number
+  totalDocs: number
+  hasPrevPage: boolean
+  hasNextPage: boolean
+  loading: boolean
+  error: string | null
+
+  fetchTasks: (page: number, limit: number) => Promise<void>
+  toggleTimer: (taskId: number, isRunning: boolean) => Promise<void>
+  addTask: (title: string) => Promise<void>
 }
 
 export const useTaskStore = create<TaskStore>((set, get) => ({
   tasks: [],
-  taskDetails: {}, // Store for individual tasks
   loading: false,
+  currentPage: 1,
+  itemsPerPage: 2,
+  totalPages: 1,
+  totalDocs: 0,
+
+  hasPrevPage: false,
+  hasNextPage: false,
   error: null,
 
-  fetchTasks: async () => {
-    set({ loading: true, error: null });
+  fetchTasks: async (page: number = 1, limit: number = 2) => {
+    console.log('Fetching tasks...')
+    const { tasks, totalPages, totalDocs, hasPrevPage, hasNextPage } = await getTasks(
+      {},
+      '-createdAt',
+      limit,
+      page,
+    )
+    set({ tasks, totalPages, totalDocs, hasPrevPage, hasNextPage })
+    console.log('In Zustand,Tasks fetched:', tasks)
+  },
+
+  addTask: async (title) => {
+    set({ loading: true, error: null })
     try {
-      const tasks = await getTasks();
-      set({ tasks: tasks.docs as Task[] });
+      const result = await createTask({ title, emoji: '🌴' })
+      console.log('In Zustand,Task created:', result)
+
+      if (result.success) {
+        set((state) => ({
+          tasks: [...state.tasks, result.task as Task],
+        }))
+      }
     } catch (error) {
-      set({ error: error as string });
+      console.error('Error in addTask:', error)
+      set({ error: error as string })
     } finally {
-      set({ loading: false });
+      set({ loading: false })
     }
   },
 
-  fetchTask: async (id: number) => {
-    set({ loading: true, error: null });
+  toggleTimer: async (taskId: number, isRunning: boolean) => {
+    set({ loading: true, error: null })
+    const task = get().tasks.find((task) => task.id === taskId)
+    if (!task) return
+
     try {
-      const task = await getTask(id);
+      if (!isRunning) {
+        // Start timer - single state update
+        const startTime = new Date().toISOString()
+        set((state) => ({
+          tasks: state.tasks.map((t) =>
+            t.id === taskId ? { ...t, startTime, is_running: true } : t,
+          ),
+        }))
+
+        await updateTask(taskId.toString(), {
+          startTime,
+          is_running: true,
+        })
+      } else {
+        // Stop timer - calculate locally
+        const endTime = Date.now()
+        const elapsed = Math.floor((endTime - new Date(task.startTime!).getTime()) / 1000)
+        const newTimer = task.timer + elapsed
+
+        // Single state update
+        set((state) => ({
+          tasks: state.tasks.map((t) =>
+            t.id === taskId
+              ? {
+                  ...t,
+                  timer: newTimer,
+                  startTime: null,
+                  is_running: false,
+                }
+              : t,
+          ),
+        }))
+
+        await updateTask(taskId.toString(), {
+          timer: newTimer,
+          startTime: null,
+          is_running: false,
+        })
+      }
+    } catch (error) {
+      // Revert local state on error
       set((state) => ({
-        taskDetails: {
-          ...state.taskDetails,
-          [id]: task as Task,
-        }
-      }));
-    } catch (error) {   
-      set({ error: error as string });
+        tasks: state.tasks.map((t) => (t.id === taskId ? { ...t, is_running: isRunning } : t)),
+      }))
+      set({ error: error as string })
     } finally {
-      set({ loading: false });
+      set({ loading: false })
     }
   },
-
-  addTask: async (task: Task) => {
-    set({ loading: true, error: null });
-    try {
-      const newTask = await createTask(task);
-      set((state) => ({ tasks: [...state.tasks, newTask.data as Task] }));
-    } catch (error) {
-      set({ error: error as string });
-    } finally {
-      set({ loading: false });
-    }
-  },
-
-  updateTask: async (id: string, data: Partial<Task>) => {
-    set({ loading: true, error: null });
-    try {
-      const updatedTask = await updateTask(parseInt(id), data);
-      set((state) => ({
-        taskDetails: {
-          ...state.taskDetails,
-          [id]: updatedTask.data as Task,
-        },
-        tasks: state.tasks.map((task) =>
-          task.id === parseInt(id) ? updatedTask.data as Task : task
-        ),
-      }));
-    } catch (error) {
-      set({ error: error as string });
-    } finally {
-      set({ loading: false });
-    }
-  },
-
-  removeTask: async (id: string) => {
-    set({ loading: true, error: null });
-    try {
-      await deleteTask(parseInt(id));
-      set((state) => ({ tasks: state.tasks.filter((task) => task.id !== parseInt(id)) }));
-    } catch (error) {
-      set({ error: error as string });
-    } finally {
-      set({ loading: false });
-    }
-  },
-}));
+}))

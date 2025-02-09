@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Moon, Sun, Search, Globe, Type, Folder, ListTodo } from "lucide-react"
+import { Moon, Sun, Search, Globe, Type, Folder, ListTodo, BarChart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -57,6 +57,11 @@ export default function NavigationBar() {
         <Button variant="ghost">
               <ListTodo className="h-4 w-4 mr-2" /> To Do List
             </Button>
+        </Link>
+        <Link href = "/statistics" className="text-sm">
+        <Button variant="ghost">
+          <BarChart className="h-4 w-4 mr-2" /> Statistics
+        </Button>
         </Link>
       </div>
 

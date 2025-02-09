@@ -1,73 +1,71 @@
-'use client';
+'use client'
 
-import { useState, useEffect } from 'react';
-import { Button } from "@/components/ui/button";
-import { PlusCircle, Check, AlertCircle } from "lucide-react";
-import { motion } from "framer-motion";
+import { useState, useEffect } from 'react'
+import { Button } from '@/components/ui/button'
+import { PlusCircle, Check, AlertCircle } from 'lucide-react'
+import { motion } from 'framer-motion'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { createField } from '@/app/(frontend)/actions';
-import { colorOptions } from '@/blocks/Color/config';
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { createField } from '@/app/(frontend)/actions1'
+import { colorOptions } from '@/blocks/Color/config'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select'
 
 export function CreateFieldButton() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [field, setField] = useState('');
-  const [color, setColor] = useState(colorOptions[0]);
-
+  const [isLoading, setIsLoading] = useState(false)
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
+  const [open, setOpen] = useState(false)
+  const [field, setField] = useState('')
+  const [color, setColor] = useState(colorOptions[0])
 
   const handleCreateField = async () => {
-    setIsLoading(true);
+    setIsLoading(true)
     try {
       await createField({
         fieldName: field,
         color: color || 'slate',
-      });
+      })
       // First close create dialog
-      setOpen(false);
+      setOpen(false)
       // Reset form
-      setField('');
-      setColor(colorOptions[0]);
+      setField('')
+      setColor(colorOptions[0])
 
-      
       // Then show success dialog after a small delay
       setTimeout(() => {
-        setIsSuccess(true);
-        setShowSuccessDialog(true);
-      }, 100);
+        setIsSuccess(true)
+        setShowSuccessDialog(true)
+      }, 100)
     } catch (error) {
-      setIsSuccess(false);
-      setShowSuccessDialog(true);
+      setIsSuccess(false)
+      setShowSuccessDialog(true)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   // Auto-hide success dialog after 3 seconds (increased from 2)
   useEffect(() => {
     if (showSuccessDialog) {
       const timer = setTimeout(() => {
-        setShowSuccessDialog(false);
-      }, 3000);
-      return () => clearTimeout(timer);
+        setShowSuccessDialog(false)
+      }, 3000)
+      return () => clearTimeout(timer)
     }
-  }, [showSuccessDialog]);
+  }, [showSuccessDialog])
 
   return (
     <>
@@ -102,9 +100,7 @@ export function CreateFieldButton() {
                   {colorOptions.map((color) => (
                     <SelectItem key={color} value={color}>
                       <div className="flex items-center gap-2">
-                        <div 
-                          className={`h-4 w-4 rounded-full bg-${color}-500`}
-                        />
+                        <div className={`h-4 w-4 rounded-full bg-${color}-500`} />
                         <span className="capitalize">{color}</span>
                       </div>
                     </SelectItem>
@@ -113,7 +109,7 @@ export function CreateFieldButton() {
               </Select>
             </div>
             <Button onClick={handleCreateField} disabled={isLoading}>
-              {isLoading ? "Creating..." : "Create Field"}
+              {isLoading ? 'Creating...' : 'Create Field'}
             </Button>
           </div>
         </DialogContent>
@@ -150,5 +146,5 @@ export function CreateFieldButton() {
         </DialogContent>
       </Dialog>
     </>
-  );
+  )
 }

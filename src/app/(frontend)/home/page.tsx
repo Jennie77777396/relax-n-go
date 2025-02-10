@@ -1,29 +1,30 @@
-import { CreateTaskButton2 } from "@/components/CreateTaskButton";
-import { CreateQAButton } from "@/components/CreateQAButton";
-import { CreateFieldButton } from "@/components/CreateFieldButton";
-import { GoToQAGame } from "@/components/GoToQAGame";
+import { CreateTaskButton2 } from '@/components/CreateTaskButton'
+import { CreateQAButton } from '@/components/CreateQAButton'
+import { CreateFieldButton } from '@/components/CreateFieldButton'
+import { GoToQAGame } from '@/components/GoToQAGame'
+import CreateTaskButton from './page.client'
+import TaskList from '@/components/Tasks/ListTasks'
 export default async function HomePage() {
-
   return (
     <main>
       <div className="container mx-auto px-4 py-16">
         <div className="text-center space-y-8">
           <h1 className="text-4xl font-bold mb-4">Welcome to Our Platform 🌴✨</h1>
           <p className="text-lg text-gray-600">
-            Meet Jennie, an experienced AI full-stack developer with a salary of $175k per year. 
-            She lives on a tropical island 🌺 and enjoys a fully remote, flexible work lifestyle. 
-            Jennie is also a talented task manager with a philosophy of <strong>"Relax and Go"</strong>. 
+            Meet Jennie, an experienced AI full-stack developer with a salary of $175k per year. She
+            lives on a tropical island 🌺 and enjoys a fully remote, flexible work lifestyle. Jennie
+            is also a talented task manager with a philosophy of <strong>"Relax and Go"</strong>.
             For her, <strong>relaxation is the key to success</strong>. 🧘‍♀️🚀
           </p>
           <div className="flex flex-row gap-4">
-          <CreateTaskButton2 /> <GoToQAGame />
+            {/* <CreateTaskButton2 /> <GoToQAGame />
           <CreateQAButton />
-          <CreateFieldButton />
+          <CreateFieldButton /> */}
+            <CreateTaskButton />
+            <TaskList />
           </div>
-
-
         </div>
       </div>
     </main>
-  );
+  )
 }

@@ -39,7 +39,6 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
       get().limit,
     )
     set({ tasks, totalPages, totalDocs, hasPrevPage, hasNextPage })
-
     console.log('In Zustand,Tasks fetched:', tasks)
   },
 

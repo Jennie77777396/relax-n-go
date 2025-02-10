@@ -1,4 +1,3 @@
-import { colorOptions, Color } from '@/types/color'
 import { statusOptions } from '@/types/status'
 import type { CollectionConfig } from 'payload'
 
@@ -17,7 +16,6 @@ export const Tasks: CollectionConfig = {
     { name: 'startTime', type: 'date' },
     { name: 'timer', type: 'number', defaultValue: 0, required: true },
     { name: 'is_running', type: 'checkbox', defaultValue: false },
-
     { name: 'parent_task', type: 'relationship', relationTo: 'tasks' },
     { name: 'completed_subtasks', type: 'number', defaultValue: 0 },
     { name: 'total_subtasks', type: 'number', defaultValue: 0 },

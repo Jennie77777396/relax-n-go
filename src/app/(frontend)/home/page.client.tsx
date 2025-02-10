@@ -15,10 +15,6 @@ export default function CreateTaskCard() {
   const [emoji, setEmoji] = useState('🌴')
   const [open, setOpen] = useState(false)
 
-  useEffect(() => {
-    fetchTasks(1, 5)
-  }, [])
-
   async function handleAddTask() {
     if (!title.trim()) return
 

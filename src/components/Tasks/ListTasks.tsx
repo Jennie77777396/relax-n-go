@@ -1,6 +1,5 @@
 'use client'
 
-import { useEffect } from 'react'
 import { useTaskStore } from '@/stores/useTaskStore'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'

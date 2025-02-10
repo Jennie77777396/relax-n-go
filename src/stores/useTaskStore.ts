@@ -1,10 +1,9 @@
 import { create } from 'zustand'
-import { createTask, getTaskById, getTasks, updateTask } from '@/actions/tasks'
+import { createTask, getTasks, updateTask } from '@/actions/tasks'
 import { Task } from '@/payload-types'
 
 interface TaskStore {
   tasks: Task[]
-  itemsPerPage: number
   currentPage: number
   totalPages: number
   totalDocs: number
@@ -12,41 +11,47 @@ interface TaskStore {
   hasNextPage: boolean
   loading: boolean
   error: string | null
+  limit: number
 
-  fetchTasks: (page: number, limit: number) => Promise<void>
+  fetchTasks: () => Promise<void>
   toggleTimer: (taskId: number, isRunning: boolean) => Promise<void>
-  addTask: (title: string) => Promise<void>
+  addTask: (title: string, fields?: string[]) => Promise<void>
+  setCurrentPage: (page: number) => void
 }
 
 export const useTaskStore = create<TaskStore>((set, get) => ({
   tasks: [],
   loading: false,
   currentPage: 1,
-  itemsPerPage: 2,
   totalPages: 1,
   totalDocs: 0,
-
+  limit: 2,
   hasPrevPage: false,
   hasNextPage: false,
   error: null,
 
-  fetchTasks: async (page: number = 1, limit: number = 2) => {
+  fetchTasks: async () => {
     console.log('Fetching tasks...')
     const { tasks, totalPages, totalDocs, hasPrevPage, hasNextPage } = await getTasks(
       {},
       '-createdAt',
-      limit,
-      page,
+      get().currentPage,
+      get().limit,
     )
     set({ tasks, totalPages, totalDocs, hasPrevPage, hasNextPage })
+
     console.log('In Zustand,Tasks fetched:', tasks)
   },
 
-  addTask: async (title) => {
+  addTask: async (title: string, fields?: string[]) => {
     set({ loading: true, error: null })
     try {
-      const result = await createTask({ title, emoji: '🌴' })
-      console.log('In Zustand,Task created:', result)
+      const result = await createTask({
+        title,
+        emoji: '🌴',
+        fields: fields,
+        status: 'not_started',
+      })
 
       if (result.success) {
         set((state) => ({
@@ -115,5 +120,10 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
     } finally {
       set({ loading: false })
     }
+  },
+
+  setCurrentPage: async (page: number) => {
+    set({ currentPage: page })
+    await get().fetchTasks()
   },
 }))

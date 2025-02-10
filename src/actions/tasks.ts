@@ -3,10 +3,8 @@
 import { Where } from 'payload'
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import { Color } from '@/types/color'
 import { Task } from '@/payload-types'
-import { Tags } from '@/collections/Tags'
-import { Fields } from '@/collections/Fields'
+import { Status } from '@/types/status'
 
 export interface TaskProps {
   id?: number
@@ -16,18 +14,15 @@ export interface TaskProps {
   importance?: number | null
   rating?: number | null
   feedback?: string | null
-  tags?: (typeof Tags)[]
-  fields?: (typeof Fields)[]
+  tags?: string[]
+  fields?: string[]
   startTime?: string | null
   timer?: number | null
   parent_task?: number | Task | null
   completed_subtasks?: number | null
   total_subtasks?: number | null
-
+  status?: Status | null
   is_repeated?: boolean | null
-
-  repeated_task_group?: string | null
-  updatedAt?: string | null
 }
 
 const payload = await getPayload({ config })
@@ -35,7 +30,7 @@ const payload = await getPayload({ config })
 export async function getTasks(
   filters: Where = {},
   sort: string = '-createdAt',
-  page: number = 1,
+  page: number = 0,
   limit: number = 5,
 ): Promise<{
   tasks: Task[]
@@ -44,6 +39,8 @@ export async function getTasks(
   hasPrevPage: boolean
   hasNextPage: boolean
 }> {
+  console.log('getTasks limit:', limit)
+  console.log('getTasks page:', page)
   const response = await payload.find({
     collection: 'tasks',
     where: filters,

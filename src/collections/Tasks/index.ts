@@ -1,4 +1,5 @@
 import { colorOptions, Color } from '@/types/color'
+import { statusOptions } from '@/types/status'
 import type { CollectionConfig } from 'payload'
 
 export const Tasks: CollectionConfig = {
@@ -12,10 +13,11 @@ export const Tasks: CollectionConfig = {
     { name: 'feedback', type: 'textarea' },
     { name: 'tags', type: 'relationship', relationTo: 'tags', hasMany: true },
     { name: 'fields', type: 'relationship', relationTo: 'fields', hasMany: true },
-    { name: 'status', type: 'select', options: ['not_started', 'in_progress', 'completed'] },
+    { name: 'status', type: 'select', options: statusOptions },
     { name: 'startTime', type: 'date' },
     { name: 'timer', type: 'number', defaultValue: 0, required: true },
     { name: 'is_running', type: 'checkbox', defaultValue: false },
+
     { name: 'parent_task', type: 'relationship', relationTo: 'tasks' },
     { name: 'completed_subtasks', type: 'number', defaultValue: 0 },
     { name: 'total_subtasks', type: 'number', defaultValue: 0 },

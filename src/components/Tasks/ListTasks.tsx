@@ -11,21 +11,15 @@ export default function TaskList() {
     tasks,
     currentPage,
     totalPages,
-    fetchTasks,
     loading,
     toggleTimer,
-    itemsPerPage,
     hasNextPage,
     hasPrevPage,
+    setCurrentPage,
   } = useTaskStore()
 
-  useEffect(() => {
-    fetchTasks(currentPage, itemsPerPage)
-  }, [fetchTasks, currentPage, itemsPerPage])
-
   return (
-    <div className="max-w-lg mx-auto space-y-4">
-      <h2 className="text-lg font-bold">Task List</h2>
+    <div className="mx-auto space-y-4">
       {loading && tasks.length === 0 ? (
         [...Array(3)].map((_, i) => <Skeleton key={i} className="h-24 w-full rounded-md" />)
       ) : tasks.length > 0 ? (
@@ -39,13 +33,13 @@ export default function TaskList() {
       )}
 
       <div className="flex justify-between items-center mt-4">
-        <Button onClick={() => fetchTasks(currentPage - 1, itemsPerPage)} disabled={!hasPrevPage}>
+        <Button onClick={() => setCurrentPage(currentPage - 1)} disabled={!hasPrevPage}>
           Previous
         </Button>
         <span>
           Page {currentPage} of {totalPages}
         </span>
-        <Button onClick={() => fetchTasks(currentPage + 1, itemsPerPage)} disabled={!hasNextPage}>
+        <Button onClick={() => setCurrentPage(currentPage + 1)} disabled={!hasNextPage}>
           Next
         </Button>
       </div>

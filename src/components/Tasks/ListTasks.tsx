@@ -4,6 +4,7 @@ import { useTaskStore } from '@/stores/useTaskStore'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { TaskCard } from './TaskCards'
+import { useEffect } from 'react'
 
 export default function TaskList() {
   const {
@@ -15,7 +16,12 @@ export default function TaskList() {
     hasNextPage,
     hasPrevPage,
     setCurrentPage,
+    fetchTasks,
   } = useTaskStore()
+
+  useEffect(() => {
+    fetchTasks()
+  }, [])
 
   return (
     <div className="mx-auto space-y-4">

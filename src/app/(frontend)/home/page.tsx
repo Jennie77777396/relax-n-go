@@ -1,4 +1,3 @@
-import { CreateTaskButton2 } from '@/components/CreateTaskButton'
 import { CreateQAButton } from '@/components/CreateQAButton'
 import { CreateFieldButton } from '@/components/CreateFieldButton'
 import { GoToQAGame } from '@/components/GoToQAGame'

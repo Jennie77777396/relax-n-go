@@ -1,6 +1,6 @@
 'use server'
 
-import { Where } from 'payload'
+import { PaginatedDocs, Where } from 'payload'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { Task } from '@/payload-types'
@@ -41,7 +41,7 @@ export async function getTasks(
 }> {
   console.log('getTasks limit:', limit)
   console.log('getTasks page:', page)
-  const response = await payload.find({
+  const response: PaginatedDocs<Task> = await payload.find({
     collection: 'tasks',
     where: filters,
     sort,

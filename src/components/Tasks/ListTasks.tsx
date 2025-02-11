@@ -1,14 +1,18 @@
 'use client'
 
-import { useEffect } from 'react'
 import { useTaskStore } from '@/stores/useTaskStore'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { TaskCard } from './TaskCards'
+import { useEffect } from 'react'
+import { Task } from '@/payload-types'
 
-export default function TaskList() {
+interface TaskListProps {
+  tasks: Task[]
+}
+
+export default function TaskList({ tasks }: TaskListProps) {
   const {
-    tasks,
     currentPage,
     totalPages,
     loading,
@@ -16,7 +20,10 @@ export default function TaskList() {
     hasNextPage,
     hasPrevPage,
     setCurrentPage,
+    fetchTasks,
   } = useTaskStore()
+  console.log('in taskslist, ', tasks)
+  console.log('task length', tasks.length)
 
   return (
     <div className="mx-auto space-y-4">

@@ -27,6 +27,11 @@ export interface TaskProps {
 
 const payload = await getPayload({ config })
 
+export async function getFields() {
+  const response = await payload.find({ collection: 'fields' })
+  return response.docs
+}
+
 export async function getTasks(
   filters: Where = {},
   sort: string = '-createdAt',
@@ -39,8 +44,7 @@ export async function getTasks(
   hasPrevPage: boolean
   hasNextPage: boolean
 }> {
-  console.log('getTasks limit:', limit)
-  console.log('getTasks page:', page)
+  console.log('filters: ', JSON.stringify(filters, null, 2))
   const response = await payload.find({
     collection: 'tasks',
     where: filters,

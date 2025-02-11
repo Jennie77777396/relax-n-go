@@ -8,30 +8,27 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover'
 import { PlusCircle, Check, AlertCircle } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { Field } from '@/payload-types'
 
-export default function CreateTaskCard() {
+export default function CreateTaskButton() {
   const { addTask, loading, error, fetchTasks, tasks } = useTaskStore()
   const [title, setTitle] = useState('')
   const [emoji, setEmoji] = useState('🌴')
   const [open, setOpen] = useState(false)
 
-  useEffect(() => {
-    fetchTasks(1, 5)
-  }, [])
-
   async function handleAddTask() {
     if (!title.trim()) return
 
     const result = await addTask(title)
-    setTitle('') // Clear input
-    setOpen(false) // Close popover
+    setTitle('')
+    setOpen(false)
   }
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" className="flex items-center gap-2">
-          <PlusCircle className="w-4 h-4" /> Add Task
+        <Button variant="outline" className="flex items-center gap-2 w-auto">
+          <PlusCircle className="w-4 h-4" /> Add Tasks
         </Button>
       </PopoverTrigger>
 

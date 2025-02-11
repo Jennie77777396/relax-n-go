@@ -70,40 +70,10 @@ export async function createTask(
   data: TaskProps,
 ): Promise<{ success: boolean; task?: Task; error?: string }> {
   try {
-    const response = await payload.create({ collection: 'tasks', data: data as Task })
-    if (data.tags) {
-      await Promise.all(
-        data.tags.map(async (tagId) => {
-          if (!tagId) return
-          const tag = await payload.findByID({ collection: 'tags', id: tagId.toString() })
-
-          if (tag) {
-            await payload.update({
-              collection: 'tags',
-              id: tagId.toString(),
-              data: { tasks: [...(tag.tasks || []), response.id] },
-            })
-          }
-        }),
-      )
-    }
-
-    if (data.fields) {
-      await Promise.all(
-        data.fields.map(async (fieldId) => {
-          if (!fieldId) return
-          const field = await payload.findByID({ collection: 'fields', id: fieldId.toString() })
-
-          if (field) {
-            await payload.update({
-              collection: 'fields',
-              id: fieldId.toString(),
-              data: { tasks: [...(field.tasks || []), response.id] },
-            })
-          }
-        }),
-      )
-    }
+    const response = await payload.create({
+      collection: 'tasks',
+      data: data as unknown as Task,
+    })
     return { success: true, task: response as Task }
   } catch (error) {
     console.error(error)

@@ -44,14 +44,8 @@ export async function getTasks(
   hasPrevPage: boolean
   hasNextPage: boolean
 }> {
-<<<<<<< HEAD
-  console.log('getTasks limit:', limit)
-  console.log('getTasks page:', page)
-  const response: PaginatedDocs<Task> = await payload.find({
-=======
   console.log('filters: ', JSON.stringify(filters, null, 2))
   const response = await payload.find({
->>>>>>> main
     collection: 'tasks',
     where: filters,
     sort,

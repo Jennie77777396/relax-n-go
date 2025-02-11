@@ -1,34 +1,38 @@
+'use server'
+
 import { Task } from '@/payload-types'
-<<<<<<< HEAD
-=======
-import type { TaskDocs } from '@/actions/home/tasks-find'
-import payload from 'payload'
->>>>>>> main
-export interface paginationType {
-  [key: number]: {
-    limit: number
-    page: number
+import { PaginatedDocs } from 'payload'
+import { SearchParamType } from './types'
+import { getPayload } from 'payload'
+import config from '@/payload.config'
+
+const payload = await getPayload({ config })
+
+export const findTasks = async function (
+  searchParam: SearchParamType,
+): Promise<PaginatedDocs<Task>> {
+  console.log('searchParam', searchParam)
+  try {
+    const result = await payload.find({
+      collection: 'tasks',
+      limit: searchParam.pages.limit,
+      page: searchParam.pages.page,
+    })
+    console.log('result ', JSON.stringify(result))
+    return result
+  } catch (e) {
+    console.log(e)
+    return {
+      docs: [],
+      totalDocs: 0,
+      limit: 10,
+      totalPages: 0,
+      page: 1,
+      pagingCounter: 1,
+      hasPrevPage: false,
+      hasNextPage: false,
+      prevPage: null,
+      nextPage: null,
+    }
   }
 }
-export const defaultPaginationType = {
-  limit: 10,
-  page: 1,
-}
-export interface SearchType extends Partial<Task> {
-  title: string
-}
-export interface SearchParamType {
-  pages: paginationType
-  search: SearchType
-}
-<<<<<<< HEAD
-=======
-
-export const findTasks = async (): Promise<TaskDocs[]> => {
-  const resFields = payload.find({
-    collection: 'fields',
-  })
-
-  return []
-}
->>>>>>> main

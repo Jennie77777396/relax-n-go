@@ -78,10 +78,6 @@ export default function TaskList({ fieldTitle }: TaskListProps) {
     }
   }
 
-  useEffect(() => {
-    fetchTasks()
-  }, [])
-
   return (
     <div className="mx-auto space-y-4">
       {loading ? (

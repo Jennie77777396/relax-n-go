@@ -1,20 +1,27 @@
-import { CreateTaskButton2 } from '@/components/CreateTaskButton'
-import { CreateQAButton } from '@/components/CreateQAButton'
-import { CreateFieldButton } from '@/components/CreateFieldButton'
-import { GoToQAGame } from '@/components/GoToQAGame'
-import CreateTaskButton from './page.client'
-import TaskList from '@/components/Tasks/ListTasks'
-import type { SearchParamType } from './lib/findByField'
+'use server'
 
-export default async function HomePage({
+import CreateTaskButton from './page.client'
+import TaskList from './lib/ListTasks'
+import type { SearchParamType } from './lib/types'
+import { findTasks } from './lib/findByField'
+import TaskPagination from './lib/TaskPagination'
+import { PaginatedDocs } from 'payload'
+
+const HomePage = async function ({
   params,
   searchParams,
 }: {
   params: Promise<{ slug?: string }>
   searchParams?: Promise<SearchParamType>
 }) {
-  const findOption = await searchParams
+  const findOption = (await searchParams) || {
+    search: { title: '' },
+    pages: { limit: 10, page: 1 },
+  }
 
+  !findOption?.search && (findOption.search = { title: '' })
+  !findOption.pages && (findOption.pages = { limit: 10, page: 1 })
+  const tasks = await findTasks(findOption)
   return (
     <main>
       <div className="container mx-auto px-4 py-16">
@@ -26,15 +33,17 @@ export default async function HomePage({
             is also a talented task manager with a philosophy of <strong>"Relax and Go"</strong>.
             For her, <strong>relaxation is the key to success</strong>. 🧘‍♀️🚀
           </p>
-          <div className="flex flex-row gap-4">
+          <div className="flex flex-col gap-4">
             {/* <CreateTaskButton2 /> <GoToQAGame />
           <CreateQAButton />
           <CreateFieldButton /> */}
             <CreateTaskButton />
-            <TaskList />
+            <TaskList tasks={tasks.docs} />
+            <TaskPagination page={tasks} />
           </div>
         </div>
       </div>
     </main>
   )
 }
+export default HomePage

@@ -9,6 +9,5 @@ export const Fields: CollectionConfig = {
   fields: [
     { name: 'title', type: 'text', required: true },
     { name: 'color', type: 'select', options: colorOptions, required: true, defaultValue: 'slate' },
-    { name: 'tasks', type: 'relationship', relationTo: 'tasks', hasMany: true },
   ],
 }

@@ -695,7 +695,7 @@ export interface Task {
   feedback?: string | null;
   tags?: (number | Tag)[] | null;
   fields?: (number | Field)[] | null;
-  status?: ('not_started' | 'in_progress' | 'completed') | null;
+  status: number;
   startTime?: string | null;
   timer: number;
   is_running?: boolean | null;
@@ -736,7 +736,6 @@ export interface Tag {
     | 'fuchsia'
     | 'pink'
     | 'rose';
-  tasks?: (number | Task)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -770,7 +769,6 @@ export interface Field {
     | 'fuchsia'
     | 'pink'
     | 'rose';
-  tasks?: (number | Task)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1438,7 +1436,6 @@ export interface RatingsSelect<T extends boolean = true> {
 export interface FieldsSelect<T extends boolean = true> {
   title?: T;
   color?: T;
-  tasks?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1461,7 +1458,6 @@ export interface TimeSelect<T extends boolean = true> {
 export interface TagsSelect<T extends boolean = true> {
   title?: T;
   color?: T;
-  tasks?: T;
   updatedAt?: T;
   createdAt?: T;
 }

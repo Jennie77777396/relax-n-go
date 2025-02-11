@@ -1,33 +1,37 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { Moon, Sun, Search, Globe, Type, Folder, ListTodo, BarChart } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { useTheme } from "next-themes"
+import { useState } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { Moon, Sun, Search, Globe, Type, Folder, ListTodo, BarChart } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { useTheme } from 'next-themes'
 
-const fonts = ["Inter", "Roboto", "Open Sans"]
-const languages = ["English", "Spanish", "French", "German"]
+const fonts = ['Inter', 'Roboto', 'Open Sans']
+const languages = ['English', 'Spanish', 'French', 'German']
 
 export default function NavigationBar() {
   const router = useRouter()
   const { setTheme, theme } = useTheme()
   const [currentFont, setCurrentFont] = useState(fonts[0])
 
-
   const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const searchTerm = (event.currentTarget.elements.namedItem("search") as HTMLInputElement).value
+    const searchTerm = (event.currentTarget.elements.namedItem('search') as HTMLInputElement).value
     // Implement search functionality here
-    console.log("Searching for:", searchTerm)
+    console.log('Searching for:', searchTerm)
   }
 
   const switchLanguage = (lang: string) => {
     // Implement language switching logic here
-    console.log("Switching to language:", lang)
+    console.log('Switching to language:', lang)
   }
 
   const switchFont = (font: string) => {
@@ -41,31 +45,22 @@ export default function NavigationBar() {
         <Link href="/home" className="text-2xl font-bold">
           Jennie's Portfolio
         </Link>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost">
-              <Folder className="h-4 w-4 mr-2" /> Fields
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem onClick={() => router.push("/full-stack")}>Full Stack Projects</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => router.push("/algo")}>Algorithms</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => router.push("/behavioral")}>Behavioral Questions</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <Link href = "/todo" className="text-sm">
-        <Button variant="ghost">
-              <ListTodo className="h-4 w-4 mr-2" /> To Do List
-            </Button>
+        <Link href="/tasks" className="text-sm">
+          <Button variant="ghost">
+            <Folder className="h-4 w-4 mr-2" /> Tasks
+          </Button>
         </Link>
-        <Link href = "/statistics" className="text-sm">
-        <Button variant="ghost">
-          <BarChart className="h-4 w-4 mr-2" /> Statistics
-        </Button>
+        <Link href="/todo" className="text-sm">
+          <Button variant="ghost">
+            <ListTodo className="h-4 w-4 mr-2" /> To Do List
+          </Button>
+        </Link>
+        <Link href="/statistics" className="text-sm">
+          <Button variant="ghost">
+            <BarChart className="h-4 w-4 mr-2" /> Statistics
+          </Button>
         </Link>
       </div>
-
-
 
       <form onSubmit={handleSearch} className="flex-1 max-w-sm mx-4">
         <div className="relative">
@@ -91,7 +86,11 @@ export default function NavigationBar() {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <Button variant="ghost" size="icon" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+        >
           <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
           <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
           <span className="sr-only">Toggle theme</span>
@@ -116,4 +115,3 @@ export default function NavigationBar() {
     </nav>
   )
 }
-

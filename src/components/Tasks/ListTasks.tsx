@@ -1,25 +1,5 @@
 'use client'
 
-<<<<<<< HEAD
-import { useTaskStore } from '@/stores/useTaskStore'
-import { Button } from '@/components/ui/button'
-import { Skeleton } from '@/components/ui/skeleton'
-import { TaskCard } from './TaskCards'
-import { useEffect } from 'react'
-
-export default function TaskList() {
-  const {
-    tasks,
-    currentPage,
-    totalPages,
-    loading,
-    toggleTimer,
-    hasNextPage,
-    hasPrevPage,
-    setCurrentPage,
-    fetchTasks,
-  } = useTaskStore()
-=======
 import { useEffect, useState } from 'react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { TaskCard } from './TaskCards'
@@ -97,7 +77,6 @@ export default function TaskList({ fieldTitle }: TaskListProps) {
       console.error('Failed to update timer:', error)
     }
   }
->>>>>>> acbb51abfb59b3cd4acae0d2600072aed881afe9
 
   useEffect(() => {
     fetchTasks()

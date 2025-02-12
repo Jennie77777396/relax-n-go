@@ -69,9 +69,6 @@ const TaskPagination = ({
               <ChevronRight className="h-4 w-4" />
             </PaginationLink>
           </PaginationItem>
-          <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem>
         </PaginationContent>
       </Pagination>
     </div>

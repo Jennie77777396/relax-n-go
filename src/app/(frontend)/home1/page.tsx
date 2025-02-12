@@ -5,6 +5,7 @@ import TaskList from './lib/ListTasks'
 import type { SearchParamType } from './lib/types'
 import { findTasks } from './lib/findByField'
 import PageClient from './page.client'
+import { stringify, parse } from 'qs-esm'
 
 const HomePage = async function ({
   params,
@@ -13,14 +14,26 @@ const HomePage = async function ({
   params: Promise<{ slug?: string }>
   searchParams?: Promise<SearchParamType>
 }) {
-  const findOption = (await searchParams) || {
-    search: { title: '' },
-    pages: { limit: 10, page: 1 },
-  }
+  const findOption =
+    (await searchParams) ||
+    ({
+      search: { title: '' },
+      pages: { limit: 3, page: 1 },
+    } as SearchParamType)
 
-  !findOption?.search && (findOption.search = { title: '' })
-  !findOption.pages && (findOption.pages = { limit: 10, page: 1 })
-  const tasks = await findTasks(findOption)
+  const optionObj = parse(stringify(findOption)) as unknown as SearchParamType
+  console.log('optionObj', optionObj)
+
+  // || {
+  //   search: { title: '' },
+  //   pages: { limit: 10, page: 1 },
+  // }
+
+  console.log('===findOption', findOption)
+
+  !optionObj?.search && (optionObj.search = { title: '' })
+  !optionObj.pages && (optionObj.pages = { limit: 3, page: 1 })
+  const tasks = await findTasks(optionObj)
   return (
     <main>
       <div className="container mx-auto px-4 py-16">

@@ -18,7 +18,7 @@ const TaskPagination = ({
   page: PaginatedDocs
   changeHandle: ChangeHandle
 }) => {
-  const [currentPage, setCurrentPage] = useState<number>(page.page || 1)
+  const currentPage = Number(page.page)
   const [turning, SetTurning] = useState<boolean>(false)
   const firstRef = useRef(true)
 
@@ -53,14 +53,15 @@ const TaskPagination = ({
                 }}
                 isActive={!turning && currentPage === i + 1}
               >
-                {i + 1}
+                {1 + i}
               </PaginationLink>
             </PaginationItem>
           ))}
           <PaginationItem>
             <PaginationLink
-              isActive={!turning && page && page.hasNextPage}
+              isActive={currentPage < page.totalPages}
               onClick={() => {
+                if (currentPage === page.totalPages) return
                 SetTurning(true)
                 changeHandle({ limit: page.limit, page: currentPage + 1 })
               }}

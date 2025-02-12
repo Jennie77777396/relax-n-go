@@ -3,7 +3,6 @@ import { Task } from '@/payload-types'
 export interface PaginationType {
   limit: number
   page: number
-  totalPages?: number
 }
 export const defaultPaginationType = {
   limit: 10,

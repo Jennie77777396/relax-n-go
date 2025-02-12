@@ -57,6 +57,7 @@
     "payload": "latest",
     "payload-admin-bar": "^1.0.6",
     "prism-react-renderer": "^2.3.1",
+    "qs-esm": "^7.0.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "7.45.4",

@@ -15,10 +15,10 @@ export const findTasks = async function (
   try {
     const result = await payload.find({
       collection: 'tasks',
-      limit: searchParam.pages.limit,
+      limit: 3,
       page: searchParam.pages.page,
     })
-    console.log('result ', JSON.stringify(result))
+    console.log('result ', result)
     return result
   } catch (e) {
     console.log(e)

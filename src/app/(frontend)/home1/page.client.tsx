@@ -1,5 +1,10 @@
 'use client'
+import TaskList from './lib/ListTasks'
+import TaskPagination from './lib/TaskPagination'
+import { PaginatedDocs } from 'payload'
+import { stringify, parse } from 'qs-esm'
 
+stringify('', { addQueryPrefix: true })
 import { useEffect, useState } from 'react'
 import { useTaskStore } from '@/stores/useTaskStore'
 import { Button } from '@/components/ui/button'
@@ -8,20 +13,16 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover'
 import { PlusCircle, Check, AlertCircle } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { usePathname, useRouter, useParams, useSearchParams } from 'next/navigation'
+import { PaginationType } from './lib/types'
 
-export default function CreateTaskCard() {
+export function CreateTaskButton() {
   const { addTask, loading, error, fetchTasks, tasks } = useTaskStore()
   const [title, setTitle] = useState('')
   const [emoji, setEmoji] = useState('🌴')
   const [open, setOpen] = useState(false)
 
-  async function handleAddTask() {
-    if (!title.trim()) return
-
-    const result = await addTask(title)
-    setTitle('') // Clear input
-    setOpen(false) // Close popover
-  }
+  async function handleAddTask() {}
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -71,5 +72,27 @@ export default function CreateTaskCard() {
         </Card>
       </PopoverContent>
     </Popover>
+  )
+}
+
+export default function PageClient({ tasks }: { tasks: PaginatedDocs }) {
+  const router = useRouter()
+  const pathName = usePathname()
+  const params = useParams()
+  const searchParams = useSearchParams()
+  const pageChangeHandled = async (pagination: PaginationType) => {
+    const queryObj = parse(searchParams.toString()) as Record<string, any>
+    queryObj.pages = pagination
+
+    const newUrl = `${pathName}?${stringify(queryObj)}`
+    router.push(newUrl)
+  }
+
+  return (
+    <div className="flex flex-col gap-4">
+      <CreateTaskButton />
+      <TaskList tasks={tasks.docs} />
+      <TaskPagination page={tasks} changeHandle={pageChangeHandled} />
+    </div>
   )
 }

@@ -52,7 +52,6 @@ export async function getTasks(
     limit,
     page,
   })
-  console.log('local api find all tasks:', response)
   return {
     tasks: response.docs as Task[],
     totalPages: response.totalPages,

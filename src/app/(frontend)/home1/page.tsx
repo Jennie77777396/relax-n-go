@@ -4,8 +4,7 @@ import CreateTaskButton from './page.client'
 import TaskList from './lib/ListTasks'
 import type { SearchParamType } from './lib/types'
 import { findTasks } from './lib/findByField'
-import TaskPagination from './lib/TaskPagination'
-import { PaginatedDocs } from 'payload'
+import PageClient from './page.client'
 
 const HomePage = async function ({
   params,
@@ -33,14 +32,7 @@ const HomePage = async function ({
             is also a talented task manager with a philosophy of <strong>"Relax and Go"</strong>.
             For her, <strong>relaxation is the key to success</strong>. 🧘‍♀️🚀
           </p>
-          <div className="flex flex-col gap-4">
-            {/* <CreateTaskButton2 /> <GoToQAGame />
-          <CreateQAButton />
-          <CreateFieldButton /> */}
-            <CreateTaskButton />
-            <TaskList tasks={tasks.docs} />
-            <TaskPagination page={tasks} />
-          </div>
+          <PageClient tasks={tasks} />
         </div>
       </div>
     </main>

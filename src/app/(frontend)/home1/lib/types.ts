@@ -1,8 +1,9 @@
 import { Task } from '@/payload-types'
 
-export interface paginationType {
+export interface PaginationType {
   limit: number
   page: number
+  totalPages?: number
 }
 export const defaultPaginationType = {
   limit: 10,
@@ -12,6 +13,6 @@ export interface SearchType extends Partial<Task> {
   title: string
 }
 export interface SearchParamType {
-  pages: paginationType
+  pages: PaginationType
   search: SearchType
 }

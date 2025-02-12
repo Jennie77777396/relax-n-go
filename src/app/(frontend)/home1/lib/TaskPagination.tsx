@@ -2,25 +2,40 @@
 import {
   Pagination,
   PaginationContent,
+  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
 } from '@/components/ui/pagination'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { PaginatedDocs } from 'payload'
-const TaskPagination = ({ page }: { page: PaginatedDocs }) => {
+import { PaginationType } from './types'
+type ChangeHandle = (page: PaginationType) => Promise<void>
+const TaskPagination = ({
+  page,
+  changeHandle,
+}: {
+  page: PaginatedDocs
+  changeHandle: ChangeHandle
+}) => {
   const [currentPage, setCurrentPage] = useState<number>(page.page || 1)
-  const [totalPages, setTotalPages] = useState<number>(page.totalPages || 1)
-  const [hasPrevPage, setHasPrevPage] = useState<boolean>(page.hasPrevPage || false)
-  const [hasNextPage, setHasNextPage] = useState<boolean>(page.hasNextPage || false)
+  const [turning, SetTurning] = useState<boolean>(false)
+  const firstRef = useRef(true)
+
   return (
     <div>
       {/* 🔹 ShadCN Pagination */}
       <Pagination className="mt-4">
         <PaginationContent className="gap-2">
           <PaginationItem>
-            {hasPrevPage ? (
-              <PaginationLink onClick={() => setCurrentPage((prev) => prev - 1)}>
+            {page.hasPrevPage ? (
+              <PaginationLink
+                onClick={() => {
+                  SetTurning(true)
+                  changeHandle({ limit: page.limit, page: currentPage - 1 })
+                }}
+                isActive={!turning && page && page.hasPrevPage}
+              >
                 <ChevronLeft className="h-4 w-4" />
               </PaginationLink>
             ) : (
@@ -29,26 +44,32 @@ const TaskPagination = ({ page }: { page: PaginatedDocs }) => {
               </PaginationLink>
             )}
           </PaginationItem>
-          {[...Array(totalPages)].map((_, i) => (
+          {[...Array(page.totalPages)].map((_, i) => (
             <PaginationItem key={i}>
               <PaginationLink
-                onClick={() => setCurrentPage(i + 1)}
-                isActive={currentPage === i + 1}
+                onClick={() => {
+                  SetTurning(true)
+                  changeHandle({ limit: page.limit, page: i + 1 })
+                }}
+                isActive={!turning && currentPage === i + 1}
               >
                 {i + 1}
               </PaginationLink>
             </PaginationItem>
           ))}
           <PaginationItem>
-            {hasNextPage ? (
-              <PaginationLink onClick={() => setCurrentPage((prev) => prev + 1)}>
-                <ChevronRight className="h-4 w-4" />
-              </PaginationLink>
-            ) : (
-              <PaginationLink className="pointer-events-none opacity-50">
-                <ChevronRight className="h-4 w-4" />
-              </PaginationLink>
-            )}
+            <PaginationLink
+              isActive={!turning && page && page.hasNextPage}
+              onClick={() => {
+                SetTurning(true)
+                changeHandle({ limit: page.limit, page: currentPage + 1 })
+              }}
+            >
+              <ChevronRight className="h-4 w-4" />
+            </PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationEllipsis />
           </PaginationItem>
         </PaginationContent>
       </Pagination>

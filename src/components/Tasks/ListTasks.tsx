@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from 'react'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Separator } from '@/components/ui/separator'
 import { TaskCard } from './TaskCards'
 import { Task } from '@/payload-types'
-import { getTasks, updateTask } from '@/actions/tasks'
+import { getTasks } from '@/actions/tasks'
 import {
   Pagination,
   PaginationContent,
@@ -43,39 +44,10 @@ export default function TaskList({ fieldTitle }: TaskListProps) {
     fetchTasks()
   }, [fieldTitle, currentPage])
 
-  /** 🔥 **toggleTimer: Local State Update & Backend Update** */
-  const toggleTimer = async (taskId: number, isRunning: boolean) => {
-    console.log('Toggling timer for task:', taskId, 'Current State:', isRunning)
-
+  const handleTaskUpdate = (updatedTask: Task) => {
     setTasks((prevTasks) =>
-      prevTasks.map((task) => (task.id === taskId ? { ...task, is_running: !isRunning } : task)),
+      prevTasks.map((task) => (task.id === updatedTask.id ? updatedTask : task)),
     )
-
-    try {
-      if (!isRunning) {
-        const startTime = new Date().toISOString()
-        await updateTask(taskId.toString(), { startTime, is_running: true })
-      } else {
-        const task = tasks.find((t) => t.id === taskId)
-        if (!task || !task.startTime) return
-
-        const endTime = Date.now()
-        const elapsed = Math.floor((endTime - new Date(task.startTime).getTime()) / 1000)
-        const newTimer = task.timer + elapsed
-
-        await updateTask(taskId.toString(), { timer: newTimer, startTime: null, is_running: false })
-
-        setTasks((prevTasks) =>
-          prevTasks.map((task) =>
-            task.id === taskId
-              ? { ...task, timer: newTimer, startTime: null, is_running: false }
-              : task,
-          ),
-        )
-      }
-    } catch (error) {
-      console.error('Failed to update timer:', error)
-    }
   }
 
   useEffect(() => {
@@ -84,12 +56,26 @@ export default function TaskList({ fieldTitle }: TaskListProps) {
 
   return (
     <div className="mx-auto space-y-4">
+      <div className="flex items-center gap-2">
+        <div className="tracking-[.25em] uppercase font-semibold text-sm"> ⁕ {fieldTitle} ⁕ </div>
+        <div className="text-sm text-muted-foreground">{tasks.length} to do</div>
+        <Separator orientation="vertical" className="h-4 bg-muted-foreground/20" />
+        <div className="text-sm text-muted-foreground">
+          {(() => {
+            const totalSeconds = tasks.reduce((acc, task) => acc + (task.timer || 0), 0)
+            const totalMinutes = Math.floor(totalSeconds / 60)
+            const hours = Math.floor(totalMinutes / 60)
+            const minutes = totalMinutes % 60
+            return totalMinutes ? `${hours}h ${minutes}m` : null
+          })()}
+        </div>
+      </div>
       {loading ? (
         [...Array(3)].map((_, i) => <Skeleton key={i} className="h-24 w-full rounded-md" />)
       ) : tasks.length > 0 ? (
         <div className="space-y-4">
           {tasks.map((task) => (
-            <TaskCard key={task.id} task={task} onToggle={toggleTimer} />
+            <TaskCard key={task.id} task={task} onTaskUpdate={handleTaskUpdate} />
           ))}
         </div>
       ) : (

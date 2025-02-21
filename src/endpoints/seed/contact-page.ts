@@ -10,7 +10,7 @@ export const contact: Partial<Page> = {
     {
       blockType: 'formBlock',
       enableIntro: true,
-      form: '{{CONTACT_FORM_ID}}',
+      form: -1,
       introContent: {
         root: {
           type: 'root',

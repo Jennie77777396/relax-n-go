@@ -5,6 +5,7 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import { Task } from '@/payload-types'
 import { Status } from '@/types/status'
+import * as qs from 'qs-esm'
 
 export interface TaskProps {
   id?: number
@@ -26,6 +27,7 @@ export interface TaskProps {
 }
 
 const payload = await getPayload({ config })
+const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL
 
 export async function getFields() {
   const response = await payload.find({ collection: 'fields' })
@@ -34,7 +36,7 @@ export async function getFields() {
 
 export async function getTasks(
   filters: Where = {},
-  sort: string = '-createdAt',
+  sort: string = '-updatedAt',
   page: number = 0,
   limit: number = 5,
 ): Promise<{
@@ -44,7 +46,6 @@ export async function getTasks(
   hasPrevPage: boolean
   hasNextPage: boolean
 }> {
-  console.log('filters: ', JSON.stringify(filters, null, 2))
   const response = await payload.find({
     collection: 'tasks',
     where: filters,
@@ -95,4 +96,44 @@ export async function updateTask(
 
 export async function deleteTask(taskId: string): Promise<void> {
   await payload.delete({ collection: 'tasks', id: taskId })
+}
+
+export async function getTasksREST(
+  filters: Where = {},
+  sort: string = '-updatedAt',
+  page: number = 1,
+  limit: number = 5,
+) {
+  const queryParams = {
+    depth: 1,
+    locale: 'en',
+    where: filters,
+    sort,
+    page,
+    limit,
+  }
+
+  const searchParams = qs.stringify(queryParams, { encode: true })
+  const response = await fetch(`${process.env.NEXT_SERVER_URL}/api/tasks?${searchParams}`, {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'Accept-Language': 'en',
+    },
+  })
+
+  if (!response.ok) {
+    const errorData = await response.json()
+    console.error('Error fetching tasks:', errorData)
+    throw new Error(`Failed to fetch tasks: ${errorData.message || response.statusText}`)
+  }
+
+  const data = await response.json()
+  return {
+    tasks: data.docs as Task[],
+    totalPages: data.totalPages,
+    totalDocs: data.totalDocs,
+    hasPrevPage: data.hasPrevPage,
+    hasNextPage: data.hasNextPage,
+  }
 }

@@ -5,7 +5,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Separator } from '@/components/ui/separator'
 import { TaskCard } from './TaskCards'
 import { Task } from '@/payload-types'
-import { getTasks } from '@/actions/tasks'
+import { getTasks, getTasksREST } from '@/actions/tasks'
 import {
   Pagination,
   PaginationContent,
@@ -13,12 +13,14 @@ import {
   PaginationLink,
 } from '@/components/ui/pagination'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { Where } from 'payload'
 
 interface TaskListProps {
   fieldTitle: string
+  fromDate: Date
 }
 
-export default function TaskList({ fieldTitle }: TaskListProps) {
+export default function TaskList({ fieldTitle, fromDate }: TaskListProps) {
   const [tasks, setTasks] = useState<Task[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const [currentPage, setCurrentPage] = useState<number>(1)
@@ -29,9 +31,13 @@ export default function TaskList({ fieldTitle }: TaskListProps) {
   useEffect(() => {
     async function fetchTasks() {
       setLoading(true)
-      const result = await getTasks(
-        { 'fields.title': { equals: fieldTitle } },
-        'createdAt',
+      const result = await getTasksREST(
+        {
+          'fields.title': { equals: fieldTitle },
+          // updatedAt: { greater_than_equal: fromDate },
+          status: { less_than: 1 },
+        },
+        '-updatedAt',
         currentPage,
       )
       setTasks(result.tasks)

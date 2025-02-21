@@ -34,7 +34,7 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
     console.log('Fetching tasks...')
     const { tasks, totalPages, totalDocs, hasPrevPage, hasNextPage } = await getTasks(
       {},
-      '-createdAt',
+      '-updatedAt',
       get().currentPage,
       get().limit,
     )

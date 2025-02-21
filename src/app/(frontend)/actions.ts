@@ -10,7 +10,7 @@ export const Actions = {
     return await payload.find({
       collection: 'tasks',
       where: filters,
-      sort: { [sort]: order },
+      sort: order === 'desc' ? `-${sort}` : sort,
       limit,
     })
   },

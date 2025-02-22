@@ -8,18 +8,52 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover'
 import { PlusCircle, Check, AlertCircle, Loader2 } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { createTaskREST } from '@/actions/tasks'
 
-export default function CreateTaskButton() {
-  const { addTask, loading, error } = useTaskStore()
+export function CreateTaskButton({ fields }: { fields: string[] }) {
+  const [loading, setLoading] = useState(false)
   const [title, setTitle] = useState('')
   const [emoji, setEmoji] = useState('🌴')
+  const [importance, setImportance] = useState<number | null>(null)
+  const [tags, setTags] = useState<string[]>([])
   const [open, setOpen] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   async function handleAddTask() {
-    if (!title.trim()) return
-    await addTask(title)
-    setTitle('')
-    setOpen(false)
+    if (!title.trim()) {
+      setError('Title is required')
+      return
+    }
+    if (importance !== null && (importance < 0 || importance > 5)) {
+      setError('Importance must be a number between 0 and 5')
+      return
+    }
+    setError(null) // Reset error state
+    setLoading(true)
+    try {
+      const result = await createTaskREST({
+        title,
+        emoji,
+        importance,
+        tags,
+        fields,
+      })
+      if (!result.success) {
+        setError(result.error || 'Failed to create task')
+      } else {
+        console.log('New task added successfully', result.task)
+        // Reset fields after successful creation
+        setTitle('')
+        setImportance(null)
+        setEmoji('🌴')
+        setTags([])
+      }
+    } catch (error) {
+      setError('An unexpected error occurred')
+      console.error(error)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -69,16 +103,23 @@ export default function CreateTaskButton() {
               className="border border-gray-300 focus:ring-2 focus:ring-primary transition-all rounded-lg"
             />
 
-            {/* Error Message */}
-            {error && (
-              <motion.div
-                initial={{ opacity: 0, y: -5 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="flex items-center text-red-500 text-sm"
-              >
-                <AlertCircle className="w-4 h-4 mr-2" /> {error}
-              </motion.div>
-            )}
+            {/* Importance Input */}
+            <Input
+              type="number"
+              placeholder="Importance"
+              value={importance !== null ? importance : ''}
+              onChange={(e) => {
+                const value = Number(e.target.value)
+                if (!isNaN(value) && value >= 0 && value <= 5) {
+                  setImportance(value)
+                } else {
+                  setImportance(null)
+                }
+              }}
+              className="border border-gray-300 focus:ring-2 focus:ring-primary transition-all rounded-lg"
+            />
+
+            {/* Tags Input */}
 
             {/* Submit Button with Loading Animation */}
             <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
@@ -111,6 +152,8 @@ export default function CreateTaskButton() {
                 )}
               </Button>
             </motion.div>
+
+            {error && <div className="error">{error}</div>}
           </CardContent>
         </Card>
       </PopoverContent>

@@ -11,7 +11,8 @@ export function TagsLine({ tags }: TagsLineProps) {
   return (
     <div className="grid grid-cols-2 items-center gap-4">
       <div className="flex flex-wrap items-center gap-2">
-        {tags?.length &&
+        {tags &&
+          tags.length > 0 &&
           tags.map((tag: Tag) => (
             <div
               key={tag.id}

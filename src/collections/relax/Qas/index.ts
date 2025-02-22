@@ -1,8 +1,8 @@
 import type { CollectionConfig } from 'payload'
 import { colorOptions } from '@/types/color'
 
-export const Tags: CollectionConfig = {
-  slug: 'tags',
+export const Qas: CollectionConfig = {
+  slug: 'qas',
   admin: {
     useAsTitle: 'title',
   },

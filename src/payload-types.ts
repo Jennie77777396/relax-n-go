@@ -11,17 +11,17 @@ export interface Config {
     users: UserAuthOperations;
   };
   collections: {
+    fields: Field;
+    importance: Importance;
+    ratings: Rating;
+    tags: Tag;
+    tasks: Task;
+    time: Time;
+    categories: Category;
     pages: Page;
     posts: Post;
     media: Media;
-    categories: Category;
     users: User;
-    tasks: Task;
-    ratings: Rating;
-    fields: Field;
-    time: Time;
-    tags: Tag;
-    importance: Importance;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -33,17 +33,17 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
+    fields: FieldsSelect<false> | FieldsSelect<true>;
+    importance: ImportanceSelect<false> | ImportanceSelect<true>;
+    ratings: RatingsSelect<false> | RatingsSelect<true>;
+    tags: TagsSelect<false> | TagsSelect<true>;
+    tasks: TasksSelect<false> | TasksSelect<true>;
+    time: TimeSelect<false> | TimeSelect<true>;
+    categories: CategoriesSelect<false> | CategoriesSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
-    categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
-    tasks: TasksSelect<false> | TasksSelect<true>;
-    ratings: RatingsSelect<false> | RatingsSelect<true>;
-    fields: FieldsSelect<false> | FieldsSelect<true>;
-    time: TimeSelect<false> | TimeSelect<true>;
-    tags: TagsSelect<false> | TagsSelect<true>;
-    importance: ImportanceSelect<false> | ImportanceSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -96,6 +96,167 @@ export interface UserAuthOperations {
     email: string;
     password: string;
   };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fields".
+ */
+export interface Field {
+  id: number;
+  title: string;
+  color:
+    | 'slate'
+    | 'gray'
+    | 'zinc'
+    | 'neutral'
+    | 'stone'
+    | 'red'
+    | 'orange'
+    | 'amber'
+    | 'yellow'
+    | 'lime'
+    | 'green'
+    | 'emerald'
+    | 'teal'
+    | 'cyan'
+    | 'sky'
+    | 'blue'
+    | 'indigo'
+    | 'violet'
+    | 'purple'
+    | 'fuchsia'
+    | 'pink'
+    | 'rose';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "importance".
+ */
+export interface Importance {
+  id: number;
+  importanceValue: '0' | '1' | '2' | '3' | '4' | '5';
+  task?: (number | null) | Task;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tasks".
+ */
+export interface Task {
+  id: number;
+  title: string;
+  emoji: string;
+  importance?: number | null;
+  rating?: number | null;
+  feedback?: string | null;
+  tags?: (number | Tag)[] | null;
+  fields?: (number | Field)[] | null;
+  status: number;
+  startTime?: string | null;
+  timer: number;
+  is_running?: boolean | null;
+  parent_task?: (number | null) | Task;
+  completed_subtasks?: number | null;
+  total_subtasks?: number | null;
+  is_repeated?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags".
+ */
+export interface Tag {
+  id: number;
+  title: string;
+  color:
+    | 'slate'
+    | 'gray'
+    | 'zinc'
+    | 'neutral'
+    | 'stone'
+    | 'red'
+    | 'orange'
+    | 'amber'
+    | 'yellow'
+    | 'lime'
+    | 'green'
+    | 'emerald'
+    | 'teal'
+    | 'cyan'
+    | 'sky'
+    | 'blue'
+    | 'indigo'
+    | 'violet'
+    | 'purple'
+    | 'fuchsia'
+    | 'pink'
+    | 'rose';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ratings".
+ */
+export interface Rating {
+  id: number;
+  ratingValue: number;
+  task?: (number | null) | Task;
+  comments?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "time".
+ */
+export interface Time {
+  id: number;
+  task: number | Task;
+  startTime: string;
+  endTime: string;
+  duration?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: number;
+  title: string;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  parent?: (number | null) | Category;
+  breadcrumbs?:
+    | {
+        doc?: (number | null) | Category;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -301,27 +462,6 @@ export interface Media {
       filename?: string | null;
     };
   };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories".
- */
-export interface Category {
-  id: number;
-  title: string;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  parent?: (number | null) | Category;
-  breadcrumbs?:
-    | {
-        doc?: (number | null) | Category;
-        url?: string | null;
-        label?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -684,146 +824,6 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tasks".
- */
-export interface Task {
-  id: number;
-  title: string;
-  emoji: string;
-  importance?: number | null;
-  rating?: number | null;
-  feedback?: string | null;
-  tags?: (number | Tag)[] | null;
-  fields?: (number | Field)[] | null;
-  status: number;
-  startTime?: string | null;
-  timer: number;
-  is_running?: boolean | null;
-  parent_task?: (number | null) | Task;
-  completed_subtasks?: number | null;
-  total_subtasks?: number | null;
-  is_repeated?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tags".
- */
-export interface Tag {
-  id: number;
-  title: string;
-  color:
-    | 'slate'
-    | 'gray'
-    | 'zinc'
-    | 'neutral'
-    | 'stone'
-    | 'red'
-    | 'orange'
-    | 'amber'
-    | 'yellow'
-    | 'lime'
-    | 'green'
-    | 'emerald'
-    | 'teal'
-    | 'cyan'
-    | 'sky'
-    | 'blue'
-    | 'indigo'
-    | 'violet'
-    | 'purple'
-    | 'fuchsia'
-    | 'pink'
-    | 'rose';
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "fields".
- */
-export interface Field {
-  id: number;
-  title: string;
-  color:
-    | 'slate'
-    | 'gray'
-    | 'zinc'
-    | 'neutral'
-    | 'stone'
-    | 'red'
-    | 'orange'
-    | 'amber'
-    | 'yellow'
-    | 'lime'
-    | 'green'
-    | 'emerald'
-    | 'teal'
-    | 'cyan'
-    | 'sky'
-    | 'blue'
-    | 'indigo'
-    | 'violet'
-    | 'purple'
-    | 'fuchsia'
-    | 'pink'
-    | 'rose';
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ratings".
- */
-export interface Rating {
-  id: number;
-  ratingValue: number;
-  task?: (number | null) | Task;
-  comments?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "time".
- */
-export interface Time {
-  id: number;
-  task: number | Task;
-  startTime: string;
-  endTime: string;
-  duration?: number | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "importance".
- */
-export interface Importance {
-  id: number;
-  importanceValue: '0' | '1' | '2' | '3' | '4' | '5';
-  task?: (number | null) | Task;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -995,6 +995,34 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
+        relationTo: 'fields';
+        value: number | Field;
+      } | null)
+    | ({
+        relationTo: 'importance';
+        value: number | Importance;
+      } | null)
+    | ({
+        relationTo: 'ratings';
+        value: number | Rating;
+      } | null)
+    | ({
+        relationTo: 'tags';
+        value: number | Tag;
+      } | null)
+    | ({
+        relationTo: 'tasks';
+        value: number | Task;
+      } | null)
+    | ({
+        relationTo: 'time';
+        value: number | Time;
+      } | null)
+    | ({
+        relationTo: 'categories';
+        value: number | Category;
+      } | null)
+    | ({
         relationTo: 'pages';
         value: number | Page;
       } | null)
@@ -1007,36 +1035,8 @@ export interface PayloadLockedDocument {
         value: number | Media;
       } | null)
     | ({
-        relationTo: 'categories';
-        value: number | Category;
-      } | null)
-    | ({
         relationTo: 'users';
         value: number | User;
-      } | null)
-    | ({
-        relationTo: 'tasks';
-        value: number | Task;
-      } | null)
-    | ({
-        relationTo: 'ratings';
-        value: number | Rating;
-      } | null)
-    | ({
-        relationTo: 'fields';
-        value: number | Field;
-      } | null)
-    | ({
-        relationTo: 'time';
-        value: number | Time;
-      } | null)
-    | ({
-        relationTo: 'tags';
-        value: number | Tag;
-      } | null)
-    | ({
-        relationTo: 'importance';
-        value: number | Importance;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1099,6 +1099,102 @@ export interface PayloadMigration {
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fields_select".
+ */
+export interface FieldsSelect<T extends boolean = true> {
+  title?: T;
+  color?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "importance_select".
+ */
+export interface ImportanceSelect<T extends boolean = true> {
+  importanceValue?: T;
+  task?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ratings_select".
+ */
+export interface RatingsSelect<T extends boolean = true> {
+  ratingValue?: T;
+  task?: T;
+  comments?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags_select".
+ */
+export interface TagsSelect<T extends boolean = true> {
+  title?: T;
+  color?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tasks_select".
+ */
+export interface TasksSelect<T extends boolean = true> {
+  title?: T;
+  emoji?: T;
+  importance?: T;
+  rating?: T;
+  feedback?: T;
+  tags?: T;
+  fields?: T;
+  status?: T;
+  startTime?: T;
+  timer?: T;
+  is_running?: T;
+  parent_task?: T;
+  completed_subtasks?: T;
+  total_subtasks?: T;
+  is_repeated?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "time_select".
+ */
+export interface TimeSelect<T extends boolean = true> {
+  task?: T;
+  startTime?: T;
+  endTime?: T;
+  duration?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories_select".
+ */
+export interface CategoriesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  slugLock?: T;
+  parent?: T;
+  breadcrumbs?:
+    | T
+    | {
+        doc?: T;
+        url?: T;
+        label?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1361,26 +1457,6 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories_select".
- */
-export interface CategoriesSelect<T extends boolean = true> {
-  title?: T;
-  slug?: T;
-  slugLock?: T;
-  parent?: T;
-  breadcrumbs?:
-    | T
-    | {
-        doc?: T;
-        url?: T;
-        label?: T;
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
@@ -1394,82 +1470,6 @@ export interface UsersSelect<T extends boolean = true> {
   hash?: T;
   loginAttempts?: T;
   lockUntil?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tasks_select".
- */
-export interface TasksSelect<T extends boolean = true> {
-  title?: T;
-  emoji?: T;
-  importance?: T;
-  rating?: T;
-  feedback?: T;
-  tags?: T;
-  fields?: T;
-  status?: T;
-  startTime?: T;
-  timer?: T;
-  is_running?: T;
-  parent_task?: T;
-  completed_subtasks?: T;
-  total_subtasks?: T;
-  is_repeated?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ratings_select".
- */
-export interface RatingsSelect<T extends boolean = true> {
-  ratingValue?: T;
-  task?: T;
-  comments?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "fields_select".
- */
-export interface FieldsSelect<T extends boolean = true> {
-  title?: T;
-  color?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "time_select".
- */
-export interface TimeSelect<T extends boolean = true> {
-  task?: T;
-  startTime?: T;
-  endTime?: T;
-  duration?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tags_select".
- */
-export interface TagsSelect<T extends boolean = true> {
-  title?: T;
-  color?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "importance_select".
- */
-export interface ImportanceSelect<T extends boolean = true> {
-  importanceValue?: T;
-  task?: T;
-  updatedAt?: T;
-  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

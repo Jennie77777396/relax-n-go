@@ -6,22 +6,23 @@ import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
 
-import { Categories } from './collections/Categories'
+import { Categories } from './collections/payload/Categories'
 import { Media } from './collections/Media'
-import { Pages } from './collections/Pages'
-import { Posts } from './collections/Posts'
+import { Pages } from './collections/payload/Pages'
+import { Posts } from './collections/payload/Posts'
 import { Users } from './collections/Users'
-import { Footer } from './Footer/config'
-import { Header } from './Header/config'
+import { Footer } from './globals/Footer/config'
+import { Header } from './globals/Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
-import { Fields } from './collections/Fields'
-import { Tasks } from './collections/Tasks'
-import { Ratings } from './collections/Ratings'
-import { Time } from './collections/Time'
-import { Tags } from './collections/Tags'
-import { Importance } from './collections/Importance'
+import { Fields } from './collections/relax/Fields'
+import { Tasks } from './collections/relax/Tasks'
+import { Ratings } from './collections/relax/Ratings'
+import { Time } from './collections/relax/Time'
+import { Tags } from './collections/relax/Tags'
+import { Importance } from './collections/relax/Importance'
+import { collections } from './collections'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -70,19 +71,20 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || '',
     },
   }),
-  collections: [
-    Pages,
-    Posts,
-    Media,
-    Categories,
-    Users,
-    Tasks,
-    Ratings,
-    Fields,
-    Time,
-    Tags,
-    Importance,
-  ],
+  collections: collections,
+  //  [
+  //   Pages,
+  //   Posts,
+  //   Media,
+  //   Categories,
+  //   Users,
+  //   Tasks,
+  //   Ratings,
+  //   Fields,
+  //   Time,
+  //   Tags,
+  //   Importance,
+  // ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins: [

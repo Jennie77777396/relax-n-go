@@ -50,14 +50,9 @@ export default function NavigationBar() {
             <Folder className="h-4 w-4 mr-2" /> Tasks
           </Button>
         </Link>
-        <Link href="/todo" className="text-sm">
-          <Button variant="ghost">
-            <ListTodo className="h-4 w-4 mr-2" /> To Do List
-          </Button>
-        </Link>
         <Link href="/statistics" className="text-sm">
           <Button variant="ghost">
-            <BarChart className="h-4 w-4 mr-2" /> Statistics
+            <BarChart className="h-4 w-4 mr-2" /> Achievements
           </Button>
         </Link>
       </div>

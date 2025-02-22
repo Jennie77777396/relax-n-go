@@ -1,11 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Switch } from '@/components/ui/switch'
 import { useStopwatch } from '@/hooks/useStopwatch'
-import { Field, Task } from '@/payload-types'
-import { Progress } from '@/components/ui/progress'
+import { Tag, Task } from '@/payload-types'
 import { useState } from 'react'
 import { updateTask } from '@/actions/tasks'
-import { FieldsLine } from '@/components/FieldsLine'
+import { TagsLine } from '@/components/TagsLine'
 
 interface TaskCardProps {
   task: Task
@@ -70,8 +69,8 @@ export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
         </div>
       </CardHeader>
       <CardContent className="p-2 space-y-2">
-        {/* 🔹 Fields Section */}
-        <FieldsLine fields={task.fields as Field[]} />
+        {/* 🔹 Tags Section */}
+        <TagsLine tags={task.tags as Tag[]} />
       </CardContent>
     </Card>
   )

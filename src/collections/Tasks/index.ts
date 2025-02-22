@@ -1,9 +1,14 @@
-import { statusOptions } from '@/types/status'
 import type { CollectionConfig } from 'payload'
 
 export const Tasks: CollectionConfig = {
   slug: 'tasks',
   timestamps: true,
+  access: {
+    read: () => true,
+    update: () => true,
+    create: () => true,
+    delete: () => true,
+  },
   admin: {
     useAsTitle: 'title',
   },

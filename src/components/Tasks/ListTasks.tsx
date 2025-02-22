@@ -13,7 +13,7 @@ import {
   PaginationLink,
 } from '@/components/ui/pagination'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { Where } from 'payload'
+import { CreateTaskButton } from './CreateTaskButton'
 
 interface TaskListProps {
   fieldTitle: string
@@ -75,6 +75,7 @@ export default function TaskList({ fieldTitle, fromDate }: TaskListProps) {
             return totalMinutes ? `${hours}h ${minutes}m` : null
           })()}
         </div>
+        <CreateTaskButton fields={[fieldTitle]} />
       </div>
       {loading ? (
         [...Array(3)].map((_, i) => <Skeleton key={i} className="h-24 w-full rounded-md" />)

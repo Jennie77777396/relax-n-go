@@ -66,7 +66,6 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
   },
 
   toggleTimer: async (taskId: number, isRunning: boolean) => {
-    console.log('toggleTimer id ', taskId), console.log('toggleTime isRunning', isRunning)
     set({ loading: true, error: null })
     const task = get().tasks.find((task) => task.id === taskId)
     console.log('task to toggle: ', JSON.stringify(task, null, 2))

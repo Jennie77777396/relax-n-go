@@ -21,7 +21,9 @@ export function FeedbackDialog({ isOpen, onClose }: { isOpen: boolean; onClose?:
   const handleSubmit = () => {
     // Handle the submission logic here
     console.log('Feedback submitted:', { learned, nextStep, status: status[0] })
-    onClose && onClose()
+    if (onClose) {
+      onClose()
+    }
   }
 
   return (

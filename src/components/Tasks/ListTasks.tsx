@@ -32,7 +32,7 @@ export default function TaskList({ fieldTitle, filter }: TaskListProps) {
   useEffect(() => {
     async function fetchTasks() {
       setLoading(true)
-      let toFilter = { ...filter, 'fields.title': { equals: fieldTitle } }
+      const toFilter = { ...filter, 'fields.title': { equals: fieldTitle } }
       console.log('filtering: ', JSON.stringify(toFilter, null, 2))
       const result = await getTasksREST(toFilter, '-updatedAt', currentPage)
       setTasks(result.tasks)

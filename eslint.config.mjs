@@ -17,6 +17,7 @@ const eslintConfig = [
       '@typescript-eslint/no-empty-object-type': 'warn',
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-unescaped-entities': 'warn',
+      'react/no-unescaped-entities': 'warn',
       '@typescript-eslint/no-unused-vars': [
         'warn',
         {

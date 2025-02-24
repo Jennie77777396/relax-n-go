@@ -55,6 +55,11 @@ export default function NavigationBar() {
             <BarChart className="h-4 w-4 mr-2" /> Achievements
           </Button>
         </Link>
+        <Link href="/sandbox" className="text-sm">
+          <Button variant="ghost">
+            <BarChart className="h-4 w-4 mr-2" /> Sandbox
+          </Button>
+        </Link>
       </div>
 
       <form onSubmit={handleSearch} className="flex-1 max-w-sm mx-4">

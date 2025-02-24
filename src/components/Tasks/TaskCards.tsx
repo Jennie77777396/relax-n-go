@@ -2,9 +2,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Switch } from '@/components/ui/switch'
 import { useStopwatch } from '@/hooks/useStopwatch'
 import { Tag, Task } from '@/payload-types'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { updateTask } from '@/actions/tasks'
 import { TagsLine } from '@/components/TagsLine'
+import { FeedbackDialog } from './FeedbackDialog'
 
 interface TaskCardProps {
   task: Task
@@ -13,8 +14,12 @@ interface TaskCardProps {
 
 export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
   const [isRunning, setIsRunning] = useState(task.is_running || false)
+  const [feedbackPopUp, setFeedbackPopUp] = useState(false)
   const { formattedTime } = useStopwatch(task.id, task.timer || 0, isRunning)
 
+  useEffect(() => {
+    console.log('feedback popup: ', feedbackPopUp)
+  }, [feedbackPopUp])
   const handleToggle = async (checked: boolean) => {
     try {
       if (!checked) {
@@ -35,6 +40,7 @@ export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
         if (result.success && result.task) {
           setIsRunning(false)
           onTaskUpdate?.(result.task)
+          setFeedbackPopUp(true)
         }
       } else {
         const startTime = new Date().toISOString()
@@ -56,22 +62,40 @@ export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
   }
 
   return (
-    <Card className="p-1 rounded-lg shadow-sm bg-white">
-      <CardHeader className="p-2 space-y-0">
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-base font-medium">
-            {task.emoji} {task.title}
-          </CardTitle>
-          <div className="flex items-center justify-end gap-1">
-            <p className="font-mono text-sm">{formattedTime}</p>
-            <Switch checked={isRunning} onCheckedChange={handleToggle} />
+    <>
+      <Card
+        className={`p-1 rounded-lg shadow-sm ${
+          task.status === 1 &&
+          task.fields &&
+          task.fields.length > 0 &&
+          typeof task.fields[0] === 'object' &&
+          'color' in task.fields[0]
+            ? `bg-${task.fields[0].color}-500`
+            : 'bg-white'
+        }`}
+      >
+        <CardHeader className="p-2 space-y-0">
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-base font-medium">
+              {task.status < 1 ? task.emoji : '💅🏻'} {task.title}
+            </CardTitle>
+            {task.status < 1 && (
+              <div className="flex items-center justify-end gap-1">
+                <p className="font-mono text-sm">{formattedTime}</p>
+                <Switch checked={isRunning} onCheckedChange={handleToggle} />
+              </div>
+            )}
           </div>
-        </div>
-      </CardHeader>
-      <CardContent className="p-2 space-y-2">
-        {/* 🔹 Tags Section */}
-        <TagsLine tags={task.tags as Tag[]} />
-      </CardContent>
-    </Card>
+        </CardHeader>
+        {task.tags && task.tags.length > 0 && (
+          <CardContent className="p-2 space-y-2">
+            {/* 🔹 Tags Section */}
+            <TagsLine tags={task.tags as Tag[]} />
+          </CardContent>
+        )}
+      </Card>
+
+      <FeedbackDialog isOpen={feedbackPopUp} onClose={() => setFeedbackPopUp(false)} />
+    </>
   )
 }

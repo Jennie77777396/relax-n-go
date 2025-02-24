@@ -1,11 +1,12 @@
 'use client'
 
+import { Where } from 'payload'
 import { useEffect, useState } from 'react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Separator } from '@/components/ui/separator'
 import { TaskCard } from './TaskCards'
 import { Task } from '@/payload-types'
-import { getTasks, getTasksREST } from '@/actions/tasks'
+import { getTasksREST } from '@/actions/tasks'
 import {
   Pagination,
   PaginationContent,
@@ -17,10 +18,10 @@ import { CreateTaskButton } from './CreateTaskButton'
 
 interface TaskListProps {
   fieldTitle: string
-  fromDate: Date
+  filter?: Where | undefined | null
 }
 
-export default function TaskList({ fieldTitle, fromDate }: TaskListProps) {
+export default function TaskList({ fieldTitle, filter }: TaskListProps) {
   const [tasks, setTasks] = useState<Task[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const [currentPage, setCurrentPage] = useState<number>(1)
@@ -31,15 +32,9 @@ export default function TaskList({ fieldTitle, fromDate }: TaskListProps) {
   useEffect(() => {
     async function fetchTasks() {
       setLoading(true)
-      const result = await getTasksREST(
-        {
-          'fields.title': { equals: fieldTitle },
-          // updatedAt: { greater_than_equal: fromDate },
-          status: { less_than: 1 },
-        },
-        '-updatedAt',
-        currentPage,
-      )
+      let toFilter = { ...filter, 'fields.title': { equals: fieldTitle } }
+      console.log('filtering: ', JSON.stringify(toFilter, null, 2))
+      const result = await getTasksREST(toFilter, '-updatedAt', currentPage)
       setTasks(result.tasks)
       setTotalPages(result.totalPages)
       setHasPrevPage(result.hasPrevPage)

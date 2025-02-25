@@ -1,0 +1,499 @@
+{
+    "login-component": {
+        "title": "Iniciar sesión",
+        "subtitle": "Ingresa tu correo electrónico y contraseña para iniciar sesión",
+        "email": "Correo electrónico",
+        "password": "Contraseña",
+        "email-placeholder": "nombre@ejemplo.com",
+        "sso-button": "Iniciar sesión con SSO",
+        "forgot-password": "¿Olvidaste tu contraseña?",
+        "sign-in-button": "Iniciar sesión",
+        "sign-in-button-loading": "Iniciando sesión..."
+    },
+    "forgot-password": {
+        "title": "¿Olvidaste tu contraseña?",
+        "subtitle": "Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña",
+        "email": "Correo electrónico",
+        "email-placeholder": "nombre@ejemplo.com",
+        "send-email-button": "Enviar enlace de restablecimiento",
+        "send-email-button-loading": "Enviando...",
+        "try-again": "¿No recibiste el correo electrónico? Intenta de nuevo",
+        "success-top": "Hemos enviado instrucciones a {email}",
+        "success-bottom": "Si existe una cuenta con esta dirección de correo electrónico, recibirás instrucciones para restablecer la contraseña.",
+        "invalid-email-error": "Ingresa una dirección de correo electrónico válida"
+    },
+    "reset-password": {
+        "title": "Restablecer contraseña",
+        "subtitle": "Ingresa tu nueva contraseña",
+        "new-password": "Nueva contraseña",
+        "password-placeholder": "Ingresa tu nueva contraseña",
+        "confirm-password": "Confirmar contraseña",
+        "confirm-password-placeholder": "Confirma tu nueva contraseña",
+        "reset-button": "Restablecer contraseña",
+        "character-limit": "Al menos 12 caracteres de longitud",
+        "uppercase-letter-limit": "Al menos 2 letras mayúsculas",
+        "lowercase-letter-limit": "Al menos 2 letras minúsculas",
+        "number-limit": "Al menos 2 números",
+        "special-character-limit": "Al menos 2 caracteres especiales",
+        "identical-limit": "No más de dos caracteres idénticos seguidos",
+        "sequence-limit": "No caracteres secuenciales (abc, 123, etc.)",
+        "passwords-mismatch": "Las contraseñas no coinciden"
+    },
+    "user-options": {
+        "sign-out": "Cerrar sesión",
+        "sign-in": "Iniciar sesión",
+        "facilities": "Instalaciones",
+        "theme": "Tema",
+        "languages": "Idiomas",
+        "admin-settings": "Administrador"
+    },
+    "header-logo-config": {
+        "title": "Logo",
+        "light-mode": "Modo claro",
+        "dark-mode": "Modo oscuro",
+        "click-to-add": "Haz clic para agregar",
+        "remove": "Eliminar",
+        "invert-logo": "Invertir en oscuro",
+        "save": "Guardar",
+        "failed-to-save": "Error al guardar el logo"
+    },
+    "header-menu-config": {
+        "title": "Menú",
+        "add-item": "Agregar elemento",
+        "save": "Guardar",
+        "reset-changes": "Restablecer cambios",
+        "label": "Etiqueta",
+        "link": "Enlace",
+        "sub-menu": "Submenú",
+        "sub-item": "Subelemento",
+        "no-roles-left": "No hay roles disponibles",
+        "URL": "URL",
+        "enter-url": "Ingresa URL",
+        "open-in-new-tab": "Abrir en una nueva pestaña",
+        "Permission": "Permiso",
+        "language-editor": "Editor de idioma",
+        "empty-menu-message": "Personaliza tu menú agregando elementos",
+        "un-saved-changes-alert": "Tienes cambios sin guardar. Guarda antes de editar el idioma.",
+        "errors": {
+            "must-have-label": "{item} debe tener una etiqueta",
+            "must-have-url": "{item} debe tener una URL",
+            "must-subitem": "{item} debe tener al menos un subelemento",
+            "must-subitem-label": "{subitem} en {item} debe tener una etiqueta",
+            "must-subitem-url": "{subitem} en {item} debe tener una URL"
+        }
+    },
+    "news-ticker": {
+        "read-more": "Leer más",
+        "previous-news": "Noticia anterior",
+        "next-news": "Siguiente noticia",
+        "settings": {
+            "title": "Configuración del Ticker de Noticias",
+            "tabs": {
+                "content": "Contenido",
+                "behavior": "Comportamiento",
+                "animation": "Animación",
+                "style": "Estilo"
+            },
+            "content": {
+                "news-placeholder": "Ingrese el contenido de la noticia",
+                "icon-placeholder": "Nombre del icono",
+                "link-placeholder": "Enlace URL"
+            },
+            "behavior": {
+                "direction": "Dirección",
+                "direction-placeholder": "Seleccionar dirección",
+                "directions": {
+                    "left": "Izquierda",
+                    "right": "Derecha",
+                    "up": "Arriba",
+                    "down": "Abajo"
+                },
+                "mode": "Modo",
+                "mode-placeholder": "Seleccionar modo",
+                "modes": {
+                    "continuous": "Continuo",
+                    "hover": "Al pasar",
+                    "click": "Al hacer clic"
+                },
+                "speed": "Velocidad"
+            },
+            "animation": {
+                "type": "Tipo de Animación",
+                "type-placeholder": "Seleccionar tipo de animación",
+                "types": {
+                    "slide": "Deslizar",
+                    "fade": "Desvanecer",
+                    "zoom": "Zoom"
+                }
+            },
+            "style": {
+                "background-color": "Color de Fondo",
+                "text-color": "Color de Texto",
+                "show-icons": "Mostrar Iconos"
+            },
+            "buttons": {
+                "add-news": "Agregar Noticia",
+                "save-changes": "Guardar Cambios"
+            }
+        }
+    },
+    "qa-section": {
+        "title": "Preguntas Frecuentes",
+        "view-modes": {
+            "accordion": "Vista acordeón",
+            "grid": "Vista cuadrícula",
+            "list": "Vista lista"
+        },
+        "animations": {
+            "fade": "Desvanecer",
+            "slide": "Deslizar",
+            "zoom": "Zoom",
+            "flip": "Voltear"
+        },
+        "color-schemes": {
+            "light": "Claro",
+            "dark": "Oscuro",
+            "custom": "Personalizado"
+        },
+        "fonts": {
+            "sans": "Sans-serif",
+            "serif": "Serif",
+            "mono": "Monoespaciado"
+        },
+        "aria-expand": "Expandir pregunta",
+        "aria-collapse": "Contraer pregunta"
+    },
+    "landing-page-sidebar": {
+        "title": "Diseñador de Página de Destino",
+        "sections": {
+            "navigation": "Barra de Navegación",
+            "video-hero": "Héroe de Video",
+            "hero": "Héroe",
+            "split-hero": "Héroe Dividido",
+            "news-ticker": "Ticker de Noticias",
+            "testimonials": "Testimonios",
+            "qa": "Preguntas y Respuestas",
+            "locations-map": "Mapa de Ubicaciones",
+            "footer": "Pie de Página"
+        },
+        "tabs": {
+            "sections": "Secciones",
+            "details": "Detalles",
+            "themes": "Temas"
+        }
+    },
+    "admin-panel": {
+        "title": "Panel de Administración",
+        "buttons": {
+            "new": "Nuevo",
+            "save": "Guardar",
+            "saving": "Guardando..."
+        },
+        "modes": {
+            "design": "Modo Diseño",
+            "preview": "Modo Vista Previa"
+        },
+        "published": {
+            "published": "Publicado",
+            "draft": "Borrador"
+        }
+    },
+    "hero-settings": {
+        "title": "Configuración de la Sección Hero",
+        "tabs": {
+            "content": "Contenido",
+            "style": "Estilo",
+            "animation": "Animación",
+            "background": "Fondo",
+            "ctas": "CTAs"
+        },
+        "style": {
+            "font-weights": {
+                "normal": "Normal",
+                "medium": "Mediano",
+                "semibold": "Semi Negrita",
+                "bold": "Negrita",
+                "extrabold": "Extra Negrita"
+            },
+            "title": "Título",
+            "subtitle": "Subtítulo",
+            "hero-size": "Tamaño del Hero",
+            "sizes": {
+                "standard": "Estándar",
+                "large": "Grande",
+                "fullscreen": "Pantalla Completa"
+            }
+        },
+        "animation": {
+            "animations": {
+                "none": "Ninguna",
+                "typewriter-simple": "Máquina de Escribir Simple",
+                "typewriter-cursor": "Máquina de Escribir con Cursor",
+                "typewriter-eraser": "Máquina de Escribir con Borrador",
+                "rainbow": "Arcoíris",
+                "neon": "Neón",
+                "pastel": "Pastel"
+            },
+            "slideshow-interval": "Intervalo de Presentación",
+            "slide-animation-type": "Tipo de Animación de Diapositiva",
+            "overlay-opacity": "Opacidad de Superposición",
+            "fade": "Desvanecer",
+            "slide": "Deslizar",
+            "zoom": "Zoom"
+        },
+        "labels": {
+            "title": "Título",
+            "subtitle": "Subtítulo",
+            "hero-size": "Tamaño del Hero",
+            "sizes": {
+                "medium": "Mediano",
+                "full": "Pantalla Completa",
+                "standard": "Estándar",
+                "large": "Grande",
+                "fullscreen": "Pantalla Completa"
+            },
+            "title-font-size": "Tamaño de Fuente del Título",
+            "title-font-weight": "Peso de Fuente del Título",
+            "title-color": "Color del Título",
+            "subtitle-font-size": "Tamaño de Fuente del Subtítulo",
+            "subtitle-font-weight": "Peso de Fuente del Subtítulo",
+            "subtitle-color": "Color del Subtítulo",
+            "font-weights": {
+                "normal": "Normal",
+                "medium": "Mediano",
+                "semibold": "Semi Negrita",
+                "bold": "Negrita",
+                "extrabold": "Extra Negrita"
+            },
+            "animations": {
+                "none": "Ninguna",
+                "typewriter-simple": "Máquina de Escribir Simple",
+                "typewriter-cursor": "Máquina de Escribir con Cursor",
+                "typewriter-eraser": "Máquina de Escribir con Borrador",
+                "rainbow": "Arcoíris",
+                "neon": "Neón",
+                "pastel": "Pastel",
+                "solid": "Sólido",
+                "gradient": "Degradado",
+                "animate-title": "Animar Título",
+                "animate-subtitle": "Animar Subtítulo",
+                "background-color": "Color de Fondo",
+                "background-images": "Imágenes de Fondo",
+                "enable-slideshow": "Activar Presentación",
+                "overlay-opacity": "Opacidad de Superposición"
+            },
+            "color-variation": "Variación de Color",
+            "animation-type": "Tipo de Animación"
+        },
+        "buttons": {
+            "save": "Guardar",
+            "test": "Probar Animación",
+            "upload": "Subir Imágenes",
+            "add-cta": "Agregar CTA"
+        },
+        "placeholders": {
+            "select-hero-size": "Seleccionar tamaño",
+            "select-animation-type": "Seleccionar tipo de animación",
+            "cta-text": "Texto CTA",
+            "cta-link": "Enlace CTA",
+            "cta-style": "Estilo"
+        },
+        "ctaStyles": {
+            "primary": "Primario",
+            "secondary": "Secundario",
+            "outline": "Contorno"
+        }
+    },
+    "video-hero-settings": {
+        "title": "Configuración del Video Hero",
+        "tabs": {
+            "content": "Contenido",
+            "style": "Estilo",
+            "animation": "Animación",
+            "ctas": "CTAs"
+        },
+        "labels": {
+            "video-url": "URL del Video",
+            "title": "Título",
+            "subtitle": "Subtítulo",
+            "overlay-style": "Estilo de Superposición",
+            "overlay-styles": {
+                "none": "Ninguno",
+                "darken": "Oscurecer",
+                "lighten": "Aclarar",
+                "blur": "Desenfoque",
+                "pattern": "Patrón"
+            },
+            "section-size": "Tamaño de Sección",
+            "sizes": {
+                "standard": "Estándar",
+                "medium": "Mediano",
+                "full": "Completo"
+            },
+            "overlay-opacity": "Opacidad de Superposición",
+            "text-animation": "Animación de Texto",
+            "animations": {
+                "fade": "Desvanecer",
+                "slide": "Deslizar",
+                "zoom": "Zoom",
+                "typewriter": "Máquina de escribir"
+            },
+            "show-ctas": "Mostrar CTAs"
+        },
+        "placeholders": {
+            "video-url": "Ingrese URL del video",
+            "title": "Ingrese título",
+            "subtitle": "Ingrese subtítulo",
+            "cta-text": "Texto del CTA",
+            "cta-link": "Enlace del CTA"
+        },
+        "buttons": {
+            "save": "Guardar",
+            "add-cta": "Agregar CTA"
+        }
+    },
+    "footer-settings": {
+        "title": "Configuración del Pie de Página",
+        "tabs": {
+            "general": "General",
+            "links": "Enlaces",
+            "social": "Redes Sociales"
+        },
+        "labels": {
+            "company-name": "Nombre de la Empresa",
+            "logo": "Logo",
+            "mode": "Modo"
+        },
+        "placeholders": {
+            "company-name": "Ingrese el nombre de la empresa",
+            "link-label": "Ingrese la etiqueta del enlace",
+            "link-url": "Ingrese la URL",
+            "social-url": "Ingrese la URL de la red social",
+            "select-mode": "Seleccione el modo",
+            "select-platform": "Seleccione la plataforma"
+        },
+        "modes": {
+            "light": "Claro",
+            "dark": "Oscuro",
+            "colorful": "Colorido"
+        },
+        "platforms": {
+            "facebook": "Facebook",
+            "twitter": "Twitter",
+            "instagram": "Instagram",
+            "linkedin": "LinkedIn"
+        },
+        "buttons": {
+            "save": "Guardar",
+            "upload-logo": "Subir Logo",
+            "add-link": "Agregar Enlace",
+            "add-social-link": "Agregar Red Social"
+        }
+    },
+    "qa": {
+        "settings": {
+            "title": "Configuración de Sección de Preguntas y Respuestas",
+            "tabs": {
+                "display": "Visualización",
+                "animation": "Animación",
+                "style": "Estilo",
+                "manage": "Gestionar P&R"
+            },
+            "view-mode": {
+                "label": "Modo de Vista",
+                "placeholder": "Seleccionar modo de vista",
+                "accordion": "Acordeón",
+                "grid": "Cuadrícula",
+                "list": "Lista"
+            },
+            "font": {
+                "label": "Fuente",
+                "placeholder": "Seleccionar fuente",
+                "sans": "Sans-serif",
+                "serif": "Serif",
+                "mono": "Monoespaciado"
+            },
+            "animation-type": {
+                "label": "Tipo de Animación",
+                "placeholder": "Seleccionar tipo de animación",
+                "fade": "Desvanecer",
+                "slide": "Deslizar",
+                "zoom": "Zoom",
+                "flip": "Voltear"
+            },
+            "animation-duration": {
+                "label": "Duración de Animación"
+            },
+            "color-scheme": {
+                "label": "Esquema de Color",
+                "placeholder": "Seleccionar esquema de color",
+                "light": "Claro",
+                "dark": "Oscuro",
+                "custom": "Personalizado",
+                "background": {
+                    "label": "Color de Fondo"
+                },
+                "text": {
+                    "label": "Color de Texto"
+                },
+                "accent": {
+                    "label": "Color de Acento"
+                }
+            },
+            "question": {
+                "placeholder": "Ingrese la pregunta"
+            },
+            "answer": {
+                "placeholder": "Ingrese la respuesta"
+            },
+            "new-question": {
+                "placeholder": "Nueva Pregunta"
+            },
+            "new-answer": {
+                "placeholder": "Nueva Respuesta"
+            },
+            "add-qa": "Agregar P&R",
+            "save-changes": "Guardar Cambios"
+        }
+    },
+    "locations-map": {
+        "buttons": {
+            "save": "Guardar"
+        }
+    },
+    "landing-designer": {
+        "search-placeholder": "Buscar páginas de destino...",
+        "create-new": "Crear Nuevo",
+        "delete-selected": "Eliminar Seleccionados",
+        "no-landing-pages": "No se encontraron páginas de destino",
+        "create-new-to-start": "Crea una nueva página de destino para comenzar",
+        "new-landing-page-name": "Nueva Página de Destino",
+        "previous": "Anterior",
+        "next": "Siguiente",
+        "create-new-landing-page": "Crear Nueva Página de Destino",
+        "create-new-landing-page-description": "Ingrese los detalles de su nueva página de destino",
+        "name": "Nombre",
+        "name-placeholder": "Ingrese el nombre de la página",
+        "industry": "Industria",
+        "select-industry": "Seleccione una industria",
+        "industries": {
+            "${industry}": "Seleccionar Industria",
+            "logistics": "Logística",
+            "transportation": "Transporte",
+            "warehousing": "Almacenaje",
+            "freight-forwarding": "Transporte de Carga",
+            "supply-chain": "Cadena de Suministro",
+            "order-fulfillment": "Cumplimiento de Pedidos",
+            "others": "Otros"
+        },
+        "create": "Crear",
+        "creating": "Creando...",
+        "cancel": "Cancelar",
+        "search-landing-pages": "Buscar páginas de destino",
+        "columns": "columnas",
+        "pagination": {
+            "items-per-page": "{count, plural, one {# elemento por página} other {# elementos por página}}",
+            "total-items": "{count, plural, one {# elemento en total} other {# elementos en total}}"
+        }
+    }
+}

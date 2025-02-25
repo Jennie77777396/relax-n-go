@@ -1,0 +1,511 @@
+{
+    "login-component": {
+        "title": "התחברות",
+        "subtitle": "הזן את כתובת האימייל והסיסמה שלך כדי להתחבר",
+        "email": "אימייל",
+        "password": "סיסמה",
+        "email-placeholder": "name@example.com",
+        "sso-button": "התחבר באמצעות SSO",
+        "forgot-password": "שכחת את הסיסמה?",
+        "sign-in-button": "התחבר",
+        "sign-in-button-loading": "מתחבר..."
+    },
+    "forgot-password": {
+        "title": "שכחת את הסיסמה?",
+        "subtitle": "הזן את כתובת האימייל שלך ונשלח לך קישור לאיפוס הסיסמה",
+        "email": "אימייל",
+        "email-placeholder": "name@example.com",
+        "send-email-button": "שלח קישור איפוס",
+        "send-email-button-loading": "שולח...",
+        "try-again": "לא קיבלת את האימייל? נסה שוב",
+        "success-top": "שלחנו הוראות ל-{email}",
+        "success-bottom": "אם קיים חשבון עם כתובת אימייל זו, תקבל הוראות לאיפוס הסיסמה.",
+        "invalid-email-error": "אנא הזן כתובת אימייל תקינה"
+    },
+    "reset-password": {
+        "title": "איפוס סיסמה",
+        "subtitle": "הזן את הסיסמה החדשה שלך",
+        "new-password": "סיסמה חדשה",
+        "password-placeholder": "הזן את הסיסמה החדשה שלך",
+        "confirm-password": "אימות סיסמה",
+        "confirm-password-placeholder": "אשר את הסיסמה החדשה שלך",
+        "reset-button": "איפוס סיסמה",
+        "character-limit": "לפחות 12 תווים",
+        "uppercase-letter-limit": "לפחות 2 אותיות גדולות",
+        "lowercase-letter-limit": "לפחות 2 אותיות קטנות",
+        "number-limit": "לפחות 2 מספרים",
+        "special-character-limit": "לפחות 2 תווים מיוחדים",
+        "identical-limit": "לא יותר משני תווים זהים ברצף",
+        "sequence-limit": "ללא תווים רציפים (abc, 123, וכו')",
+        "passwords-mismatch": "הסיסמאות אינן תואמות"
+    },
+    "header-logo-config": {
+        "title": "סמל",
+        "light-mode": "מצב בהיר",
+        "dark-mode": "מצב כהה",
+        "click-to-add": "לחצו כדי להוסיף",
+        "remove": "הסר",
+        "invert-logo": "הפוך בכהה",
+        "save": "שמור",
+        "failed-to-save": "שגיאה בשמירת הסמל"
+    },
+    "header-menu-config": {
+        "title": "מסך",
+        "add-item": "הוסף פריט",
+        "save": "שמור",
+        "reset-changes": "איפוס שינויים",
+        "label": "תווית",
+        "link": "קישור",
+        "sub-menu": "תת סרגל",
+        "sub-item": "פריט תתי",
+        "no-roles-left": "אין תפקידים נותרים",
+        "URL": "URL",
+        "enter-url": "הזן URL",
+        "open-in-new-tab": "פתח בכרטיסייה חדשה",
+        "Permission": "הרשאה",
+        "language-editor": "עורך שפה",
+        "empty-menu-message": "התאמת מסך שלך על ידי הוספת פריטים",
+        "un-saved-changes-alert": "יש לך שינויים שלא נשמרו. שמור לפני שתשנה את השפה.",
+        "errors": {
+            "must-have-label": "{item} חייב להכיל תווית",
+            "must-have-url": "{item} חייב להכיל כתובת URL",
+            "must-subitem": "{item} חייב להכיל לפחות פריט תתי",
+            "must-subitem-label": "{subitem} ב-{item} חייב להכיל תווית",
+            "must-subitem-url": "{subitem} ב-{item} חייב להכיל כתובת URL"
+        }
+    },
+    "user-options": {
+        "sign-out": "התנתק",
+        "sign-in": "התחבר",
+        "facilities": "מתקנים",
+        "theme": "ערכת נושא",
+        "languages": "שפות",
+        "admin-settings": "מנהל"
+    },
+    "news-ticker": {
+        "read-more": "קרא עוד",
+        "previous-news": "לחדשות הקודמות",
+        "next-news": "לחדשות הבאות",
+        "settings": {
+            "title": "הגדרות טיקר חדשות",
+            "tabs": {
+                "content": "תוכן",
+                "behavior": "התנהגות",
+                "animation": "אנימציה",
+                "style": "עיצוב"
+            },
+            "content": {
+                "news-placeholder": "הזן תוכן חדשות",
+                "icon-placeholder": "שם האייקון",
+                "link-placeholder": "קישור URL"
+            },
+            "behavior": {
+                "direction": "כיוון",
+                "direction-placeholder": "בחר כיוון",
+                "directions": {
+                    "left": "שמאלה",
+                    "right": "ימינה",
+                    "up": "למעלה",
+                    "down": "למטה"
+                },
+                "mode": "מצב",
+                "mode-placeholder": "בחר מצב",
+                "modes": {
+                    "continuous": "רציף",
+                    "hover": "מעבר עכבר",
+                    "click": "לחיצה"
+                },
+                "speed": "מהירות"
+            },
+            "animation": {
+                "type": "סוג אנימציה",
+                "type-placeholder": "בחר סוג אנימציה",
+                "types": {
+                    "slide": "החלקה",
+                    "fade": "דעיכה",
+                    "zoom": "זום"
+                }
+            },
+            "style": {
+                "background-color": "צבע רקע",
+                "text-color": "צבע טקסט",
+                "show-icons": "הצג אייקונים"
+            },
+            "buttons": {
+                "add-news": "הוסף חדשות",
+                "save-changes": "שמור שינויים"
+            }
+        }
+    },
+    "qa-section": {
+        "title": "שאלות נפוצות",
+        "view-modes": {
+            "accordion": "תצוגת אקורדיון",
+            "grid": "תצוגת רשת",
+            "list": "תצוגת רשימה"
+        },
+        "animations": {
+            "fade": "דעיכה",
+            "slide": "החלקה",
+            "zoom": "זום",
+            "flip": "היפוך"
+        },
+        "color-schemes": {
+            "light": "בהיר",
+            "dark": "כהה",
+            "custom": "מותאם אישית"
+        },
+        "fonts": {
+            "sans": "סנס",
+            "serif": "סריף",
+            "mono": "מונוספייס"
+        },
+        "aria-expand": "הרחב שאלה",
+        "aria-collapse": "צמצם שאלה"
+    },
+    "landing-page-sidebar": {
+        "title": "עורך דף נחיתה",
+        "sections": {
+            "navigation": "סרגל ניווט",
+            "video-hero": "וידאו ראשי",
+            "hero": "ראשי",
+            "split-hero": "ראשי מפוצל",
+            "news-ticker": "טיקר חדשות",
+            "testimonials": "המלצות",
+            "qa": "שאלות ותשובות",
+            "locations-map": "מפת מיקומים",
+            "footer": "כותרת תחתונה"
+        },
+        "tabs": {
+            "sections": "מקטעים",
+            "details": "פרטים",
+            "themes": "ערכות נושא"
+        }
+    },
+    "admin-panel": {
+        "title": "פאנל ניהול",
+        "buttons": {
+            "new": "חדש",
+            "save": "שמור",
+            "saving": "שומר..."
+        },
+        "modes": {
+            "design": "מצב עיצוב",
+            "preview": "מצב תצוגה מקדימה"
+        },
+        "published": {
+            "published": "מוגש",
+            "draft": "גרסת בולט"
+        }
+    },
+    "hero-settings": {
+        "title": "הגדרות מקטע Hero",
+        "tabs": {
+            "content": "תוכן",
+            "style": "סגנון",
+            "animation": "אנימציה",
+            "background": "רקע",
+            "ctas": "כפתורי פעולה"
+        },
+        "style": {
+            "font-weights": {
+                "normal": "רגיל",
+                "medium": "בינוני",
+                "semibold": "חצי מודגש",
+                "bold": "מודגש",
+                "extrabold": "מודגש במיוחד"
+            },
+            "title": "כותרת",
+            "subtitle": "כותרת משנה",
+            "hero-size": "גודל Hero",
+            "sizes": {
+                "standard": "רגיל",
+                "large": "גדול",
+                "fullscreen": "מסך מלא"
+            }
+        },
+        "animation": {
+            "animations": {
+                "none": "ללא",
+                "typewriter-simple": "מכונת כתיבה פשוטה",
+                "typewriter-cursor": "מכונת כתיבה עם סמן",
+                "typewriter-eraser": "מכונת כתיבה עם מחיקה",
+                "rainbow": "קשת",
+                "neon": "ניאון",
+                "pastel": "פסטל"
+            },
+            "slideshow-interval": "מרווח זמן מצגת",
+            "slide-animation-type": "סוג אנימציית החלקה",
+            "overlay-opacity": "שקיפות שכבת כיסוי",
+            "fade": "דעיכה",
+            "slide": "החלקה",
+            "zoom": "זום"
+        },
+        "labels": {
+            "title": "כותרת",
+            "subtitle": "כותרת משנה",
+            "hero-size": "גודל Hero",
+            "background-color": "צבע רקע",
+            "background-images": "תמונות רקע",
+            "enable-slideshow": "הפעל מצגת",
+            "slideshow-interval": "מרווח זמן מצגת",
+            "slide-animation-type": "סוג אנימציית החלקה",
+            "overlay-opacity": "שקיפות שכבת כיסוי",
+            "sizes": {
+                "medium": "בינוני",
+                "full": "מסך מלא",
+                "standard": "רגיל",
+                "large": "גדול",
+                "fullscreen": "מסך מלא"
+            },
+            "title-font-size": "גודל גופן כותרת",
+            "title-font-weight": "עובי גופן כותרת",
+            "title-color": "צבע כותרת",
+            "subtitle-font-size": "גודל גופן כותרת משנה",
+            "subtitle-font-weight": "עובי גופן כותרת משנה",
+            "subtitle-color": "צבע כותרת משנה",
+            "font-weights": {
+                "normal": "רגיל",
+                "medium": "בינוני",
+                "semibold": "חצי מודגש",
+                "bold": "מודגש",
+                "extrabold": "מודגש במיוחד"
+            },
+            "animations": {
+                "none": "ללא",
+                "typewriter-simple": "מכונת כתיבה פשוטה",
+                "typewriter-cursor": "מכונת כתיבה עם סמן",
+                "typewriter-eraser": "מכונת כתיבה עם מחיקה",
+                "rainbow": "קשת",
+                "neon": "ניאון",
+                "pastel": "פסטל",
+                "solid": "צבע אחיד",
+                "gradient": "גרדיאנט",
+                "animate-title": "אנימציית כותרת",
+                "animate-subtitle": "אנימציית כותרת משנה",
+                "background-color": "צבע רקע",
+                "background-images": "תמונות רקע",
+                "enable-slideshow": "הפעל מצגת",
+                "overlay-opacity": "שקיפות שכבת כיסוי",
+                "fade": "דעיכה",
+                "slide": "החלקה",
+                "zoom": "זום"
+            },
+            "color-variation": "וריאציית צבע",
+            "animation-type": "סוג אנימציה"
+        },
+        "buttons": {
+            "save": "שמור",
+            "test": "בדוק אנימציה",
+            "upload": "העלה תמונות",
+            "add-cta": "הוסף כפתור פעולה",
+            "save-changes": "שמור שינויים",
+            "test-animation": "בדוק אנימציה",
+            "upload-images": "העלה תמונות"
+        },
+        "placeholders": {
+            "select-hero-size": "בחר גודל",
+            "select-animation-type": "בחר סוג אנימציה",
+            "cta-text": "טקסט כפתור",
+            "cta-link": "קישור כפתור",
+            "cta-style": "סגנון"
+        },
+        "ctaStyles": {
+            "primary": "ראשי",
+            "secondary": "משני",
+            "outline": "מתאר"
+        }
+    },
+    "video-hero-settings": {
+        "title": "הגדרות וידאו Hero",
+        "tabs": {
+            "content": "תוכן",
+            "style": "סגנון",
+            "animation": "אנימציה",
+            "ctas": "כפתורי פעולה"
+        },
+        "labels": {
+            "video-url": "כתובת URL של הוידאו",
+            "title": "כותרת",
+            "subtitle": "כותרת משנה",
+            "overlay-style": "סגנון שכבת כיסוי",
+            "overlay-styles": {
+                "none": "ללא",
+                "darken": "הכהה",
+                "lighten": "הבהר",
+                "blur": "טשטוש",
+                "pattern": "דפוס"
+            },
+            "section-size": "גודל מקטע",
+            "sizes": {
+                "standard": "רגיל",
+                "medium": "בינוני",
+                "full": "מלא"
+            },
+            "overlay-opacity": "שקיפות שכבת כיסוי",
+            "text-animation": "אנימציית טקסט",
+            "animations": {
+                "fade": "דעיכה",
+                "slide": "החלקה",
+                "zoom": "זום",
+                "typewriter": "מכונת כתיבה"
+            },
+            "show-ctas": "הצג כפתורי פעולה"
+        },
+        "placeholders": {
+            "videoUrl": "הזן כתובת URL של הוידאו",
+            "title": "הזן כותרת",
+            "subtitle": "הזן כותרת משנה",
+            "ctaText": "טקסט כפתור",
+            "ctaLink": "קישור כפתור"
+        },
+        "buttons": {
+            "save": "שמור",
+            "add-cta": "הוסף כפתור פעולה"
+        }
+    },
+    "footer-settings": {
+        "title": "הגדרות כותרת תחתונה",
+        "tabs": {
+            "general": "כללי",
+            "links": "קישורים",
+            "social": "רשתות חברתיות"
+        },
+        "labels": {
+            "company-name": "שם החברה",
+            "logo": "לוגו",
+            "mode": "מצב"
+        },
+        "placeholders": {
+            "company-name": "הזן את שם החברה",
+            "link-label": "הזן תווית קישור",
+            "link-url": "הזן כתובת URL",
+            "social-url": "הזן כתובת URL של הרשת החברתית",
+            "select-mode": "בחר מצב",
+            "select-platform": "בחר פלטפורמה"
+        },
+        "modes": {
+            "light": "בהיר",
+            "dark": "כהה",
+            "colorful": "צבעוני"
+        },
+        "platforms": {
+            "facebook": "פייסבוק",
+            "twitter": "טוויטר",
+            "instagram": "אינסטגרם",
+            "linkedin": "לינקדאין"
+        },
+        "buttons": {
+            "save": "שמור",
+            "upload-logo": "העלה לוגו",
+            "add-link": "הוסף קישור",
+            "add-social-link": "הוסף רשת חברתית"
+        }
+    },
+    "qa": {
+        "settings": {
+            "title": "הגדרות מקטע שאלות ותשובות",
+            "tabs": {
+                "display": "תצוגה",
+                "animation": "אנימציה",
+                "style": "סגנון",
+                "manage": "ניהול שאלות ותשובות"
+            },
+            "view-mode": {
+                "label": "מצב תצוגה",
+                "placeholder": "בחר מצב תצוגה",
+                "accordion": "אקורדיון",
+                "grid": "רשת",
+                "list": "רשימה"
+            },
+            "font": {
+                "label": "גופן",
+                "placeholder": "בחר גופן",
+                "sans": "ללא תגיות",
+                "serif": "עם תגיות",
+                "mono": "רוחב אחיד"
+            },
+            "animation-type": {
+                "label": "סוג אנימציה",
+                "placeholder": "בחר סוג אנימציה",
+                "fade": "דעיכה",
+                "slide": "החלקה",
+                "zoom": "זום",
+                "flip": "היפוך"
+            },
+            "animation-duration": {
+                "label": "משך אנימציה"
+            },
+            "color-scheme": {
+                "label": "ערכת צבעים",
+                "placeholder": "בחר ערכת צבעים",
+                "light": "בהיר",
+                "dark": "כהה",
+                "custom": "מותאם אישית",
+                "background": {
+                    "label": "צבע רקע"
+                },
+                "text": {
+                    "label": "צבע טקסט"
+                },
+                "accent": {
+                    "label": "צבע הדגשה"
+                }
+            },
+            "question": {
+                "placeholder": "הזן שאלה"
+            },
+            "answer": {
+                "placeholder": "הזן תשובה"
+            },
+            "new-question": {
+                "placeholder": "שאלה חדשה"
+            },
+            "new-answer": {
+                "placeholder": "תשובה חדשה"
+            },
+            "add-qa": "הוסף שאלה ותשובה",
+            "save-changes": "שמור שינויים"
+        }
+    },
+    "locations-map": {
+        "buttons": {
+            "save": "שמור"
+        }
+    },
+    "landing-designer": {
+        "search-placeholder": "חיפוש דפי נחיתה...",
+        "create-new": "יצירת חדש",
+        "delete-selected": "מחק נבחרים",
+        "no-landing-pages": "לא נמצאו דפי נחיתה",
+        "create-new-to-start": "צור דף נחיתה חדש כדי להתחיל",
+        "new-landing-page-name": "דף נחיתה חדש",
+        "previous": "הקודם",
+        "next": "הבא",
+        "create-new-landing-page": "יצירת דף נחיתה חדש",
+        "create-new-landing-page-description": "הזן את הפרטים עבור דף הנחיתה החדש שלך",
+        "name": "שם",
+        "name-placeholder": "הזן שם לדף הנחיתה",
+        "industry": "תעשייה",
+        "select-industry": "בחר תעשייה",
+        "industries": {
+            "${industry}": "בחר תעשייה",
+            "logistics": "לוגיסטיקה",
+            "transportation": "תחבורה",
+            "warehousing": "אחסון",
+            "freight-forwarding": "שילוח מטענים",
+            "supply-chain": "שרשרת אספקה",
+            "order-fulfillment": "מילוי הזמנות",
+            "others": "אחר"
+        },
+        "create": "צור",
+        "creating": "...יוצר",
+        "cancel": "ביטול",
+        "search-landing-pages": "חיפוש דפי נחיתה",
+        "columns": "עמודות",
+        "pagination": {
+            "items-per-page": "{count, plural, one {פריט # לדף} other {# פריטים לדף}}",
+            "total-items": "{count, plural, one {פריט # בסך הכל} other {# פריטים בסך הכל}}"
+        }
+    }
+}

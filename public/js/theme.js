@@ -29,5 +29,5 @@
   }
 
   document.documentElement.setAttribute('data-theme', themeToSet)
-  console.log('theme.js')
+  // console.log('theme.js')
 })()

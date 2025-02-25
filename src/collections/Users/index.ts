@@ -21,6 +21,12 @@ export const Users: CollectionConfig = {
       name: 'name',
       type: 'text',
     },
+    {
+      name: 'role',
+      type: 'relationship',
+      relationTo: ['roles'],
+      hasMany: true,
+    },
   ],
   timestamps: true,
 }

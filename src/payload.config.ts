@@ -6,23 +6,13 @@ import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
 
-import { Categories } from './collections/payload/Categories'
-import { Media } from './collections/Media'
-import { Pages } from './collections/payload/Pages'
-import { Posts } from './collections/payload/Posts'
-import { Users } from './collections/Users'
 import { Footer } from './globals/Footer/config'
 import { Header } from './globals/Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
-import { Fields } from './collections/relax/Fields'
-import { Tasks } from './collections/relax/Tasks'
-import { Ratings } from './collections/relax/Ratings'
-import { Time } from './collections/relax/Time'
-import { Tags } from './collections/relax/Tags'
-import { Importance } from './collections/relax/Importance'
-import { collections } from './collections'
+
+import { collections, Users } from './collections'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)

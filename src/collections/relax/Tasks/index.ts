@@ -12,20 +12,6 @@ export const Tasks: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
   },
-  access: {
-    read: () => {
-      return true
-    },
-    delete: () => {
-      return true
-    },
-    create: () => {
-      return true
-    },
-    update: () => {
-      return true
-    },
-  },
   fields: [
     { name: 'title', type: 'text', required: true },
     { name: 'emoji', type: 'text', defaultValue: '🌟', required: true },

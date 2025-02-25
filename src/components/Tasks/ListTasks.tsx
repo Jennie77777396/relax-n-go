@@ -71,7 +71,7 @@ export default function TaskList({ fieldTitle, filter }: TaskListProps) {
       {loading ? (
         [...Array(3)].map((_, i) => <Skeleton key={i} className="h-24 w-full rounded-md" />)
       ) : tasks.length > 0 ? (
-        <div className="space-y-4">
+        <div className="space-y-1">
           {tasks.map((task) => (
             <TaskCard key={task.id} task={task} onTaskUpdate={handleTaskUpdate} />
           ))}

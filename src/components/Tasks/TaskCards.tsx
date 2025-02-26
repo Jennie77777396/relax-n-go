@@ -17,13 +17,10 @@ export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
   const [feedbackPopUp, setFeedbackPopUp] = useState(false)
   const { formattedTime } = useStopwatch(task.id, task.timer || 0, isRunning)
 
-  useEffect(() => {
-    console.log('feedback popup: ', feedbackPopUp)
-  }, [feedbackPopUp])
+  useEffect(() => {}, [feedbackPopUp])
   const handleToggle = async (checked: boolean) => {
     try {
       if (!checked) {
-        // Stopping the timer
         if (!task.startTime) return
 
         const endTime = Date.now()

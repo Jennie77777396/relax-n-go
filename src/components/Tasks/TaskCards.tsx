@@ -3,9 +3,18 @@ import { Switch } from '@/components/ui/switch'
 import { useStopwatch } from '@/hooks/useStopwatch'
 import { Tag, Task } from '@/payload-types'
 import { useEffect, useState } from 'react'
-import { updateTask } from '@/actions/tasks'
+import { updateTask } from '@/actions/tasks-rest'
 import { TagsLine } from '@/components/TagsLine'
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { FeedbackDialog } from './FeedbackDialog'
+import { MarkdownDialog } from './MarkdownDialog'
+import { EllipsisVertical } from 'lucide-react'
 
 interface TaskCardProps {
   task: Task
@@ -15,12 +24,15 @@ interface TaskCardProps {
 export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
   const [isRunning, setIsRunning] = useState(task.is_running || false)
   const [feedbackPopUp, setFeedbackPopUp] = useState(false)
+  const [isMarkdownOpen, setIsMarkdownOpen] = useState(false)
   const { formattedTime } = useStopwatch(task.id, task.timer || 0, isRunning)
 
   useEffect(() => {}, [feedbackPopUp])
   const handleToggle = async (checked: boolean) => {
+    console.log('Handle StopWatch Toggle Is Triggered!', checked)
     try {
       if (!checked) {
+        console.log('if checked is false, You should see this line')
         if (!task.startTime) return
 
         const endTime = Date.now()
@@ -28,11 +40,12 @@ export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
         const elapsed = Math.floor((endTime - startTime) / 1000)
         const newTimer = (task.timer || 0) + elapsed
 
-        const result = await updateTask(task.id.toString(), {
+        const result = await updateTask(task.id, {
           timer: newTimer,
           startTime: null,
           is_running: false,
         })
+        console.log('lets keep debugging - is updatedTask working correctly? ', result)
 
         if (result.success && result.task) {
           setIsRunning(false)
@@ -41,7 +54,7 @@ export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
         }
       } else {
         const startTime = new Date().toISOString()
-        const result = await updateTask(task.id.toString(), {
+        const result = await updateTask(task.id, {
           startTime,
           is_running: true,
         })
@@ -57,6 +70,17 @@ export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
       setIsRunning(!checked)
     }
   }
+  const handleReDoTask = async (id: number) => {
+    try {
+      const response = await updateTask(id, { status: 0 })
+      console.log('re do task update: ', response.task)
+      if (!response.success) {
+        console.error('re do task failed: ', response.error)
+      }
+    } catch (error) {
+      console.error('Error when updating a completed task: ', (error as Error).message)
+    }
+  }
 
   return (
     <>
@@ -67,14 +91,51 @@ export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
           task.fields.length > 0 &&
           typeof task.fields[0] === 'object' &&
           'color' in task.fields[0]
-            ? `bg-${task.fields[0].color}-500`
+            ? 'bg-transparent' // Make the background transparent to show the gradient
             : 'bg-white'
         }`}
+        style={{
+          background:
+            task.status === 1 &&
+            task.fields &&
+            task.fields.length > 0 &&
+            typeof task.fields[0] === 'object' &&
+            'color' in task.fields[0]
+              ? `linear-gradient(135deg, ${task.fields[0].color}, rgba(248, 200, 208, 0.5), rgba(243, 229, 245, 0.5))` // Use Tailwind color and soft colors
+              : 'white',
+        }}
       >
         <CardHeader className="p-2 space-y-0">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-base font-medium">
-              {task.status < 1 ? task.emoji : '💅🏻'} {task.title}
+            <CardTitle className="flex items-center justify-between w-full">
+              <div
+                className="text-base font-medium cursor-pointer hover:underline"
+                onClick={() => setIsMarkdownOpen(true)}
+                onMouseEnter={() => {
+                  /* Show tooltip with keywords and success rate */
+                }}
+                onMouseLeave={() => {
+                  /* Hide tooltip */
+                }}
+              >
+                {task.status < 1 ? task.emoji : '💅🏻'} {task.title}
+              </div>
+              {task.status === 1 && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <div className="ml-auto cursor-pointer">
+                      <EllipsisVertical />
+                    </div>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-40">
+                    <DropdownMenuItem onClick={() => handleReDoTask(task.id)}>
+                      Redo task now
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>Review Tomorrow</DropdownMenuItem>
+                    <DropdownMenuItem>Review followed Ebbinghouse</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
             </CardTitle>
             {task.status < 1 && (
               <div className="flex items-center justify-end gap-1">
@@ -92,7 +153,20 @@ export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
         )}
       </Card>
 
-      <FeedbackDialog isOpen={feedbackPopUp} onClose={() => setFeedbackPopUp(false)} />
+      <FeedbackDialog task={task} isOpen={feedbackPopUp} onClose={() => setFeedbackPopUp(false)} />
+      <MarkdownDialog
+        task={task}
+        isOpen={isMarkdownOpen}
+        onClose={() => setIsMarkdownOpen(false)}
+      />
     </>
   )
+}
+
+const hexToRgb = (hex: string) => {
+  const bigint = parseInt(hex.replace('#', ''), 16)
+  const r = (bigint >> 16) & 255
+  const g = (bigint >> 8) & 255
+  const b = bigint & 255
+  return `${r}, ${g}, ${b}`
 }

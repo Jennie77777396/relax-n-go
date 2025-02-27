@@ -31,7 +31,7 @@ const payload = await getPayload({ config })
 const baseURL = process.env.NEXT_SERVER_URL
 
 export async function getFields() {
-  const response = await payload.find({ collection: 'fields' })
+  const response = await payload.find({ collection: 'fields', sort: '-createdAt' })
   return response.docs
 }
 
@@ -92,12 +92,10 @@ export async function createTaskREST(
     const fieldName = data?.fields && data.fields.length > 0 ? data.fields[0] : null
     const fields = await getFieldsREST({ fieldName: fieldName as string })
     if (fields.success) {
-      console.log('fields ', fields)
       data = {
         ...data,
         fields: fields.field.length > 0 ? [fields.field[0].id] : [],
       }
-      console.log('new data: ', JSON.stringify(data))
     } else {
       console.error(fields.error)
     }

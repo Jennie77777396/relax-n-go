@@ -18,6 +18,7 @@ export const Tasks: CollectionConfig = {
 
     { name: 'importance', type: 'number', min: 0, max: 5 },
     { name: 'rating', type: 'number', min: 0, max: 5 },
+    { name: 'content', type: 'textarea' },
     { name: 'feedback', type: 'textarea' },
     { name: 'tags', type: 'relationship', relationTo: 'tags', hasMany: true },
     { name: 'fields', type: 'relationship', relationTo: 'fields', hasMany: true },
@@ -25,7 +26,8 @@ export const Tasks: CollectionConfig = {
     { name: 'startTime', type: 'date' },
     { name: 'timer', type: 'number', defaultValue: 0, required: true },
     { name: 'is_running', type: 'checkbox', defaultValue: false },
-
+    { name: 'success_attempts', type: 'number', min: 0, required: true, defaultValue: 0 },
+    { name: 'total_attempts', type: 'number', min: 0, required: true, defaultValue: 0 },
     { name: 'parent_task', type: 'relationship', relationTo: 'tasks' },
     { name: 'completed_subtasks', type: 'number', defaultValue: 0 },
     { name: 'total_subtasks', type: 'number', defaultValue: 0 },

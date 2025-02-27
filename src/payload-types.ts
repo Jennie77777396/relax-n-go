@@ -692,6 +692,7 @@ export interface Task {
   emoji: string;
   importance?: number | null;
   rating?: number | null;
+  content?: string | null;
   feedback?: string | null;
   tags?: (number | Tag)[] | null;
   fields?: (number | Field)[] | null;
@@ -699,6 +700,8 @@ export interface Task {
   startTime?: string | null;
   timer: number;
   is_running?: boolean | null;
+  success_attempts: number;
+  total_attempts: number;
   parent_task?: (number | null) | Task;
   completed_subtasks?: number | null;
   total_subtasks?: number | null;
@@ -1404,6 +1407,7 @@ export interface TasksSelect<T extends boolean = true> {
   emoji?: T;
   importance?: T;
   rating?: T;
+  content?: T;
   feedback?: T;
   tags?: T;
   fields?: T;
@@ -1411,6 +1415,8 @@ export interface TasksSelect<T extends boolean = true> {
   startTime?: T;
   timer?: T;
   is_running?: T;
+  success_attempts?: T;
+  total_attempts?: T;
   parent_task?: T;
   completed_subtasks?: T;
   total_subtasks?: T;

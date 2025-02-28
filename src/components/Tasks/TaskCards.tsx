@@ -28,11 +28,13 @@ export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
   const { formattedTime } = useStopwatch(task.id, task.timer || 0, isRunning)
 
   useEffect(() => {}, [feedbackPopUp])
-  const handleToggle = async (checked: boolean) => {
+  const handleToggle = (checked: boolean) => {
     console.log('Handle StopWatch Toggle Is Triggered!', checked)
     try {
       if (!checked) {
         console.log('if checked is false, You should see this line')
+        setIsRunning(false)
+        setFeedbackPopUp(true)
         if (!task.startTime) return
 
         const endTime = Date.now()
@@ -40,29 +42,39 @@ export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
         const elapsed = Math.floor((endTime - startTime) / 1000)
         const newTimer = (task.timer || 0) + elapsed
 
-        const result = await updateTask(task.id, {
+        updateTask(task.id, {
           timer: newTimer,
           startTime: null,
           is_running: false,
+        }).then((result) => {
+          if (result.success && result.task) {
+            onTaskUpdate?.(result.task)
+          }
+          console.log('lets keep debugging - is updatedTask working correctly? ', result)
         })
-        console.log('lets keep debugging - is updatedTask working correctly? ', result)
+        // const result = await updateTask(task.id, {
+        //   timer: newTimer,
+        //   startTime: null,
+        //   is_running: false,
+        // })
+        // console.log('lets keep debugging - is updatedTask working correctly? ', result)
 
-        if (result.success && result.task) {
-          setIsRunning(false)
-          onTaskUpdate?.(result.task)
-          setFeedbackPopUp(true)
-        }
+        // if (result.success && result.task) {
+        //   setIsRunning(false)
+        //   onTaskUpdate?.(result.task)
+        //   setFeedbackPopUp(true)
+        // }
       } else {
         const startTime = new Date().toISOString()
-        const result = await updateTask(task.id, {
+        updateTask(task.id, {
           startTime,
           is_running: true,
+        }).then((result) => {
+          if (result.success && result.task) {
+            setIsRunning(true)
+            onTaskUpdate?.(result.task)
+          }
         })
-
-        if (result.success && result.task) {
-          setIsRunning(true)
-          onTaskUpdate?.(result.task)
-        }
       }
     } catch (error) {
       console.error('Error toggling timer:', error)

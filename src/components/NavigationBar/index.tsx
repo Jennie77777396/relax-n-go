@@ -45,9 +45,9 @@ export default function NavigationBar() {
         <Link href="/home" className="text-2xl font-bold">
           Jennie's Portfolio
         </Link>
-        <Link href="/tasks" className="text-sm">
+        <Link href="/fields" className="text-sm">
           <Button variant="ghost">
-            <Folder className="h-4 w-4 mr-2" /> Tasks
+            <Folder className="h-4 w-4 mr-2" /> Fields
           </Button>
         </Link>
         <Link href="/statistics" className="text-sm">

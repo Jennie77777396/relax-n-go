@@ -11,7 +11,6 @@ import {
   Search,
   Star,
 } from 'lucide-react'
-
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -77,101 +76,25 @@ const scrollbarStyles = `
 `
 
 // Sample task data based on the new structure
-const sampleTasks = [
-  {
-    id: 'task1',
-    title: 'Complete project proposal',
-    emoji: '📝',
-    importance: 4,
-    tags: ['work', 'urgent'],
-    fields: ['project management', 'writing'],
-    status: 0,
-    startTime: '2023-11-15T09:00:00Z',
-    timer: 3600, // 1 hour in seconds
-    success_attempts: 0,
-    total_attempts: 1,
-    createdAt: '2023-11-14T14:30:00Z',
-    updatedAt: '2023-11-14T14:30:00Z',
-  },
-  {
-    id: 'task2',
-    title: 'Go for a 5km run',
-    emoji: '🏃',
-    importance: 3,
-    tags: ['health', 'personal'],
-    fields: ['fitness'],
-    status: 1,
-    startTime: '2023-11-16T06:00:00Z',
-    timer: 1800, // 30 minutes in seconds
-    success_attempts: 1,
-    total_attempts: 1,
-    createdAt: '2023-11-15T20:00:00Z',
-    updatedAt: '2023-11-16T06:35:00Z',
-  },
-  {
-    id: 'task3',
-    title: 'Learn React hooks',
-    emoji: '⚛️',
-    importance: 4,
-    tags: ['learning', 'tech'],
-    fields: ['programming', 'web development'],
-    status: 0,
-    startTime: '2023-11-17T13:00:00Z',
-    timer: 7200, // 2 hours in seconds
-    success_attempts: 0,
-    total_attempts: 0,
-    createdAt: '2023-11-15T10:15:00Z',
-    updatedAt: '2023-11-15T10:15:00Z',
-  },
-  {
-    id: 'task4',
-    title: 'Meditate',
-    emoji: '🧘',
-    importance: 2,
-    tags: ['health', 'personal'],
-    fields: ['mindfulness'],
-    status: 1,
-    startTime: '2023-11-15T07:00:00Z',
-    timer: 600, // 10 minutes in seconds
-    success_attempts: 5,
-    total_attempts: 7,
-    createdAt: '2023-11-10T18:45:00Z',
-    updatedAt: '2023-11-15T07:12:00Z',
-  },
-  {
-    id: 'task5',
-    title: 'Prepare presentation for client meeting',
-    emoji: '🖥️',
-    importance: 5,
-    tags: ['work', 'urgent', 'client'],
-    fields: ['communication', 'design'],
-    status: 0,
-    startTime: '2023-11-18T14:00:00Z',
-    timer: 5400, // 1.5 hours in seconds
-    success_attempts: 0,
-    total_attempts: 0,
-    createdAt: '2023-11-16T09:30:00Z',
-    updatedAt: '2023-11-16T09:30:00Z',
-  },
-]
 
-export default function SampleSandbox() {
+export default function DataTable({ tasks }: { tasks: Task[] }) {
+  console.log('task', tasks)
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('All')
   const [importanceFilter, setImportanceFilter] = useState('All')
-  const [taskList, setTaskList] = useState(sampleTasks)
+  const [taskList, setTaskList] = useState<Task[]>(tasks || [])
   const [taskToDelete, setTaskToDelete] = useState<Task | null>(null)
 
   // Filter tasks based on search term and filters
   const filteredTasks = taskList.filter((task) => {
     const matchesSearch =
       task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      task.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      task.id.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
       task.emoji.includes(searchTerm)
 
     const matchesStatus = statusFilter === 'All' || task.status.toString() === statusFilter
     const matchesImportance =
-      importanceFilter === 'All' || task.importance.toString() === importanceFilter
+      importanceFilter === 'All' || task.importance?.toString() === importanceFilter
 
     return matchesSearch && matchesStatus && matchesImportance
   })
@@ -194,20 +117,14 @@ export default function SampleSandbox() {
   }
 
   // Delete task function
-  const deleteTask = (taskId: string) => {
+  const deleteTask = (taskId: number) => {
     setTaskList(taskList.filter((task) => task.id !== taskId))
     setTaskToDelete(null)
   }
 
   return (
     <div className="flex flex-col h-screen">
-      <header className="border-b p-4 bg-background">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <Button className="w-full md:w-auto">
-            <Plus className="mr-2 h-4 w-4" /> Add New Task
-          </Button>
-        </div>
-      </header>
+      <header className="border-b p-4 bg-background"></header>
 
       <div className="p-4 flex-1 flex flex-col">
         <div className="flex flex-col gap-4 md:flex-row md:items-center mb-4">
@@ -292,7 +209,7 @@ export default function SampleSandbox() {
                     <TableCell>{getStatusBadge(task.status)}</TableCell>
                     <TableCell>
                       <div className="flex items-center">
-                        {Array.from({ length: task.importance }).map((_, index) => (
+                        {Array.from({ length: task.importance || 0 }).map((_, index) => (
                           <Star key={index} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                         ))}
                       </div>
@@ -300,7 +217,7 @@ export default function SampleSandbox() {
                     <TableCell>
                       <div className="flex items-center">
                         <Calendar className="mr-2 h-4 w-4 text-muted-foreground" />
-                        {new Date(task.startTime).toLocaleDateString()}
+                        {new Date(task.startTime || 0).toLocaleDateString()}
                       </div>
                     </TableCell>
                     <TableCell>
@@ -312,11 +229,14 @@ export default function SampleSandbox() {
                     <TableCell>{`${task.success_attempts}/${task.total_attempts}`}</TableCell>
                     <TableCell>
                       <div className="flex flex-wrap gap-1">
-                        {task.tags.map((tag) => (
-                          <Badge key={tag} variant="outline" className="text-xs">
-                            {tag}
-                          </Badge>
-                        ))}
+                        {task.tags?.map(
+                          (tag, index) =>
+                            typeof tag === 'string' && (
+                              <Badge key={index} variant="outline" className="text-xs">
+                                {tag}
+                              </Badge>
+                            ),
+                        )}
                       </div>
                     </TableCell>
                     <TableCell>
@@ -370,7 +290,7 @@ export default function SampleSandbox() {
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               className="bg-red-600 hover:bg-red-700"
-              onClick={() => taskToDelete?.id && deleteTask(taskToDelete.id.toString())}
+              onClick={() => taskToDelete?.id && deleteTask(taskToDelete.id)}
             >
               Delete
             </AlertDialogAction>

@@ -1,48 +1,48 @@
-"use client";
+'use client'
 
-import { Where } from 'payload';
-import { useEffect, useState } from 'react';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Separator } from '@/components/ui/separator';
-import { TaskCard } from './TaskCards';
-import { Task } from '@/payload-types';
-import { useSearchParams } from 'next/navigation';
-import { getTasks } from '@/actions/tasks-rest'; // Using this import, removed unused getTasksREST
-import { useRouter } from 'next/navigation';
+import { Where } from 'payload'
+import { useEffect, useState } from 'react'
+import { Skeleton } from '@/components/ui/skeleton'
+import { Separator } from '@/components/ui/separator'
+import { TaskCard } from './TaskCards'
+import { Task } from '@/payload-types'
+import { useSearchParams } from 'next/navigation'
+import { getTasks } from '@/actions/tasks-rest' // Using this import, removed unused getTasksREST
+import { useRouter } from 'next/navigation'
 import {
   Pagination,
   PaginationContent,
   PaginationItem,
   PaginationLink,
-} from '@/components/ui/pagination';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { CreateTaskButton } from './CreateTaskButton';
+} from '@/components/ui/pagination'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { CreateTaskButton } from './CreateTaskButton'
 
 interface TaskListProps {
-  fieldTitle: string;
-  filter?: Where | undefined | null;
+  fieldTitle: string
+  filter?: Where | undefined | null
 }
 
 const TaskList = ({ fieldTitle, filter }: TaskListProps) => {
-  const searchParams = useSearchParams();
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(1);
-  const [hasPrevPage, setHasPrevPage] = useState<boolean>(false);
-  const [hasNextPage, setHasNextPage] = useState<boolean>(false);
+  const searchParams = useSearchParams()
+  const [tasks, setTasks] = useState<Task[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [totalPages, setTotalPages] = useState<number>(1)
+  const [hasPrevPage, setHasPrevPage] = useState<boolean>(false)
+  const [hasNextPage, setHasNextPage] = useState<boolean>(false)
 
-  const router = useRouter();
+  const router = useRouter()
 
   // Extracting parameters from the URL
-  const today = searchParams.get('today') === 'true';
-  const lastThreeDays = searchParams.get('lastThreeDays') === 'true';
-  const reviewOnly = searchParams.get('reviewOnly') === 'true';
-  const hideCompleted = searchParams.get('hideCompleted') === 'true';
+  const today = searchParams.get('today') === 'true'
+  const lastThreeDays = searchParams.get('lastThreeDays') === 'true'
+  const reviewOnly = searchParams.get('reviewOnly') === 'true'
+  const hideCompleted = searchParams.get('hideCompleted') === 'true'
 
   useEffect(() => {
     async function fetchTasks() {
-      setLoading(true);
+      setLoading(true)
       const toFilter: any = {
         ...filter,
         'fields.title': { like: fieldTitle },
@@ -59,27 +59,26 @@ const TaskList = ({ fieldTitle, filter }: TaskListProps) => {
         }),
         ...(reviewOnly && { reviewOnly: true }),
         ...(hideCompleted && { hideCompleted: true }),
-      };
-      const result = await getTasks(toFilter, '-updatedAt', currentPage);
-      setTasks(result.tasks);
-      setTotalPages(result.totalPages);
-      setHasPrevPage(result.hasPrevPage);
-      setHasNextPage(result.hasNextPage);
-      setLoading(false);
+      }
+      const result = await getTasks(toFilter, '-updatedAt', currentPage)
+      setTasks(result.tasks)
+      setTotalPages(result.totalPages)
+      setHasPrevPage(result.hasPrevPage)
+      setHasNextPage(result.hasNextPage)
+      setLoading(false)
     }
-    fetchTasks();
-  }, [fieldTitle, currentPage, today, lastThreeDays, reviewOnly, hideCompleted, filter]);
+    fetchTasks()
+  }, [fieldTitle, currentPage, today, lastThreeDays, reviewOnly, hideCompleted, filter])
 
   const handleNavigationToFieldPage = (field: string) => {
-    console.log('lets navigate to the right page');
-    router.push(`/${field}`);
-  };
+    router.push(`/${field}`)
+  }
 
   const handleTaskUpdate = (updatedTask: Task) => {
     setTasks((prevTasks) =>
       prevTasks.map((task) => (task.id === updatedTask.id ? updatedTask : task)),
-    );
-  };
+    )
+  }
 
   return (
     <div className="mx-auto space-y-4">
@@ -103,17 +102,17 @@ const TaskList = ({ fieldTitle, filter }: TaskListProps) => {
         setCurrentPage={setCurrentPage}
       />
     </div>
-  );
-};
+  )
+}
 
 const TaskListHeader = ({
   fieldTitle,
   tasks,
   onNavigate, // Add prop for navigation
 }: {
-  fieldTitle: string;
-  tasks: Task[];
-  onNavigate: (field: string) => void;
+  fieldTitle: string
+  tasks: Task[]
+  onNavigate: (field: string) => void
 }) => (
   <div className="flex items-center gap-2">
     <div
@@ -129,16 +128,16 @@ const TaskListHeader = ({
     <Separator orientation="vertical" className="h-4 bg-muted-foreground/20" />
     <div className="text-sm text-muted-foreground">
       {(() => {
-        const totalSeconds = tasks.reduce((acc, task) => acc + (task.timer || 0), 0);
-        const totalMinutes = Math.floor(totalSeconds / 60);
-        const hours = Math.floor(totalMinutes / 60);
-        const minutes = totalMinutes % 60;
-        return totalMinutes ? `${hours}h ${minutes}m` : null;
+        const totalSeconds = tasks.reduce((acc, task) => acc + (task.timer || 0), 0)
+        const totalMinutes = Math.floor(totalSeconds / 60)
+        const hours = Math.floor(totalMinutes / 60)
+        const minutes = totalMinutes % 60
+        return totalMinutes ? `${hours}h ${minutes}m` : null
       })()}
     </div>
     <CreateTaskButton fields={[fieldTitle]} />
   </div>
-);
+)
 
 const TaskListSkeleton = () => (
   <>
@@ -146,21 +145,21 @@ const TaskListSkeleton = () => (
       <Skeleton key={i} className="h-24 w-full rounded-md" />
     ))}
   </>
-);
+)
 
 const TaskListContent = ({
   tasks,
   onTaskUpdate,
 }: {
-  tasks: Task[];
-  onTaskUpdate: (task: Task) => void;
+  tasks: Task[]
+  onTaskUpdate: (task: Task) => void
 }) => (
   <div className="space-y-1">
     {tasks.map((task) => (
       <TaskCard key={task.id} task={task} onTaskUpdate={onTaskUpdate} />
     ))}
   </div>
-);
+)
 
 const TaskListPagination = ({
   currentPage,
@@ -169,11 +168,11 @@ const TaskListPagination = ({
   hasNextPage,
   setCurrentPage,
 }: {
-  currentPage: number;
-  totalPages: number;
-  hasPrevPage: boolean;
-  hasNextPage: boolean;
-  setCurrentPage: (page: number) => void;
+  currentPage: number
+  totalPages: number
+  hasPrevPage: boolean
+  hasNextPage: boolean
+  setCurrentPage: (page: number) => void
 }) => (
   <Pagination className="mt-4">
     <PaginationContent className="gap-2">
@@ -208,6 +207,6 @@ const TaskListPagination = ({
       </PaginationItem>
     </PaginationContent>
   </Pagination>
-);
+)
 
-export default TaskList;
+export default TaskList

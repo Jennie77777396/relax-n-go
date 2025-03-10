@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { FeedbackDialog } from './FeedbackDialog'
 import { MarkdownDialog } from './MarkdownDialog'
+import Link from 'next/link'
 import { EllipsisVertical } from 'lucide-react'
 
 interface TaskCardProps {
@@ -50,7 +51,6 @@ export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
           if (result.success && result.task) {
             onTaskUpdate?.(result.task)
           }
-          console.log('lets keep debugging - is updatedTask working correctly? ', result)
         })
         // const result = await updateTask(task.id, {
         //   timer: newTimer,
@@ -120,18 +120,9 @@ export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
         <CardHeader className="p-2 space-y-0">
           <div className="flex items-center justify-between">
             <CardTitle className="flex items-center justify-between w-full">
-              <div
-                className="text-base font-medium cursor-pointer hover:underline"
-                onClick={() => setIsMarkdownOpen(true)}
-                onMouseEnter={() => {
-                  /* Show tooltip with keywords and success rate */
-                }}
-                onMouseLeave={() => {
-                  /* Hide tooltip */
-                }}
-              >
+              <Link href={`/fields/${task.id}`}>
                 {task.status < 1 ? task.emoji : '💅🏻'} {task.title}
-              </div>
+              </Link>
               {task.status === 1 && (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -173,12 +164,4 @@ export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
       />
     </>
   )
-}
-
-const hexToRgb = (hex: string) => {
-  const bigint = parseInt(hex.replace('#', ''), 16)
-  const r = (bigint >> 16) & 255
-  const g = (bigint >> 8) & 255
-  const b = bigint & 255
-  return `${r}, ${g}, ${b}`
 }

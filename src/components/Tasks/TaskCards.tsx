@@ -52,18 +52,6 @@ export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
             onTaskUpdate?.(result.task)
           }
         })
-        // const result = await updateTask(task.id, {
-        //   timer: newTimer,
-        //   startTime: null,
-        //   is_running: false,
-        // })
-        // console.log('lets keep debugging - is updatedTask working correctly? ', result)
-
-        // if (result.success && result.task) {
-        //   setIsRunning(false)
-        //   onTaskUpdate?.(result.task)
-        //   setFeedbackPopUp(true)
-        // }
       } else {
         const startTime = new Date().toISOString()
         updateTask(task.id, {
@@ -150,18 +138,12 @@ export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
         </CardHeader>
         {task.tags && task.tags.length > 0 && (
           <CardContent className="p-2 space-y-2">
-            {/* 🔹 Tags Section */}
             <TagsLine tags={task.tags as Tag[]} />
           </CardContent>
         )}
       </Card>
 
       <FeedbackDialog task={task} isOpen={feedbackPopUp} onClose={() => setFeedbackPopUp(false)} />
-      <MarkdownDialog
-        task={task}
-        isOpen={isMarkdownOpen}
-        onClose={() => setIsMarkdownOpen(false)}
-      />
     </>
   )
 }

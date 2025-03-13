@@ -1,7 +1,6 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Maximize2, Edit, Eye } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
@@ -80,7 +79,7 @@ export default function NextDialog({ params: paramsPromise }: { params: Promise<
   if (!task) return <div className="text-white">Loading...</div>
 
   return (
-    <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-white rounded-lg shadow-lg">
+    <div className="w-full bg-white rounded-lg shadow-lg">
       <div className="relative p-6">
         <h2 className="text-xl font-semibold">Study Card</h2>
         <div className="absolute top-4 right-4">
@@ -169,13 +168,6 @@ export default function NextDialog({ params: paramsPromise }: { params: Promise<
               </Button>
             </div>
           </div>
-        </div>
-
-        <div className="mt-6 flex justify-end space-x-2">
-          <Button onClick={handleOnClose}>Close</Button>
-          <Link href={`/tasks/${params.id}`}>
-            <Button>Expand to Full Page</Button>
-          </Link>
         </div>
       </div>
     </div>

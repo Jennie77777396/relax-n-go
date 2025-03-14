@@ -108,14 +108,14 @@ export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
         <CardHeader className="p-2 space-y-0">
           <div className="flex items-center justify-between">
             <CardTitle className="flex items-center justify-between w-full">
-              <Link href={`/fields/${task.id}`}>
+              <Link href={`/tasks/${task.id}`}>
                 {task.status < 1 ? task.emoji : '💅🏻'} {task.title}
               </Link>
               {task.status === 1 && (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <div className="ml-auto cursor-pointer">
-                      <EllipsisVertical />
+                      <EllipsisVertical />F
                     </div>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-40">

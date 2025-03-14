@@ -1,5 +1,5 @@
 'use client'
-
+import Link from 'next/link'
 import { useState } from 'react'
 import {
   ArrowUpDown,
@@ -205,7 +205,9 @@ export default function DataTable({ tasks }: { tasks: Task[] }) {
                   <TableRow key={task.id}>
                     <TableCell>{task.emoji}</TableCell>
                     <TableCell className="font-medium">{task.id}</TableCell>
-                    <TableCell>{task.title}</TableCell>
+                    <TableCell>
+                      <Link href={`/tasks/${task.id}`}>{task.title}</Link>
+                    </TableCell>
                     <TableCell>{getStatusBadge(task.status)}</TableCell>
                     <TableCell>
                       <div className="flex items-center">

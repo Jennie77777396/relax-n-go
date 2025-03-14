@@ -1,7 +1,7 @@
 'use client'
 
 import { Where } from 'payload'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Separator } from '@/components/ui/separator'
 import { TaskCard } from './TaskCards'
@@ -17,20 +17,21 @@ import {
 } from '@/components/ui/pagination'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { CreateTaskButton } from './CreateTaskButton'
+import useSWR from 'swr'
 
 interface TaskListProps {
   fieldTitle: string
   filter?: Where | undefined | null
 }
 
+const fetcher = async ([endpoint, filters, sort, page]: [string, Where, string, number]) => {
+  const result = await getTasks(filters, sort, page)
+  return result
+}
+
 const TaskList = ({ fieldTitle, filter }: TaskListProps) => {
   const searchParams = useSearchParams()
-  const [tasks, setTasks] = useState<Task[]>([])
-  const [loading, setLoading] = useState<boolean>(true)
   const [currentPage, setCurrentPage] = useState<number>(1)
-  const [totalPages, setTotalPages] = useState<number>(1)
-  const [hasPrevPage, setHasPrevPage] = useState<boolean>(false)
-  const [hasNextPage, setHasNextPage] = useState<boolean>(false)
 
   const router = useRouter()
 
@@ -40,57 +41,52 @@ const TaskList = ({ fieldTitle, filter }: TaskListProps) => {
   const reviewOnly = searchParams.get('reviewOnly') === 'true'
   const hideCompleted = searchParams.get('hideCompleted') === 'true'
 
-  useEffect(() => {
-    async function fetchTasks() {
-      setLoading(true)
-      const toFilter: any = {
-        ...filter,
-        'fields.title': { like: fieldTitle },
-        status: hideCompleted ? { less_than: 1 } : undefined,
-        updatedAt: today
-          ? { greater_than_equal: new Date().toISOString().split('T')[0] }
-          : undefined,
-        ...(lastThreeDays && {
-          updatedAt: {
-            greater_than_equal: new Date(new Date().setDate(new Date().getDate() - 3))
-              .toISOString()
-              .split('T')[0],
-          },
-        }),
-        ...(reviewOnly && { reviewOnly: true }),
-        ...(hideCompleted && { hideCompleted: true }),
-      }
-      const result = await getTasks(toFilter, '-updatedAt', currentPage)
-      setTasks(result.tasks)
-      setTotalPages(result.totalPages)
-      setHasPrevPage(result.hasPrevPage)
-      setHasNextPage(result.hasNextPage)
-      setLoading(false)
-    }
-    fetchTasks()
-  }, [fieldTitle, currentPage, today, lastThreeDays, reviewOnly, hideCompleted, filter])
+  const toFilter: Where = {
+    ...filter,
+    'fields.title': { like: fieldTitle },
+    ...(hideCompleted ? { status: { less_than: 1 } } : {}),
+    ...(today
+      ? {
+          updatedAt: { greater_than_equal: new Date().toISOString().split('T')[0] },
+        }
+      : {}),
+    ...(lastThreeDays && {
+      updatedAt: {
+        greater_than_equal: new Date(new Date().setDate(new Date().getDate() - 3))
+          .toISOString()
+          .split('T')[0],
+      },
+    }),
+    ...(reviewOnly ? { reviewOnly: { equals: true } } : {}),
+  }
+
+  const swrKey = ['/api/tasks', toFilter, '-updatedAt', currentPage]
+
+  // Use SWR
+  const { data, error, isLoading } = useSWR(swrKey, fetcher)
+  const tasks = data?.tasks || []
+  const totalPages = data?.totalPages || 1
+  const hasPrevPage = data?.hasPrevPage || false
+  const hasNextPage = data?.hasNextPage || false
 
   const handleNavigationToFieldPage = (field: string) => {
     router.push(`/${field}`)
   }
 
-  const handleTaskUpdate = (updatedTask: Task) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) => (task.id === updatedTask.id ? updatedTask : task)),
-    )
-  }
+  if (error) return <div>Error loading tasks</div>
 
   return (
     <div className="mx-auto space-y-4">
       <TaskListHeader
         fieldTitle={fieldTitle}
         tasks={tasks}
-        onNavigate={handleNavigationToFieldPage} // Pass navigation function
+        onNavigate={handleNavigationToFieldPage}
+        swrKey={swrKey}
       />
-      {loading ? (
+      {isLoading ? (
         <TaskListSkeleton />
       ) : tasks.length > 0 ? (
-        <TaskListContent tasks={tasks} onTaskUpdate={handleTaskUpdate} />
+        <TaskListContent tasks={tasks} />
       ) : (
         <p className="text-gray-500">No tasks found for {fieldTitle}.</p>
       )}
@@ -108,11 +104,13 @@ const TaskList = ({ fieldTitle, filter }: TaskListProps) => {
 const TaskListHeader = ({
   fieldTitle,
   tasks,
-  onNavigate, // Add prop for navigation
+  onNavigate,
+  swrKey,
 }: {
   fieldTitle: string
   tasks: Task[]
   onNavigate: (field: string) => void
+  swrKey: (string | number | Where)[]
 }) => (
   <div className="flex items-center gap-2">
     <div
@@ -135,7 +133,7 @@ const TaskListHeader = ({
         return totalMinutes ? `${hours}h ${minutes}m` : null
       })()}
     </div>
-    <CreateTaskButton fields={[fieldTitle]} />
+    <CreateTaskButton fields={[fieldTitle]} swrKey={swrKey} />
   </div>
 )
 
@@ -147,16 +145,10 @@ const TaskListSkeleton = () => (
   </>
 )
 
-const TaskListContent = ({
-  tasks,
-  onTaskUpdate,
-}: {
-  tasks: Task[]
-  onTaskUpdate: (task: Task) => void
-}) => (
+const TaskListContent = ({ tasks }: { tasks: Task[] }) => (
   <div className="space-y-1">
     {tasks.map((task) => (
-      <TaskCard key={task.id} task={task} onTaskUpdate={onTaskUpdate} />
+      <TaskCard key={task.id} task={task} />
     ))}
   </div>
 )

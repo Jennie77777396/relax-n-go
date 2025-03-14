@@ -25,7 +25,6 @@ interface TaskCardProps {
 export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
   const [isRunning, setIsRunning] = useState(task.is_running || false)
   const [feedbackPopUp, setFeedbackPopUp] = useState(false)
-  const [isMarkdownOpen, setIsMarkdownOpen] = useState(false)
   const { formattedTime } = useStopwatch(task.id, task.timer || 0, isRunning)
 
   useEffect(() => {}, [feedbackPopUp])
@@ -115,7 +114,7 @@ export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <div className="ml-auto cursor-pointer">
-                      <EllipsisVertical />F
+                      <EllipsisVertical />
                     </div>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-40">

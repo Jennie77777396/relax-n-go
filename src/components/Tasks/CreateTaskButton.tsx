@@ -1,16 +1,23 @@
 'use client'
 
 import { useState } from 'react'
-import { useTaskStore } from '@/stores/useTaskStore'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover'
-import { PlusCircle, Check, AlertCircle, Loader2 } from 'lucide-react'
+import { PlusCircle, Check, Loader2 } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { createTaskREST } from '@/actions/tasks'
+import { mutate } from 'swr'
+import { Where } from 'payload'
 
-export function CreateTaskButton({ fields }: { fields: string[] }) {
+export function CreateTaskButton({
+  fields,
+  swrKey,
+}: {
+  fields: string[]
+  swrKey?: (string | number | Where)[]
+}) {
   const [loading, setLoading] = useState(false)
   const [title, setTitle] = useState('')
   const [emoji, setEmoji] = useState('🌴')
@@ -42,9 +49,11 @@ export function CreateTaskButton({ fields }: { fields: string[] }) {
         setError(result.error || 'Failed to create task')
       } else {
         console.log('New task added successfully', result.task)
+        mutate(swrKey)
         // Reset fields after successful creation
+        setOpen(false)
         setTitle('')
-        setImportance(null)
+        setImportance(0)
         setEmoji('🌴')
         setTags([])
       }

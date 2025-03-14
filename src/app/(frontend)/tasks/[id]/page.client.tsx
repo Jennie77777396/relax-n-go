@@ -32,6 +32,11 @@ export function TaskEditPage({ task: initialTask }: { task: TaskType }) {
 
   // Initialize task with a default structure
   const [task, setTask] = useState<TaskType>(initialTask)
+
+  useEffect(() => {
+    console.log('task in client side: ', JSON.stringify(task, null, 2))
+  }, [])
+
   // Handle form field changes
   const handleChange = (field: keyof TaskType, value: any) => {
     setTask((prev) => ({
@@ -71,10 +76,7 @@ export function TaskEditPage({ task: initialTask }: { task: TaskType }) {
 
   // Handle tag removal
   const removeTag = (tagId: string) => {
-    setTask((prev) => ({
-      ...prev,
-      tags: prev.tags.filter((tag) => tag.id !== tagId),
-    }))
+    console.log('add remove tag logic there.')
   }
 
   // Handle success/failure recording
@@ -141,11 +143,14 @@ export function TaskEditPage({ task: initialTask }: { task: TaskType }) {
                   <TabsTrigger value="preview">Preview</TabsTrigger>
                 </TabsList>
                 <TabsContent value="edit">
-                  <MarkdownEditor value={task.content} onChange={handleContentChange} />
+                  <MarkdownEditor
+                    value={task.content || 'add your value'}
+                    onChange={handleContentChange}
+                  />
                 </TabsContent>
                 <TabsContent value="preview" className="prose dark:prose-invert max-w-none">
                   <div className="border rounded-md p-4 min-h-[200px]">
-                    <MarkdownRenderer content={task.content} />
+                    <MarkdownRenderer content={task.content || 'Add your value'} />
                   </div>
                 </TabsContent>
               </Tabs>
@@ -204,7 +209,7 @@ export function TaskEditPage({ task: initialTask }: { task: TaskType }) {
                         className="text-2xl cursor-pointer focus:outline-none"
                         onClick={() => handleChange('importance', star)}
                       >
-                        {star <= task.importance ? '⭐' : '☆'}
+                        {star <= (task?.importance ?? 0) ? '⭐' : '☆'}
                       </button>
                     ))}
                   </div>
@@ -295,7 +300,7 @@ export function TaskEditPage({ task: initialTask }: { task: TaskType }) {
                 <div>
                   <Label htmlFor="parent_task">Parent Task</Label>
                   <div className="flex items-center space-x-2 mt-1">
-                    <Input id="parent_task" value={task.parent_task} readOnly className="flex-1" />
+                    {/* <Input id="parent_task" value={task.parent_task} readOnly className="flex-1" /> */}
                     <Button variant="outline" size="sm">
                       Change
                     </Button>

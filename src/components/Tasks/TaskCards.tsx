@@ -1,10 +1,9 @@
+// components/Tasks/TaskCard.tsx
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Switch } from '@/components/ui/switch'
 import { Tag, Task } from '@/payload-types'
 import { useEffect, useState } from 'react'
 import { updateTask } from '@/actions/tasks-rest'
 import { TagsLine } from '@/components/TagsLine'
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,6 +24,7 @@ export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
   const [isCompleted, setIsCompleted] = useState(false)
 
   useEffect(() => {}, [feedbackPopUp])
+
   const handleReDoTask = async (id: number) => {
     try {
       const response = await updateTask(id, { status: 0 })
@@ -40,15 +40,19 @@ export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
   return (
     <>
       <Card
-        className={`p-1 rounded-lg shadow-sm ${
-          task.status === 1 &&
-          task.fields &&
-          task.fields.length > 0 &&
-          typeof task.fields[0] === 'object' &&
-          'color' in task.fields[0]
-            ? 'bg-transparent' // Make the background transparent to show the gradient
-            : 'bg-white'
-        }`}
+        className={`
+          rounded-lg shadow-sm transition-all
+          w-full sm:w-[90%] md:w-[70%] lg:w-[400px] mx-auto
+          ${
+            task.status === 1 &&
+            task.fields &&
+            task.fields.length > 0 &&
+            typeof task.fields[0] === 'object' &&
+            'color' in task.fields[0]
+              ? 'bg-transparent'
+              : 'bg-white'
+          }
+        `}
         style={{
           background:
             task.status === 1 &&
@@ -56,21 +60,21 @@ export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
             task.fields.length > 0 &&
             typeof task.fields[0] === 'object' &&
             'color' in task.fields[0]
-              ? `linear-gradient(135deg, ${task.fields[0].color}, rgba(248, 200, 208, 0.5), rgba(243, 229, 245, 0.5))` // Use Tailwind color and soft colors
+              ? `linear-gradient(135deg, ${task.fields[0].color}, rgba(248, 200, 208, 0.5), rgba(243, 229, 245, 0.5))`
               : 'white',
         }}
       >
-        <CardHeader className="p-2 space-y-0">
-          <div className="flex items-center justify-between">
-            <CardTitle className="flex items-center justify-between w-full">
-              <Link href={`/tasks/${task.id}`}>
+        <CardHeader className="p-2 sm:p-3 md:p-4 space-y-0">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <CardTitle className="text-base sm:text-lg font-medium flex items-center justify-between w-full">
+              <Link href={`/tasks/${task.id}`} className="truncate">
                 {task.status < 1 ? task.emoji : '💅🏻'} {task.title}
               </Link>
               {task.status === 1 && (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <div className="ml-auto cursor-pointer">
-                      <EllipsisVertical />
+                    <div className="ml-2 cursor-pointer p-1 hover:bg-gray-100 rounded">
+                      <EllipsisVertical className="w-5 h-5" />
                     </div>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-40">
@@ -84,12 +88,12 @@ export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
               )}
             </CardTitle>
             {task.status < 1 && (
-              <div className="flex items-center justify-end gap-1">Need some new Design</div>
+              <div className="text-sm text-gray-600 text-right">Need some new design</div>
             )}
           </div>
         </CardHeader>
         {task.tags && task.tags.length > 0 && (
-          <CardContent className="p-2 space-y-2">
+          <CardContent className="p-2 sm:p-3 md:p-4 space-y-2">
             <TagsLine tags={task.tags as Tag[]} />
           </CardContent>
         )}

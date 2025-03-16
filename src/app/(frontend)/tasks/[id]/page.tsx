@@ -2,7 +2,7 @@ import { Task as TaskType } from '@/payload-types'
 import { getTaskById } from '@/actions/tasks'
 import { TaskEditPage } from './page.client'
 import { getTaskTimeLogs } from '@/actions/task-time-log-rest'
-import { Stopwatch } from '../../task/[id]/stopwatch'
+import { Stopwatch } from '../../../../components/Stopwatch/stopwatch'
 
 export default async function TaskPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params

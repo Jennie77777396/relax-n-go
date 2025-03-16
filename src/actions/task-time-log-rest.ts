@@ -153,66 +153,86 @@ export async function upsertTaskTimeLog(data: Partial<TaskTimeLog>): Promise<{
   taskTimeLog?: TaskTimeLog
   error?: string
 }> {
+  console.log(`[upsertTaskTimeLog] Starting - Input: ${JSON.stringify(data)}`)
+
   try {
-    const taskId = data.task
+    const taskId = typeof data.task === 'number' ? data.task : Number(data.task)
     const date = data.date ? new Date(data.date).toISOString().split('T')[0] : null
     const seconds = data.seconds || 0
+    console.log(
+      `[upsertTaskTimeLog] Parsed - taskId: ${taskId}, date: ${date}, seconds: ${seconds}`,
+    )
 
     if (!taskId || !date) {
+      console.error(
+        `[upsertTaskTimeLog] Missing required fields - taskId: ${taskId}, date: ${date}`,
+      )
       throw new Error('task and date are required for upsert')
     }
 
-    // Check if a log exists for this task and date
+    // Check existing logs
+    console.log(`[upsertTaskTimeLog] Checking existing logs for task ${taskId} on ${date}`)
     const existingLogs = await getTaskTimeLogs({
       task: { equals: taskId },
       date: { equals: date },
     })
+    console.log(`[upsertTaskTimeLog] Found ${existingLogs.taskTimeLogs.length} existing logs`)
 
-    if (existingLogs.taskTimeLogs.length > 0 && existingLogs?.taskTimeLogs[0]?.id) {
-      // Update existing log
+    let response
+    if (existingLogs.taskTimeLogs.length > 0 && existingLogs.taskTimeLogs[0]?.id) {
       const logId = existingLogs.taskTimeLogs[0].id
       const existingSeconds = existingLogs.taskTimeLogs[0].seconds || 0
-      const updatedData = {
-        seconds: existingSeconds + seconds,
-      }
+      const updatedData = { seconds: existingSeconds + seconds }
+      console.log(
+        `[upsertTaskTimeLog] Updating log ${logId} with data: ${JSON.stringify(updatedData)}`,
+      )
 
       const req = await fetch(`${url}/api/taskTimeLogs/${logId}`, {
         method: 'PATCH',
         credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedData),
       })
-
-      if (!req.ok) {
-        throw new Error(`HTTP error! status: ${req.status}`)
-      }
-
-      const response = await req.json()
-      console.log('upsert update response: ', response)
-      return { success: true, taskTimeLog: response.doc }
+      response = await req.json()
+      if (!req.ok) throw new Error(`PATCH failed: ${req.status}`)
+      console.log(`[upsertTaskTimeLog] Update response: ${JSON.stringify(response)}`)
     } else {
-      // Create new log
+      console.log(
+        `[upsertTaskTimeLog] Creating new log with data: ${JSON.stringify({ task: taskId, date, seconds })}`,
+      )
       const req = await fetch(`${url}/api/taskTimeLogs`, {
         method: 'POST',
         credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ task: taskId, date, seconds }),
       })
-
-      if (!req.ok) {
-        throw new Error(`HTTP error! status: ${req.status}`)
-      }
-
-      const response = await req.json()
-      console.log('upsert create response: ', response)
-      return { success: true, taskTimeLog: response.doc }
+      response = await req.json()
+      if (!req.ok) throw new Error(`POST failed: ${req.status}`)
+      console.log(`[upsertTaskTimeLog] Create response: ${JSON.stringify(response)}`)
     }
-  } catch (err) {
-    console.error('Upsert error:', err)
-    return { success: false, error: (err as Error).message }
+
+    // Update total_spent in tasks collection
+    console.log(`[upsertTaskTimeLog] Fetching all logs for task ${taskId} to update total_spent`)
+    const allLogs = await getTaskTimeLogs({ task: { equals: taskId } })
+    const totalSeconds = allLogs.taskTimeLogs.reduce((sum, log) => sum + (log.seconds || 0), 0)
+    console.log(`[upsertTaskTimeLog] Calculated totalSeconds: ${totalSeconds}`)
+
+    console.log(`[upsertTaskTimeLog] Updating task ${taskId} with total_spent: ${totalSeconds}`)
+    const taskUpdateReq = await fetch(`${url}/api/tasks/${taskId}`, {
+      method: 'PATCH',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ total_spent: totalSeconds }),
+    })
+    const taskUpdateResponse = await taskUpdateReq.json()
+    if (!taskUpdateReq.ok) throw new Error(`Task update failed: ${taskUpdateReq.status}`)
+    console.log(`[upsertTaskTimeLog] Task update response: ${JSON.stringify(taskUpdateResponse)}`)
+
+    return { success: true, taskTimeLog: response.doc }
+  } catch (err: unknown) {
+    console.error(
+      `[upsertTaskTimeLog] Error: ${err instanceof Error ? err.message : 'Unknown error'}`,
+    )
+    return { success: false, error: err instanceof Error ? err.message : 'Unknown error' }
   }
 }

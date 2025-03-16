@@ -15,58 +15,89 @@ export function useStopwatch(taskId: string, initialSeconds: number = 0) {
     isRunning: true,
   })
 
+  console.log(`[useStopwatch] Initialized - taskId: ${taskId}, initialSeconds: ${initialSeconds}`)
+
   const formatTime = useCallback((totalSeconds: number): string => {
     const hours = Math.floor(totalSeconds / 3600)
     const minutes = Math.floor((totalSeconds % 3600) / 60)
     const secs = totalSeconds % 60
-    return `${hours.toString().padStart(2, '0')}:${minutes
+    const formatted = `${hours.toString().padStart(2, '0')}:${minutes
       .toString()
       .padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
+    console.log(`[useStopwatch] Formatted time - ${totalSeconds} seconds: ${formatted}`)
+    return formatted
   }, [])
 
-  // Increment seconds every second while running
   useEffect(() => {
-    console.log(`Tick - Task ${taskId}, isRunning: ${state.isRunning}, seconds: ${state.seconds}`)
+    console.log(
+      `[useStopwatch] Tick - Task: ${taskId}, isRunning: ${state.isRunning}, seconds: ${state.seconds}`,
+    )
     let interval: NodeJS.Timeout | null = null
     if (state.isRunning) {
       interval = setInterval(() => {
-        setState((prev) => ({ ...prev, seconds: prev.seconds + 1 }))
+        setState((prev) => {
+          const newSeconds = prev.seconds + 1
+          console.log(`[useStopwatch] Incrementing to: ${newSeconds}`)
+          return { ...prev, seconds: newSeconds }
+        })
       }, 1000)
     }
     return () => {
-      if (interval) clearInterval(interval)
+      if (interval) {
+        console.log(`[useStopwatch] Clearing interval for task ${taskId}`)
+        clearInterval(interval)
+      }
     }
   }, [state.isRunning, taskId])
 
-  // Manual save function with .then()
   const save = useCallback(async () => {
-    console.log(
-      `in saving function of useStopWatchHook. Task Id: ${taskId}, state.seconds ${state.seconds}`,
-    )
+    console.log(`[useStopwatch] Entering save - Task Id: ${taskId}, seconds: ${state.seconds}`)
+
     if (!taskId || state.seconds <= 0) {
-      console.log('Save skipped - No taskId or seconds to save')
+      console.log(`[useStopwatch] Save skipped - taskId: ${taskId}, seconds: ${state.seconds}`)
       return { success: false, error: 'No taskId or seconds to save' }
     }
 
     const today = new Date().toISOString().split('T')[0]
-    console.log(`Saving ${state.seconds} seconds for task ${taskId} on ${today}`)
+    console.log(`[useStopwatch] Saving ${state.seconds} seconds for task ${taskId} on ${today}`)
 
-    return upsertTaskTimeLog({
-      task: Number(taskId), // Convert to number as in your original
-      date: today,
-      seconds: state.seconds,
-    }).then((result) => {
-      console.log('Save result:', JSON.stringify(result))
+    try {
+      console.log(
+        `[useStopwatch] Calling upsertTaskTimeLog with task: ${Number(taskId)}, date: ${today}, seconds: ${state.seconds}`,
+      )
+      const result = await upsertTaskTimeLog({
+        task: Number(taskId),
+        date: today,
+        seconds: state.seconds,
+      })
+      console.log(`[useStopwatch] Save result: ${JSON.stringify(result)}`)
       if (result.success) {
-        setState((prev) => ({ ...prev, seconds: 0 })) // Reset seconds after save
+        console.log(`[useStopwatch] Save successful, resetting seconds to 0`)
+        setState((prev) => ({ ...prev, seconds: 0 }))
       }
       return result
-    })
-  }, [taskId])
+    } catch (error: unknown) {
+      console.error(
+        `[useStopwatch] Save error: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      )
+      throw error
+    }
+  }, [taskId, state.seconds])
 
-  const start = () => setState((prev) => ({ ...prev, isRunning: true }))
-  const pause = () => setState((prev) => ({ ...prev, isRunning: false }))
-  const reset = () => setState({ seconds: 0, isRunning: false })
+  const start = () =>
+    setState((prev) => {
+      console.log(`[useStopwatch] Starting - task ${taskId}`)
+      return { ...prev, isRunning: true }
+    })
+  const pause = () =>
+    setState((prev) => {
+      console.log(`[useStopwatch] Pausing - task ${taskId}`)
+      return { ...prev, isRunning: false }
+    })
+  const reset = () => {
+    console.log(`[useStopwatch] Resetting - task ${taskId}`)
+    setState({ seconds: 0, isRunning: false })
+  }
 
   return {
     time: formatTime(state.seconds),

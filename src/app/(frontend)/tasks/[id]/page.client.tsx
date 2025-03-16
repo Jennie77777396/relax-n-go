@@ -133,10 +133,7 @@ export function TaskEditPage({ task: initialTask }: { task: TaskType }) {
                   <TabsTrigger value="preview">Preview</TabsTrigger>
                 </TabsList>
                 <TabsContent value="edit">
-                  <MarkdownEditor
-                    value={task.content || 'add your value'}
-                    onChange={handleContentChange}
-                  />
+                  <MarkdownEditor value={task.content || ''} onChange={handleContentChange} />
                 </TabsContent>
                 <TabsContent value="preview" className="prose dark:prose-invert max-w-none">
                   <div className="rounded-md p-2 min-h-[200px]">

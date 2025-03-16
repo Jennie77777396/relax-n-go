@@ -126,7 +126,7 @@ const TaskListHeader = ({
     <Separator orientation="vertical" className="h-4 bg-muted-foreground/20" />
     <div className="text-sm text-muted-foreground">
       {(() => {
-        const totalSeconds = tasks.reduce((acc, task) => acc + (task.timer || 0), 0)
+        const totalSeconds = tasks.reduce((acc, task) => acc + (task.total_spent || 0), 0)
         const totalMinutes = Math.floor(totalSeconds / 60)
         const hours = Math.floor(totalMinutes / 60)
         const minutes = totalMinutes % 60

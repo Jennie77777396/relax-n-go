@@ -219,13 +219,13 @@ export default function DataTable({ tasks }: { tasks: Task[] }) {
                     <TableCell>
                       <div className="flex items-center">
                         <Calendar className="mr-2 h-4 w-4 text-muted-foreground" />
-                        {new Date(task.startTime || 0).toLocaleDateString()}
+                        {new Date(task.start_time || 0).toLocaleDateString()}
                       </div>
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center">
                         <Clock className="mr-2 h-4 w-4 text-muted-foreground" />
-                        {formatTimer(task.timer)}
+                        {formatTimer(task.total_spent)}
                       </div>
                     </TableCell>
                     <TableCell>{`${task.success_attempts}/${task.total_attempts}`}</TableCell>

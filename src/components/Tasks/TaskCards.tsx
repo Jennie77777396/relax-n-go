@@ -1,6 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Switch } from '@/components/ui/switch'
-import { useStopwatch } from '@/hooks/useStopwatch'
 import { Tag, Task } from '@/payload-types'
 import { useEffect, useState } from 'react'
 import { updateTask } from '@/actions/tasks-rest'
@@ -13,7 +12,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { FeedbackDialog } from './FeedbackDialog'
-import { MarkdownDialog } from './MarkdownDialog'
 import Link from 'next/link'
 import { EllipsisVertical } from 'lucide-react'
 
@@ -23,52 +21,10 @@ interface TaskCardProps {
 }
 
 export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
-  const [isRunning, setIsRunning] = useState(task.is_running || false)
   const [feedbackPopUp, setFeedbackPopUp] = useState(false)
-  const { formattedTime } = useStopwatch(task.id, task.timer || 0, isRunning)
+  const [isCompleted, setIsCompleted] = useState(false)
 
   useEffect(() => {}, [feedbackPopUp])
-  const handleToggle = (checked: boolean) => {
-    console.log('Handle StopWatch Toggle Is Triggered!', checked)
-    try {
-      if (!checked) {
-        console.log('if checked is false, You should see this line')
-        setIsRunning(false)
-        setFeedbackPopUp(true)
-        if (!task.startTime) return
-
-        const endTime = Date.now()
-        const startTime = new Date(task.startTime).getTime()
-        const elapsed = Math.floor((endTime - startTime) / 1000)
-        const newTimer = (task.timer || 0) + elapsed
-
-        updateTask(task.id, {
-          timer: newTimer,
-          startTime: null,
-          is_running: false,
-        }).then((result) => {
-          if (result.success && result.task) {
-            onTaskUpdate?.(result.task)
-          }
-        })
-      } else {
-        const startTime = new Date().toISOString()
-        updateTask(task.id, {
-          startTime,
-          is_running: true,
-        }).then((result) => {
-          if (result.success && result.task) {
-            setIsRunning(true)
-            onTaskUpdate?.(result.task)
-          }
-        })
-      }
-    } catch (error) {
-      console.error('Error toggling timer:', error)
-      // Revert UI state if there's an error
-      setIsRunning(!checked)
-    }
-  }
   const handleReDoTask = async (id: number) => {
     try {
       const response = await updateTask(id, { status: 0 })
@@ -128,10 +84,7 @@ export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
               )}
             </CardTitle>
             {task.status < 1 && (
-              <div className="flex items-center justify-end gap-1">
-                <p className="font-mono text-sm">{formattedTime}</p>
-                <Switch checked={isRunning} onCheckedChange={handleToggle} />
-              </div>
+              <div className="flex items-center justify-end gap-1">Need some new Design</div>
             )}
           </div>
         </CardHeader>

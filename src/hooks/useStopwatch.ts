@@ -1,65 +1,80 @@
-import { useState, useEffect } from 'react'
+// hooks/useStopwatch.ts
+'use client'
 
-export const useStopwatch = (
-  taskId: number,
-  initialTime: number = 0,
-  isRunning: boolean = false,
-) => {
-  const [elapsedTime, setElapsedTime] = useState(initialTime)
-  const storageKey = `task_${taskId}_time`
-  const startTimeKey = `task_${taskId}_start`
+import { useState, useEffect, useCallback } from 'react'
+import { upsertTaskTimeLog } from '@/actions/task-time-log-rest'
 
+interface StopwatchState {
+  seconds: number
+  isRunning: boolean
+}
+
+export function useStopwatch(taskId: string, initialSeconds: number = 0) {
+  const [state, setState] = useState<StopwatchState>({
+    seconds: initialSeconds,
+    isRunning: true,
+  })
+
+  const formatTime = useCallback((totalSeconds: number): string => {
+    const hours = Math.floor(totalSeconds / 3600)
+    const minutes = Math.floor((totalSeconds % 3600) / 60)
+    const secs = totalSeconds % 60
+    return `${hours.toString().padStart(2, '0')}:${minutes
+      .toString()
+      .padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
+  }, [])
+
+  // Increment seconds every second while running
   useEffect(() => {
-    let worker: Worker
-
-    if (isRunning) {
-      // Store start time in localStorage
-      const startTime = localStorage.getItem(startTimeKey) || Date.now().toString()
-      localStorage.setItem(startTimeKey, startTime)
-
-      // Create Worker
-      worker = new Worker(new URL('../lib/stopwatch/timerWorker.ts', import.meta.url))
-
-      worker.onmessage = () => {
-        const start = parseInt(localStorage.getItem(startTimeKey) || '0')
-        const currentElapsed = Math.floor((Date.now() - start) / 1000) + initialTime
-        setElapsedTime(currentElapsed)
-        localStorage.setItem(storageKey, currentElapsed.toString())
-      }
-
-      worker.postMessage({ type: 'START' })
-
-      // Sync with localStorage on visibility change
-      const handleVisibilityChange = () => {
-        if (document.visibilityState === 'visible') {
-          const start = parseInt(localStorage.getItem(startTimeKey) || '0')
-          const stored = Math.floor((Date.now() - start) / 1000) + initialTime
-          setElapsedTime(stored)
-        }
-      }
-
-      document.addEventListener('visibilitychange', handleVisibilityChange)
-
-      return () => {
-        worker.postMessage({ type: 'STOP' })
-        worker.terminate()
-        document.removeEventListener('visibilitychange', handleVisibilityChange)
-      }
-    } else {
-      // Clean up localStorage when stopped
-      localStorage.removeItem(startTimeKey)
+    console.log(`Tick - Task ${taskId}, isRunning: ${state.isRunning}, seconds: ${state.seconds}`)
+    let interval: NodeJS.Timeout | null = null
+    if (state.isRunning) {
+      interval = setInterval(() => {
+        setState((prev) => ({ ...prev, seconds: prev.seconds + 1 }))
+      }, 1000)
     }
-  }, [isRunning, taskId, initialTime, startTimeKey, storageKey])
+    return () => {
+      if (interval) clearInterval(interval)
+    }
+  }, [state.isRunning, taskId])
 
-  const formatTime = (seconds: number) => {
-    const hrs = Math.floor(seconds / 3600)
-    const mins = Math.floor((seconds % 3600) / 60)
-    const secs = seconds % 60
-    return `${hrs > 0 ? `${hrs}:` : ''}${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
-  }
+  // Manual save function with .then()
+  const save = useCallback(async () => {
+    console.log(
+      `in saving function of useStopWatchHook. Task Id: ${taskId}, state.seconds ${state.seconds}`,
+    )
+    if (!taskId || state.seconds <= 0) {
+      console.log('Save skipped - No taskId or seconds to save')
+      return { success: false, error: 'No taskId or seconds to save' }
+    }
+
+    const today = new Date().toISOString().split('T')[0]
+    console.log(`Saving ${state.seconds} seconds for task ${taskId} on ${today}`)
+
+    return upsertTaskTimeLog({
+      task: Number(taskId), // Convert to number as in your original
+      date: today,
+      seconds: state.seconds,
+    }).then((result) => {
+      console.log('Save result:', JSON.stringify(result))
+      if (result.success) {
+        setState((prev) => ({ ...prev, seconds: 0 })) // Reset seconds after save
+      }
+      return result
+    })
+  }, [taskId])
+
+  const start = () => setState((prev) => ({ ...prev, isRunning: true }))
+  const pause = () => setState((prev) => ({ ...prev, isRunning: false }))
+  const reset = () => setState({ seconds: 0, isRunning: false })
 
   return {
-    elapsedTime,
-    formattedTime: formatTime(elapsedTime),
+    time: formatTime(state.seconds),
+    seconds: state.seconds,
+    isRunning: state.isRunning,
+    start,
+    pause,
+    reset,
+    save,
   }
 }

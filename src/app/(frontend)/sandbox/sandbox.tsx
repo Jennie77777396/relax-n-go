@@ -86,8 +86,8 @@ const sampleTasks = [
     tags: ['work', 'urgent'],
     fields: ['project management', 'writing'],
     status: 0,
-    startTime: '2023-11-15T09:00:00Z',
-    timer: 3600, // 1 hour in seconds
+    start_time: '2023-11-15T09:00:00Z',
+    total_spent: 3600, // 1 hour in seconds
     success_attempts: 0,
     total_attempts: 1,
     createdAt: '2023-11-14T14:30:00Z',
@@ -101,8 +101,8 @@ const sampleTasks = [
     tags: ['health', 'personal'],
     fields: ['fitness'],
     status: 1,
-    startTime: '2023-11-16T06:00:00Z',
-    timer: 1800, // 30 minutes in seconds
+    start_time: '2023-11-16T06:00:00Z',
+    total_spent: 1800, // 30 minutes in seconds
     success_attempts: 1,
     total_attempts: 1,
     createdAt: '2023-11-15T20:00:00Z',
@@ -116,8 +116,8 @@ const sampleTasks = [
     tags: ['learning', 'tech'],
     fields: ['programming', 'web development'],
     status: 0,
-    startTime: '2023-11-17T13:00:00Z',
-    timer: 7200, // 2 hours in seconds
+    start_time: '2023-11-17T13:00:00Z',
+    total_spent: 7200, // 2 hours in seconds
     success_attempts: 0,
     total_attempts: 0,
     createdAt: '2023-11-15T10:15:00Z',
@@ -131,8 +131,8 @@ const sampleTasks = [
     tags: ['health', 'personal'],
     fields: ['mindfulness'],
     status: 1,
-    startTime: '2023-11-15T07:00:00Z',
-    timer: 600, // 10 minutes in seconds
+    start_time: '2023-11-15T07:00:00Z',
+    total_spent: 600, // 10 minutes in seconds
     success_attempts: 5,
     total_attempts: 7,
     createdAt: '2023-11-10T18:45:00Z',
@@ -146,8 +146,8 @@ const sampleTasks = [
     tags: ['work', 'urgent', 'client'],
     fields: ['communication', 'design'],
     status: 0,
-    startTime: '2023-11-18T14:00:00Z',
-    timer: 5400, // 1.5 hours in seconds
+    start_time: '2023-11-18T14:00:00Z',
+    total_spent: 5400, // 1.5 hours in seconds
     success_attempts: 0,
     total_attempts: 0,
     createdAt: '2023-11-16T09:30:00Z',
@@ -185,7 +185,7 @@ export default function SampleSandbox() {
     )
   }
 
-  // Format timer to display as HH:MM:SS
+  // Format total_spent to display as HH:MM:SS
   const formatTimer = (seconds: number) => {
     const hours = Math.floor(seconds / 3600)
     const minutes = Math.floor((seconds % 3600) / 60)
@@ -300,13 +300,13 @@ export default function SampleSandbox() {
                     <TableCell>
                       <div className="flex items-center">
                         <Calendar className="mr-2 h-4 w-4 text-muted-foreground" />
-                        {new Date(task.startTime).toLocaleDateString()}
+                        {new Date(task.start_time).toLocaleDateString()}
                       </div>
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center">
                         <Clock className="mr-2 h-4 w-4 text-muted-foreground" />
-                        {formatTimer(task.timer)}
+                        {formatTimer(task.total_spent)}
                       </div>
                     </TableCell>
                     <TableCell>{`${task.success_attempts}/${task.total_attempts}`}</TableCell>

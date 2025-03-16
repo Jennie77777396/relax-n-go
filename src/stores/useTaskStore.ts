@@ -73,23 +73,23 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
 
     try {
       if (!isRunning) {
-        // Start timer - single state update
-        const startTime = new Date().toISOString()
+        // Start total_spent - single state update
+        const start_time = new Date().toISOString()
         set((state) => ({
           tasks: state.tasks.map((t) =>
-            t.id === taskId ? { ...t, startTime, is_running: true } : t,
+            t.id === taskId ? { ...t, start_time, is_running: true } : t,
           ),
         }))
 
         await updateTask(taskId.toString(), {
-          startTime,
+          start_time,
           is_running: true,
         })
       } else {
-        // Stop timer - calculate locally
+        // Stop total_spent - calculate locally
         const endTime = Date.now()
-        const elapsed = Math.floor((endTime - new Date(task.startTime!).getTime()) / 1000)
-        const newTimer = task.timer + elapsed
+        const elapsed = Math.floor((endTime - new Date(task.start_time!).getTime()) / 1000)
+        const newTimer = task.total_spent + elapsed
 
         // Single state update
         set((state) => ({
@@ -97,8 +97,8 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
             t.id === taskId
               ? {
                   ...t,
-                  timer: newTimer,
-                  startTime: null,
+                  total_spent: newTimer,
+                  start_time: null,
                   is_running: false,
                 }
               : t,
@@ -106,8 +106,8 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
         }))
 
         await updateTask(taskId.toString(), {
-          timer: newTimer,
-          startTime: null,
+          total_spent: newTimer,
+          start_time: null,
           is_running: false,
         })
       }

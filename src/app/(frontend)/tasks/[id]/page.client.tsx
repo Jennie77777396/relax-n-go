@@ -11,19 +11,11 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Slider } from '@/components/ui/slider'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Badge } from '@/components/ui/badge'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-
 import { MarkdownEditor } from '@/components/Markdown/MarkdownEditor'
 import { MarkdownRenderer } from '@/components/Markdown/MarkdownRenderer'
 
 import { Task as TaskType } from '@/payload-types'
+import { updateTask } from '@/actions/tasks-rest'
 
 export function TaskEditPage({ task: initialTask }: { task: TaskType }) {
   const router = useRouter()
@@ -57,20 +49,18 @@ export function TaskEditPage({ task: initialTask }: { task: TaskType }) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsSubmitting(true)
-
     try {
-      // Here you would typically send the updated task to your API
       console.log('Submitting updated task:', task)
-
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      // Navigate back or show success
-      router.push('/tasks')
+      const response = await updateTask(task.id, task)
+      if (!response.success) {
+        return console.error('Not Working!!! ', response.error)
+      }
+      console.log('data is just updated, ', JSON.stringify(response, null, 2))
     } catch (error) {
       console.error('Error updating task:', error)
     } finally {
       setIsSubmitting(false)
+      console.log('data updated successfully! You should send a dialog for this moment!')
     }
   }
 

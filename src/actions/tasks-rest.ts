@@ -53,7 +53,6 @@ export async function getTasks(
   })
 
   const wholeUrl = `${url}/api/tasks${searchParams}`
-  console.log('Whole URL ', wholeUrl)
   const response = await fetch(wholeUrl, {
     method: 'GET',
     credentials: 'include',

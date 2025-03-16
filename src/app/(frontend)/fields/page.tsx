@@ -17,7 +17,7 @@ export default async function TasksPage() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {fields.map((field) => (
-            <div key={field.title} className="rounded-xl border p-2">
+            <div key={field.title} className="p-1">
               <TaskList fieldTitle={field.title} />
             </div>
           ))}

@@ -139,8 +139,8 @@ export function TaskEditPage({ task: initialTask }: { task: TaskType }) {
                   />
                 </TabsContent>
                 <TabsContent value="preview" className="prose dark:prose-invert max-w-none">
-                  <div className="border rounded-md p-4 min-h-[200px]">
-                    <MarkdownRenderer content={task.content || 'Add your value'} />
+                  <div className="rounded-md p-2 min-h-[200px]">
+                    <MarkdownRenderer content={task.content || ''} />
                   </div>
                 </TabsContent>
               </Tabs>

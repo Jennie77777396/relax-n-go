@@ -73,7 +73,7 @@ const TaskList = ({ fieldTitle, filter }: TaskListProps) => {
   if (error) return <div>Error loading tasks</div>
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       <TaskListHeader
         fieldTitle={fieldTitle}
         tasks={tasks}

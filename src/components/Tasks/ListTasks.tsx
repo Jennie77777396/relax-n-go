@@ -1,3 +1,4 @@
+// components/Tasks/ListTasks.tsx
 'use client'
 
 import { Where } from 'payload'
@@ -7,7 +8,7 @@ import { Separator } from '@/components/ui/separator'
 import { TaskCard } from './TaskCards'
 import { Task } from '@/payload-types'
 import { useSearchParams } from 'next/navigation'
-import { getTasks } from '@/actions/tasks-rest' // Using this import, removed unused getTasksREST
+import { getTasks } from '@/actions/tasks-rest'
 import { useRouter } from 'next/navigation'
 import {
   Pagination,
@@ -32,10 +33,8 @@ const fetcher = async ([endpoint, filters, sort, page]: [string, Where, string, 
 const TaskList = ({ fieldTitle, filter }: TaskListProps) => {
   const searchParams = useSearchParams()
   const [currentPage, setCurrentPage] = useState<number>(1)
-
   const router = useRouter()
 
-  // Extracting parameters from the URL
   const today = searchParams.get('today') === 'true'
   const lastThreeDays = searchParams.get('lastThreeDays') === 'true'
   const reviewOnly = searchParams.get('reviewOnly') === 'true'
@@ -61,8 +60,6 @@ const TaskList = ({ fieldTitle, filter }: TaskListProps) => {
   }
 
   const swrKey = ['/api/tasks', toFilter, '-updatedAt', currentPage]
-
-  // Use SWR
   const { data, error, isLoading } = useSWR(swrKey, fetcher)
   const tasks = data?.tasks || []
   const totalPages = data?.totalPages || 1
@@ -76,7 +73,7 @@ const TaskList = ({ fieldTitle, filter }: TaskListProps) => {
   if (error) return <div>Error loading tasks</div>
 
   return (
-    <div className="mx-auto space-y-4">
+    <div className="space-y-4">
       <TaskListHeader
         fieldTitle={fieldTitle}
         tasks={tasks}
@@ -115,7 +112,7 @@ const TaskListHeader = ({
   <div className="flex items-center gap-2">
     <div
       className="tracking-[.25em] uppercase font-semibold text-sm hover:cursor-pointer hover:bg-muted hover:text-foreground transition-colors duration-200 group relative"
-      onClick={() => onNavigate(fieldTitle)} // Use the passed function
+      onClick={() => onNavigate(fieldTitle)}
     >
       ⁕ {fieldTitle} ⁕
       <span className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-background text-muted-foreground text-xs px-2 py-1 rounded shadow">
@@ -146,7 +143,7 @@ const TaskListSkeleton = () => (
 )
 
 const TaskListContent = ({ tasks }: { tasks: Task[] }) => (
-  <div className="space-y-1">
+  <div className="space-y-2">
     {tasks.map((task) => (
       <TaskCard key={task.id} task={task} />
     ))}

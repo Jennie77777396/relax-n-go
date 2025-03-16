@@ -1,3 +1,4 @@
+// pages/TasksPage.tsx
 import React, { Suspense } from 'react'
 import TaskList from '@/components/Tasks/ListTasks'
 import { getFields } from '@/actions/tasks'
@@ -14,9 +15,9 @@ export default async function TasksPage() {
         <div className="flex items-center gap-2">
           <FilterButtons />
         </div>
-        <div className="grid auto-rows-min gap-4 md:grid-cols-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {fields.map((field) => (
-            <div key={field.title} className="aspect-video rounded-xl border-1 p-2">
+            <div key={field.title} className="rounded-xl border p-2">
               <TaskList fieldTitle={field.title} />
             </div>
           ))}

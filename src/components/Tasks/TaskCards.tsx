@@ -1,4 +1,4 @@
-// components/TaskCard.tsx
+// components/tasks/TaskCard.tsx
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tag, Task } from '@/payload-types'
 import { useEffect, useState } from 'react'
@@ -41,8 +41,7 @@ export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
     <>
       <Card
         className={`
-          rounded-lg shadow-sm transition-all
-          w-[300px] sm:w-[90%] md:w-[400px] lg:w-[450px] mx-auto
+          w-full rounded-lg shadow-sm transition-all
           ${
             task.status === 1 &&
             task.fields &&
@@ -64,9 +63,9 @@ export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
               : 'white',
         }}
       >
-        <CardHeader className="p-2 sm:p-3 lg:p-4 space-y-0">
+        <CardHeader className="p-2 sm:p-3 space-y-0">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-            <CardTitle className="text-sm sm:text-base lg:text-lg font-medium flex items-center justify-between w-full">
+            <CardTitle className="text-sm sm:text-base font-medium flex items-center justify-between w-full">
               <Link href={`/tasks/${task.id}`} className="truncate">
                 {task.status < 1 ? task.emoji : '💅🏻'} {task.title}
               </Link>
@@ -88,14 +87,14 @@ export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
               )}
             </CardTitle>
             {task.status < 1 && (
-              <div className="text-xs sm:text-sm text-gray-600 text-right">
+              <div className="text-xs sm:text-sm text-gray-600 text-right truncate">
                 Need some new design
               </div>
             )}
           </div>
         </CardHeader>
         {task.tags && task.tags.length > 0 && (
-          <CardContent className="p-2 sm:p-3 lg:p-4 space-y-2">
+          <CardContent className="p-2 sm:p-3 space-y-2">
             <TagsLine tags={task.tags as Tag[]} />
           </CardContent>
         )}

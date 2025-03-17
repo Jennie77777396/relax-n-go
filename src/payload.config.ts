@@ -20,6 +20,7 @@ import { Fields } from './collections/Fields'
 import { Tasks } from './collections/Tasks'
 import { Ratings } from './collections/Ratings'
 import { Time } from './collections/Time'
+import { TaskTimeLogs } from './collections/TaskTimeLogs'
 import { Tags } from './collections/Tags'
 import { Importance } from './collections/Importance'
 
@@ -77,6 +78,7 @@ export default buildConfig({
     Categories,
     Users,
     Tasks,
+    TaskTimeLogs,
     Ratings,
     Fields,
     Time,

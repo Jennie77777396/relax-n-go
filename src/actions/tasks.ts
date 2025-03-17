@@ -18,8 +18,8 @@ export interface TaskProps {
   feedback?: string | null
   tags?: string[]
   fields?: string[]
-  startTime?: string | null
-  timer?: number | null
+  start_time?: string | null
+  total_spent?: number | null
   parent_task?: number | Task | null
   completed_subtasks?: number | null
   total_subtasks?: number | null

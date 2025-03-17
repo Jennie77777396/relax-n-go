@@ -17,6 +17,7 @@ export interface Config {
     categories: Category;
     users: User;
     tasks: Task;
+    taskTimeLogs: TaskTimeLog;
     ratings: Rating;
     fields: Field;
     time: Time;
@@ -39,6 +40,7 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     tasks: TasksSelect<false> | TasksSelect<true>;
+    taskTimeLogs: TaskTimeLogsSelect<false> | TaskTimeLogsSelect<true>;
     ratings: RatingsSelect<false> | RatingsSelect<true>;
     fields: FieldsSelect<false> | FieldsSelect<true>;
     time: TimeSelect<false> | TimeSelect<true>;
@@ -697,8 +699,8 @@ export interface Task {
   tags?: (number | Tag)[] | null;
   fields?: (number | Field)[] | null;
   status: number;
-  startTime?: string | null;
-  timer: number;
+  start_time?: string | null;
+  total_spent: number;
   is_running?: boolean | null;
   success_attempts: number;
   total_attempts: number;
@@ -772,6 +774,19 @@ export interface Field {
     | 'fuchsia'
     | 'pink'
     | 'rose';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "taskTimeLogs".
+ */
+export interface TaskTimeLog {
+  id: number;
+  task: number | Task;
+  date: string;
+  seconds: number;
+  title?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1020,6 +1035,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'tasks';
         value: number | Task;
+      } | null)
+    | ({
+        relationTo: 'taskTimeLogs';
+        value: number | TaskTimeLog;
       } | null)
     | ({
         relationTo: 'ratings';
@@ -1412,8 +1431,8 @@ export interface TasksSelect<T extends boolean = true> {
   tags?: T;
   fields?: T;
   status?: T;
-  startTime?: T;
-  timer?: T;
+  start_time?: T;
+  total_spent?: T;
   is_running?: T;
   success_attempts?: T;
   total_attempts?: T;
@@ -1421,6 +1440,18 @@ export interface TasksSelect<T extends boolean = true> {
   completed_subtasks?: T;
   total_subtasks?: T;
   is_repeated?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "taskTimeLogs_select".
+ */
+export interface TaskTimeLogsSelect<T extends boolean = true> {
+  task?: T;
+  date?: T;
+  seconds?: T;
+  title?: T;
   updatedAt?: T;
   createdAt?: T;
 }

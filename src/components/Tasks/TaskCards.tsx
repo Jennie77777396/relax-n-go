@@ -115,7 +115,7 @@ export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <div className="ml-auto cursor-pointer">
-                      <EllipsisVertical />F
+                      <EllipsisVertical />
                     </div>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-40">

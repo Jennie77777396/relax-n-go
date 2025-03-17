@@ -32,6 +32,10 @@ const baseURL = process.env.NEXT_SERVER_URL
 
 export async function getFields() {
   const response = await payload.find({ collection: 'fields', sort: '-createdAt' })
+  console.log(
+    'Checking why Fields are not representing latest update at actions.ts: ',
+    JSON.stringify(response),
+  )
   return response.docs
 }
 

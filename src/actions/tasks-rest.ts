@@ -22,7 +22,6 @@ export async function updateTask(
     }
 
     const response = await req.json()
-    console.log('update response: ', response)
     return { success: true, task: response }
   } catch (err) {
     console.error('Fetch error:', err)

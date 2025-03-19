@@ -10,7 +10,10 @@ export default async function HomePage() {
             is also a talented task manager with a philosophy of <strong>"Relax and Go"</strong>.
             For her, <strong>relaxation is the key to success</strong>. 🧘‍♀️🚀
           </p>
-          <div className="flex flex-row gap-4"></div>
+          <div>
+            {' '}
+            Jennie is Visioning the scenario, not repeating words. Language is cheating not real
+          </div>
         </div>
       </div>
     </main>

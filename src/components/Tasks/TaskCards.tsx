@@ -21,7 +21,6 @@ interface TaskCardProps {
 
 export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
   const [feedbackPopUp, setFeedbackPopUp] = useState(false)
-  const [isCompleted, setIsCompleted] = useState(false)
 
   useEffect(() => {}, [feedbackPopUp])
 
@@ -59,7 +58,7 @@ export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
             task.fields.length > 0 &&
             typeof task.fields[0] === 'object' &&
             'color' in task.fields[0]
-              ? `linear-gradient(135deg, ${task.fields[0].color}, rgba(248, 200, 208, 0.5), rgba(243, 229, 245, 0.5))`
+              ? task.fields[0].color
               : 'white',
         }}
       >
@@ -72,8 +71,8 @@ export const TaskCard = ({ task, onTaskUpdate }: TaskCardProps) => {
               {task.status === 1 && (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <div className="ml-2 cursor-pointer p-1 hover:bg-gray-100 rounded">
-                      <EllipsisVertical className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <div className="ml-auto cursor-pointer">
+                      <EllipsisVertical />
                     </div>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-36 sm:w-40">

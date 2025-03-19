@@ -50,7 +50,6 @@ import {
 import { plus } from 'lucide-react'
 import { Task } from '@/payload-types'
 
-// Add this style block
 const scrollbarStyles = `
   /* Webkit browsers like Chrome, Safari */
   ::-webkit-scrollbar {
@@ -75,8 +74,6 @@ const scrollbarStyles = `
     scrollbar-color: hsl(var(--muted-foreground)) hsl(var(--background));
   }
 `
-
-// Sample task data based on the new structure
 
 export default function DataTable({ tasks }: { tasks: Task[] }) {
   const [searchTerm, setSearchTerm] = useState('')

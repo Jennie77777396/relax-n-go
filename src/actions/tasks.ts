@@ -31,7 +31,7 @@ const payload = await getPayload({ config })
 const baseURL = process.env.NEXT_SERVER_URL
 
 export async function getFields() {
-  const response = await payload.find({ collection: 'fields', sort: 'createdAt' })
+  const response = await payload.find({ collection: 'fields', sort: '-createdAt' })
   return response.docs
 }
 

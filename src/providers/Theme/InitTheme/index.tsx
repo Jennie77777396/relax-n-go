@@ -38,7 +38,6 @@ export const InitTheme: React.FC = () => {
         themeToSet = implicitPreference
       }
     }
-
     document.documentElement.setAttribute('data-theme', themeToSet)
   })();
   `,

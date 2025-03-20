@@ -1,7 +1,16 @@
 'use client'
 import Link from 'next/link'
 import { useState } from 'react'
-import { ArrowUpDown, Calendar, Clock, Filter, MoreHorizontal, Search, Star } from 'lucide-react'
+import {
+  ArrowUpDown,
+  Calendar,
+  Clock,
+  Filter,
+  MoreHorizontal,
+  Search,
+  Star,
+  Plus,
+} from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -38,7 +47,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import { plus } from 'lucide-react'
 import { Task } from '@/payload-types'
 
 const scrollbarStyles = `

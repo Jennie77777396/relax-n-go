@@ -38,6 +38,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
+import { plus } from 'lucide-react'
 import { Task } from '@/payload-types'
 
 const scrollbarStyles = `
@@ -66,7 +67,6 @@ const scrollbarStyles = `
 `
 
 export default function DataTable({ tasks }: { tasks: Task[] }) {
-  console.log('task', tasks)
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('All')
   const [importanceFilter, setImportanceFilter] = useState('All')
@@ -128,23 +128,12 @@ export default function DataTable({ tasks }: { tasks: Task[] }) {
           </div>
 
           <div className="flex gap-2">
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-[130px]">
-                <SelectValue placeholder="Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="All">All Status</SelectItem>
-                <SelectItem value="0">Pending</SelectItem>
-                <SelectItem value="1">Completed</SelectItem>
-              </SelectContent>
-            </Select>
-
             <Select value={importanceFilter} onValueChange={setImportanceFilter}>
               <SelectTrigger className="w-[130px]">
                 <SelectValue placeholder="Importance" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="All">All Importance</SelectItem>
+                <SelectItem value="All">Columns</SelectItem>
                 <SelectItem value="1">1</SelectItem>
                 <SelectItem value="2">2</SelectItem>
                 <SelectItem value="3">3</SelectItem>
@@ -156,6 +145,13 @@ export default function DataTable({ tasks }: { tasks: Task[] }) {
             <Button variant="outline" size="icon">
               <Filter className="h-4 w-4" />
             </Button>
+
+            <Button variant="outline" className="ml-2">
+              <div className="flex items-center">
+                <Plus className="mr-2 h-4 w-4" />
+                Add Task
+              </div>
+            </Button>
           </div>
         </div>
 
@@ -165,9 +161,7 @@ export default function DataTable({ tasks }: { tasks: Task[] }) {
           <Table>
             <TableHeader className="sticky top-0 bg-background">
               <TableRow>
-                <TableHead className="w-[50px]">Emoji</TableHead>
-                <TableHead className="w-[100px]">ID</TableHead>
-                <TableHead className="min-w-[200px]">Task</TableHead>
+                <TableHead className="min-w-[1000px]">Task</TableHead>
                 <TableHead className="w-[100px]">Status</TableHead>
                 <TableHead className="w-[100px]">
                   <div className="flex items-center">
@@ -177,11 +171,13 @@ export default function DataTable({ tasks }: { tasks: Task[] }) {
                 </TableHead>
                 <TableHead className="w-[120px]">
                   <div className="flex items-center">
-                    Start Time
+                    Created At
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                   </div>
                 </TableHead>
+                <TableHead>Updated At</TableHead>
                 <TableHead className="w-[100px]">Timer</TableHead>
+                <TableHead className="w-[100px]">Rating</TableHead>
                 <TableHead className="w-[120px]">Attempts</TableHead>
                 <TableHead className="w-[150px]">Tags</TableHead>
                 <TableHead className="w-[70px]"></TableHead>
@@ -191,10 +187,8 @@ export default function DataTable({ tasks }: { tasks: Task[] }) {
               {filteredTasks.length > 0 ? (
                 filteredTasks.map((task) => (
                   <TableRow key={task.id}>
-                    <TableCell>{task.emoji}</TableCell>
-                    <TableCell className="font-medium">{task.id}</TableCell>
                     <TableCell>
-                      <Link href={`/tasks/${task.id}`}>{task.title}</Link>
+                      <Link href={`/tasks/${task.id}`}>{`${task.emoji} ${task.title}`}</Link>
                     </TableCell>
                     <TableCell>{getStatusBadge(task.status)}</TableCell>
                     <TableCell>
@@ -207,7 +201,13 @@ export default function DataTable({ tasks }: { tasks: Task[] }) {
                     <TableCell>
                       <div className="flex items-center">
                         <Calendar className="mr-2 h-4 w-4 text-muted-foreground" />
-                        {new Date(task.start_time || 0).toLocaleDateString()}
+                        {new Date(task.createdAt || 0).toLocaleDateString()}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center">
+                        <Calendar className="mr-2 h-4 w-4 text-muted-foreground" />
+                        {new Date(task.updatedAt || 0).toLocaleDateString()}
                       </div>
                     </TableCell>
                     <TableCell>
@@ -216,7 +216,8 @@ export default function DataTable({ tasks }: { tasks: Task[] }) {
                         {formatTimer(task.total_spent)}
                       </div>
                     </TableCell>
-                    <TableCell>{`${task.success_attempts}/${task.total_attempts}`}</TableCell>
+                    <TableCell>{task.rating}</TableCell>
+                    <TableCell>{task.total_attempts}</TableCell>
                     <TableCell>
                       <div className="flex flex-wrap gap-1">
                         {task.tags?.map(

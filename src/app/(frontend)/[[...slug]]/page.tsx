@@ -6,7 +6,7 @@ export default async function FieldsPage({ params }: { params: Promise<{ slug?: 
   if (slug?.[0]) {
     toFilter = { 'fields.title': { like: decodeURIComponent(slug?.[0]) } }
   }
-  const response = await getTasks(toFilter)
+  const response = await getTasks(toFilter, '-updatedAt', 1, 50)
   return (
     <>
       <DataTable tasks={response.tasks} />
